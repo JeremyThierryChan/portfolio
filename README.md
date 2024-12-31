@@ -1,4 +1,3 @@
-# Translator
 
 ### Education
 - Bachelor's degree
