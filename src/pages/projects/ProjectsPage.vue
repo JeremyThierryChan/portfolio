@@ -83,6 +83,7 @@ export default {
       filters: [
         { label: 'All', value: 'all' },
         { label: 'In Progress', value: 'In Progress' },
+        { label: 'Paused', value: 'Paused' },
         { label: 'Completed', value: 'Completed' },
       ]
     };
