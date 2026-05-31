@@ -2,10 +2,11 @@
   display: flex;
   justify-content: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #2b2b2b, #3c3c3c); /* 背景渐变 */
-  color: white;
+  background: var(--bg-gradient);
+  color: var(--text-primary);
   font-family: 'Arial', sans-serif;
   padding: 40px;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .content {
@@ -22,13 +23,14 @@ h2 {
 }
 
 .page-introduction {
-  background: rgba(0, 0, 0, 0.7);
+  background: var(--bg-card);
   padding: 20px;
   margin-bottom: 20px;
   border-radius: 15px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 8px 20px var(--shadow);
   transform: translateY(20px);
   animation: slideUp 1s ease-out forwards;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .page-introduction h3 {
@@ -36,7 +38,7 @@ h2 {
   font-weight: 600;
   margin-top: 10px;
   margin-bottom: 10px;
-  text-align: center;  
+  text-align: center;
 }
 
 .filter-section {
@@ -48,30 +50,26 @@ h2 {
   padding: 6px 10px;
   font-size: 0.6rem;
   border-radius: 5px;
-  background-color: #444;
-  color: white;
-  border: 1px solid #666;
+  background-color: var(--bg-filter);
+  color: var(--text-primary);
+  border: 1px solid var(--border-filter);
   cursor: pointer;
   margin: 10px 10px;
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-.filter-btn:hover {
-  background-color: #ff6b6b;
-}
-
-.filter-btn.active {
-  background-color: #ff4747;
-}
+.filter-btn:hover  { background-color: #ff6b6b; color: #fff; }
+.filter-btn.active { background-color: #ff4747; color: #fff; }
 
 .card {
-  background: rgba(0, 0, 0, 0.7);
+  background: var(--bg-card);
   padding: 20px;
   margin-bottom: 20px;
   border-radius: 15px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 8px 20px var(--shadow);
   transform: translateY(20px);
   animation: slideUp 1s ease-out forwards;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card h3 {
@@ -100,12 +98,10 @@ h2 {
 
 .progress-text {
   font-size: 1rem;
-  color: white;
+  color: var(--text-primary);
 }
 
-.stages {
-  margin-top: 20px;
-}
+.stages { margin-top: 20px; }
 
 .stages h4 {
   font-size: 1.5rem;
@@ -117,9 +113,7 @@ h2 {
   padding: 0;
 }
 
-.stages li {
-  margin-bottom: 10px;
-}
+.stages li { margin-bottom: 10px; }
 
 .stage-title {
   display: flex;
@@ -127,13 +121,11 @@ h2 {
   font-weight: bold;
 }
 
-.completed {
-  color: #4caf50;
-}
+.completed { color: #4caf50; }
 
 .simple-view p {
   font-size: 1.2rem;
-  color: white;
+  color: var(--text-primary);
 }
 
 .card-btn {
@@ -157,47 +149,23 @@ h2 {
   font-style: italic;
   margin-top: 30px;
   text-align: center;
-  color: white;
+  color: var(--text-muted);
 }
 
 @keyframes slideUp {
-  from {
-    transform: translateY(50px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+  from { transform: translateY(50px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 @media (max-width: 768px) {
-  .projects {
-    padding: 20px;
-  }
-
-  h2 {
-    font-size: 2rem;
-  }
-
-  .card {
-    padding: 15px;
-  }
-
-  .card-btn {
-    padding: 10px 20px;
-  }
-
-  .wait-text {
-    font-size: 1rem;
-  }
+  .page    { padding: 20px; }
+  h2       { font-size: 2rem; }
+  .card    { padding: 15px; }
+  .card-btn{ padding: 10px 20px; }
+  .wait-text { font-size: 1rem; }
 }

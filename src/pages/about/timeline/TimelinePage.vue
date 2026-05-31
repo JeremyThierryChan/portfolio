@@ -1,7 +1,7 @@
 <template>
   <section class="timeline">
     <div class="content">
-      <h2>My Journey</h2>
+      <h2>{{ $t('timeline.title') }}</h2>
       <div v-for="(event, index) in events" :key="index" :class="['timeline-item', event.type]" :style="event.style">
         <div class="timeline-date">
           <p>{{ event.date }}</p>
@@ -35,10 +35,11 @@ export default {
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #2b2b2b, #3c3c3c);
-  color: white;
+  background: var(--bg-gradient);
+  color: var(--text-primary);
   font-family: 'Arial', sans-serif;
   padding: 40px;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .content {
@@ -74,12 +75,13 @@ h2 {
 }
 
 .timeline-content {
-  background: rgba(0, 0, 0, 0.7); /* 半透明背景 */
+  background: var(--bg-card);
   padding: 20px;
   border-radius: 15px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); /* 阴影效果 */
+  box-shadow: 0 8px 20px var(--shadow);
   width: 70%;
-  max-width: 800px; /* 最大宽度为 800px */
+  max-width: 800px;
+  transition: background 0.3s ease;
 }
 
 .timeline-date {

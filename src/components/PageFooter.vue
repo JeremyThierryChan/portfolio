@@ -1,7 +1,7 @@
 <template>
     <footer class="footer">
       <div class="container">
-        <p>&copy; 2025 Jeremy Thierry Chan. All rights reserved.</p>
+        <p>{{ $t('footer.rights') }}</p>
         <div class="social-links">
           <a href="https://www.instagram.com/jeremy.thierry.chan/" target="_blank" aria-label="Instagram">
             <img src="@/assets/icons/instagram-icon.png" alt="Instagram" />
@@ -22,11 +22,12 @@
   
   <style scoped>
   .footer {
-    background-color: #333;
-    color: white;
+    background-color: var(--bg-footer);
+    color: var(--text-footer);
     padding: 20px 0;
     text-align: center;
     font-size: 14px;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
   
   .container {

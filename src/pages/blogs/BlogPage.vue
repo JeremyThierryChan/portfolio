@@ -1,29 +1,21 @@
 <template>
   <section class="page">
     <div class="content">
-      <h2>My Blog</h2>
+      <h2>{{ $t('blog.title') }}</h2>
 
       <div class="page-introduction">
-          <h3>What You’ll Find Here</h3>
-          <p>Welcome to my corner of the internet! 
-            Here, I share my thoughts, insights, and stories on a wide variety of topics that I’m passionate about. 
-            Whether you’re here for tech tips, personal development advice, or just a bit of inspiration. 
-            I hope you find something that resonates with you.
-          </p>
+        <h3>{{ $t('blog.subtitle') }}</h3>
+        <p>{{ $t('blog.intro') }}</p>
       </div>
 
       <div v-for="post in posts" :key="post.id" class="card">
         <h3>{{ post.title }}</h3>
         <p>{{ post.excerpt }}</p>
-        <!-- 使用 router-link 来跳转到不存在的页面 -->
-        <router-link :to="'/post/' + post.id" class="card-btn">Read More</router-link>
+        <router-link :to="'/post/' + post.id" class="card-btn">{{ $t('blog.readMore') }}</router-link>
       </div>
 
-      <!-- 敬请期待的文字 -->
-      <p class="wait-text">Please wait for more...</p>
+      <p class="wait-text">{{ $t('blog.waitMore') }}</p>
     </div>
-
-    
   </section>
 </template>
 

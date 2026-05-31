@@ -1,15 +1,15 @@
 <template>
     <section class="skills">
       <div class="content">
-        <h2>My Skills</h2>
-  
+        <h2>{{ $t('skills.title') }}</h2>
+
         <!-- 筛选按钮 -->
         <div class="filter">
-          <button v-for="filter in filters" 
-                  :key="filter.value" 
+          <button v-for="filter in filters"
+                  :key="filter.value"
                   :class="['filter-btn', { active: selectedFilter === filter.value }]"
                   @click="filterSkills(filter.value)">
-            {{ filter.label }}
+            {{ $t(filter.labelKey) }}
           </button>
         </div>
   
@@ -58,10 +58,10 @@
         selectedFilter: 'all',
         filteredSkills: [],
         filters: [
-          { label: 'All', value: 'all' },
-          { label: 'Programming', value: 'Programming Language' },
-          { label: 'Language', value: 'Language' },
-          { label: 'Other', value: 'Other' }
+          { labelKey: 'skills.filterAll',         value: 'all' },
+          { labelKey: 'skills.filterProgramming', value: 'Programming Language' },
+          { labelKey: 'skills.filterLanguage',    value: 'Language' },
+          { labelKey: 'skills.filterOther',       value: 'Other' },
         ]
       };
     },
@@ -95,10 +95,11 @@
     display: flex;
     justify-content: center;
     min-height: 100vh;
-    background: linear-gradient(135deg, #2b2b2b, #3c3c3c);
-    color: white;
+    background: var(--bg-gradient);
+    color: var(--text-primary);
     font-family: 'Arial', sans-serif;
     padding: 40px;
+    transition: background 0.3s ease, color 0.3s ease;
   }
   
   .content {
@@ -123,21 +124,16 @@
     padding: 6px 10px;
     font-size: 0.8rem;
     border-radius: 5px;
-    background-color: #444;
-    color: white;
-    border: 1px solid #666;
+    background-color: var(--bg-filter);
+    color: var(--text-primary);
+    border: 1px solid var(--border-filter);
     cursor: pointer;
     margin: 10px;
     transition: background-color 0.3s ease, transform 0.3s ease;
   }
-  
-  .filter-btn:hover {
-    background-color: #ff6b6b;
-  }
-  
-  .filter-btn.active {
-    background-color: #ff4747;
-  }
+
+  .filter-btn:hover  { background-color: #ff6b6b; color: #fff; }
+  .filter-btn.active { background-color: #ff4747; color: #fff; }
   
   /* 网格布局 */
   .skills-grid {
@@ -147,12 +143,13 @@
   }
   
   .skill-card {
-    background: rgba(0, 0, 0, 0.7);
+    background: var(--bg-card);
     padding: 20px;
     border-radius: 15px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 8px 20px var(--shadow);
     transform: translateY(20px);
     animation: slideUp 1s ease-out forwards;
+    transition: background 0.3s ease;
   }
   
   .skill-card h3 {
@@ -169,7 +166,7 @@
   
   .skill-level {
     width: 100%;
-    background-color: #444;
+    background-color: var(--skill-bg);
     border-radius: 25px;
     height: 10px;
     margin-top: 10px;
