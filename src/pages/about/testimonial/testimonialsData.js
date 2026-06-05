@@ -44,4 +44,15 @@ export const testimonials = [
     excerpt: 'Mr. Jeremy Thierry Chan has been actively involved in the program and made a fine contribution to the project. With his excellent character and desire to succeed, he will make an excellent candidate for any organisation.',
     full: 'Mr. Jeremy Thierry Chan participated in our Teaching Program from 15.07.2019 for a week. His tasks and activities were in the local community at a local Primary School, teaching English during weekdays. During his stay, he has been actively involved in the program and made a fine contribution to the project. I believed that Mr. Jeremy Thierry Chan with his excellent character and his desire to succeed in this chosen project will make an excellent candidate. I strongly recommend him for your organisation. I wish him success in his academic and professional career.',
   },
+  {
+    id: 5,
+    name: 'Simon Kaufmann',
+    role: 'Fellow Volunteer, Zurich, Switzerland',
+    date: '2019',
+    context: 'Green Lion Volunteer Programme — Ubud, Bali, July 2019',
+    initials: 'SK',
+    color: '#8e44ad',
+    excerpt: 'Jeremy was the only Chinese volunteer in the project. He got up at 6 AM every day to prepare his lessons — writing teaching materials in both Balinese and English by hand and practising his plan repeatedly before class.',
+    full: 'I am Simon Kaufmann from Zurich, Switzerland. I met Jeremy in Ubud, Indonesia when we were volunteering with The Green Lion. He was the only Chinese in the project at that time. He taught English in a local school and did epic work. Nearly all the students in the school were in his class. His class started in the afternoon like the other volunteers, but he got up very early — around 6 AM — to prepare. There was neither a projector nor modern teaching equipment in the local school, so he wrote down everything he was going to teach in both Balinese and English on paper, made copies at the camp, and then practised his teaching plan again and again before class.',
+  },
 ];
