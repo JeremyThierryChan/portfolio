@@ -21,6 +21,12 @@
         <p>{{ $t('about.skillsDesc') }}</p>
         <router-link to="/about/skills" class="card-btn">{{ $t('about.viewSkills') }}</router-link>
       </div>
+
+      <div class="card">
+        <h3>{{ $t('about.testimonialsTitle') }}</h3>
+        <p>{{ $t('about.testimonialsDesc') }}</p>
+        <router-link to="/about/testimonials" class="card-btn">{{ $t('about.viewTestimonials') }}</router-link>
+      </div>
     </div>
   </section>
 </template>

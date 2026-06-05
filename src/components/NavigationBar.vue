@@ -9,10 +9,12 @@
           <li><router-link to="/about">{{ $t('nav.aboutMe') }}</router-link></li>
           <li><router-link to="/about/timeline">{{ $t('nav.timeline') }}</router-link></li>
           <li><router-link to="/about/skills">{{ $t('nav.skills') }}</router-link></li>
+          <li><router-link to="/about/testimonials">{{ $t('nav.testimonials') }}</router-link></li>
         </ul>
       </li>
 
       <li><router-link to="/projects">{{ $t('nav.projects') }}</router-link></li>
+      <li><router-link to="/gallery">{{ $t('nav.gallery') }}</router-link></li>
       <li><router-link to="/blog">{{ $t('nav.blog') }}</router-link></li>
       <li><router-link to="/contact">{{ $t('nav.contact') }}</router-link></li>
 

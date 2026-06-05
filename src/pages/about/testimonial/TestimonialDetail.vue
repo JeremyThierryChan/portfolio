@@ -1,62 +1,43 @@
 <template>
-  <div class="testimonial-detail">
-    <!-- 页面标题和基本信息 -->
-    <section class="testimonial-header">
+  <div class="testimonial-detail" v-if="testimonial">
+    <section class="detail-header">
+      <div class="avatar-lg" :style="{ backgroundColor: testimonial.color }">
+        {{ testimonial.initials }}
+      </div>
       <h1>{{ testimonial.name }}</h1>
       <p class="role">{{ testimonial.role }}</p>
+      <p class="context">{{ testimonial.context }}</p>
       <p class="date">{{ testimonial.date }}</p>
     </section>
 
-    <!-- 头像和推荐内容 -->
-    <section class="testimonial-body">
-      <img :src="testimonial.avatar" alt="Avatar" class="avatar" />
-      <p>{{ testimonial.text }}</p>
+    <section class="detail-body">
+      <p>"{{ testimonial.full }}"</p>
     </section>
 
-    <!-- 返回按钮 -->
     <div class="back-button">
-      <router-link to="/about/testimonial" class="button">Go Back to Testimonial List</router-link>
+      <router-link to="/about/testimonials" class="button">
+        {{ $t('testimonials.backBtn') }}
+      </router-link>
     </div>
+  </div>
+
+  <div class="testimonial-detail not-found" v-else>
+    <p>Testimonial not found.</p>
+    <router-link to="/about/testimonials" class="button">
+      {{ $t('testimonials.backBtn') }}
+    </router-link>
   </div>
 </template>
 
 <script>
+import { testimonials } from './testimonialsData.js';
+
 export default {
   name: 'TestimonialDetail',
   props: ['id'],
-  data() {
-    return {
-      testimonial: {},
-    };
-  },
-  created() {
-    this.loadTestimonial();
-  },
-  methods: {
-    loadTestimonial() {
-      // 假设这里是从 API 或本地数据加载推荐的详细信息
-      const testimonials = [
-        {
-          id: 1,
-          name: 'John Doe',
-          role: 'Software Engineer at XYZ Company',
-          date: '2023-12-15',
-          text: 'An incredibly talented developer, always delivering high-quality work on time.',
-          avatar: 'path_to_avatar_1.jpg',
-        },
-        {
-          id: 2,
-          name: 'Jane Smith',
-          role: 'Project Manager at ABC Corp',
-          date: '2023-11-25',
-          text: 'A true team player with excellent problem-solving skills. Highly recommended.',
-          avatar: 'path_to_avatar_2.jpg',
-        },
-        // 更多推荐数据...
-      ];
-
-      // 根据动态参数 id 查找对应的 testimonial
-      this.testimonial = testimonials.find(item => item.id == this.id);
+  computed: {
+    testimonial() {
+      return testimonials.find(t => t.id == this.id);
     },
   },
 };
@@ -64,75 +45,94 @@ export default {
 
 <style scoped>
 .testimonial-detail {
-  display: flex; /* 使用 flexbox 布局 */
-  flex-direction: column; /* 垂直排列子元素 */
-  align-items: center; /* 水平居中对齐子元素 */
-  justify-content: top; /* 垂直居中对齐子元素 */
-  height: 100vh; /* 高度占满整个视口 */
-  background: linear-gradient(135deg, #2b2b2b, #3c3c3c); /* 设置渐变背景色，135度斜向 */
-  color: white; /* 设置文本颜色为白色 */
-  text-align: center; /* 设置文本居中对齐 */
-  font-family: 'Arial', sans-serif; /* 设置字体为 Arial */
-  background-size: cover; /* 背景覆盖整个容器，不拉伸 */
-}
-
-.testimonial-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  background: var(--bg-gradient);
+  color: var(--text-primary);
+  font-family: 'Arial', sans-serif;
+  padding: 60px 40px;
   text-align: center;
-  margin-bottom: 30px;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
-.testimonial-header h1 {
-  font-size: 2.5rem;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.testimonial-header .role {
-  font-size: 1.2rem;
-  color: #777;
-  margin-bottom: 5px;
-}
-
-.testimonial-header .date {
-  font-size: 1rem;
-  color: #aaa;
-}
-
-.testimonial-body {
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-.testimonial-body .avatar {
-  width: 100px;
-  height: 100px;
+.avatar-lg {
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: white;
   margin-bottom: 20px;
 }
 
-.testimonial-body p {
-  font-size: 1.1rem;
-  line-height: 1.6;
+.detail-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.detail-header .role {
+  font-size: 1rem;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.detail-header .context {
+  font-size: 0.9rem;
+  color: #ff6b6b;
+  font-style: italic;
+  margin-bottom: 6px;
+}
+
+.detail-header .date {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 30px;
+}
+
+.detail-body {
+  max-width: 720px;
+  background: var(--bg-card);
+  border-radius: 15px;
+  padding: 32px;
+  box-shadow: 0 8px 20px var(--shadow);
+  margin-bottom: 36px;
+  transition: background 0.3s ease;
+}
+
+.detail-body p {
+  font-style: italic;
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--text-primary);
+}
+
+.button {
+  display: inline-block;
+  background-color: #ff6b6b;
   color: white;
+  padding: 12px 28px;
+  font-size: 1rem;
+  border-radius: 25px;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-.back-button {
-  text-align: center;
+.button:hover {
+  background-color: #ff4747;
+  transform: translateY(-3px);
 }
 
-.back-button .button {
-  display: inline-block; /* 使按钮为行内块元素 */
-  background-color: #ff6b6b; /* 设置按钮背景颜色 */
-  color: white; /* 设置按钮文字颜色为白色 */
-  padding: 12px 25px; /* 设置按钮的内边距 */
-  font-size: 1.1rem; /* 设置按钮字体大小 */
-  border-radius: 25px; /* 设置按钮圆角为 25px */
-  text-decoration: none; /* 移除链接下划线 */
-  transition: background-color 0.3s ease, transform 0.3s ease; /* 设置按钮的过渡效果 */
-}
+.not-found { justify-content: center; gap: 20px; }
 
-.back-button .button:hover {
-  background-color: #ff4747; /* 鼠标悬停时，背景颜色变为深红色 */
-  transform: translateY(-3px); /* 鼠标悬停时，按钮上移 3px */
+@media (max-width: 768px) {
+  .testimonial-detail { padding: 40px 20px; }
+  .detail-header h1 { font-size: 1.5rem; }
+  .detail-body { padding: 20px; }
 }
 </style>

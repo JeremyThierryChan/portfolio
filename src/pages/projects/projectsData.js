@@ -153,6 +153,42 @@ export const projects = [
     cofounder: '',
   },
 
+  {
+    id: 17,
+    title: 'Muyang Education — Intranet Website',
+    description: 'Internal promotional website built for Muyang Education (沐阳教育), a local training centre. Deployed on the organisation\'s intranet. No public URL.',
+    tech: 'Vue.js, CSS, JavaScript',
+    link: '',
+    status: 'In Progress',
+    progress: 80,
+    displayType: 'simple',
+    cofounder: '',
+  },
+
+  {
+    id: 18,
+    title: 'Qianyuan — Taoist Culture Website',
+    description: 'Website for Qianyuan (乾元), a professional fortune-teller and practitioner of Taoist culture. Currently in early development with content being gradually populated.',
+    tech: 'Next.js, JavaScript',
+    link: '',
+    status: 'In Progress',
+    progress: 15,
+    displayType: 'simple',
+    cofounder: '',
+  },
+
+  {
+    id: 19,
+    title: 'Lacquora — Lacquer Art Guitar',
+    description: 'A niche project combining traditional intangible cultural heritage lacquer art with custom electric guitars. A collaboration between Jeremy and Pingyang Lacquer Art (平阳漆器), a local ICH studio. Includes a showcase website, product pages, and a backend server.',
+    tech: 'Vue.js, Node.js, Docker',
+    link: '',
+    status: 'In Progress',
+    progress: 30,
+    displayType: 'simple',
+    cofounder: 'Pingyang Lacquer Art (平阳漆器)',
+  },
+
   // ── Paused ───────────────────────────────────────────────────
 
   {
