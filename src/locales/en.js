@@ -72,6 +72,7 @@ export default {
     stageCompleted: 'Completed',
     stageInProgress: 'In Progress',
     viewProject: 'View Project',
+    comingSoon: 'Coming Soon',
     waitMore: 'Please wait for more...',
   },
   blog: {
@@ -79,6 +80,7 @@ export default {
     subtitle: "What You'll Find Here",
     intro: "Welcome to my corner of the internet! Here, I share my thoughts, insights, and stories on topics I'm passionate about. Whether you're here for tech tips, language learning, or a bit of inspiration — I hope you find something that resonates.",
     readMore: 'Read More',
+    comingSoon: 'Coming Soon',
     waitMore: 'Please wait for more...',
   },
   contact: {

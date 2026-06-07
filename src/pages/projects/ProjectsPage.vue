@@ -53,6 +53,9 @@
         <a v-if="project.link" :href="project.link" class="card-btn" target="_blank" rel="noopener noreferrer">
           {{ $t('projects.viewProject') }}
         </a>
+        <span v-else class="card-btn card-btn-disabled">
+          {{ $t('projects.comingSoon') }}
+        </span>
       </div>
 
       <p class="wait-text">{{ $t('projects.waitMore') }}</p>

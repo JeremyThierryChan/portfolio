@@ -70,6 +70,7 @@ export default {
     stageCompleted: 'Completado',
     stageInProgress: 'En curso',
     viewProject: 'Ver proyecto',
+    comingSoon: 'Próximamente',
     waitMore: 'Más contenido próximamente…',
   },
   blog: {
@@ -77,6 +78,7 @@ export default {
     subtitle: 'Qué encontrarás aquí',
     intro: '¡Bienvenido a mi rincón de internet! Aquí comparto mis pensamientos sobre temas que me apasionan — tecnología, idiomas, cultura y mucho más.',
     readMore: 'Leer más',
+    comingSoon: 'Próximamente',
     waitMore: 'Más contenido próximamente…',
   },
   contact: {

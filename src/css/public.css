@@ -144,6 +144,18 @@ h2 {
   transform: translateY(-3px);
 }
 
+.card-btn-disabled {
+  background-color: var(--bg-filter);
+  color: var(--text-muted);
+  cursor: default;
+  border: 1px solid var(--border-filter);
+}
+
+.card-btn-disabled:hover {
+  background-color: var(--bg-filter);
+  transform: none;
+}
+
 .wait-text {
   font-size: 1.2rem;
   font-style: italic;

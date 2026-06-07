@@ -72,6 +72,7 @@ export default {
     stageCompleted: '已完成',
     stageInProgress: '进行中',
     viewProject: '查看项目',
+    comingSoon: '即将上线',
     waitMore: '更多内容即将上线…',
   },
   blog: {
@@ -79,6 +80,7 @@ export default {
     subtitle: '你能在这里找到什么',
     intro: '欢迎来到我在互联网的角落！这里记录着我对技术、语言学习、文化以及各种感兴趣话题的思考。希望你能找到有共鸣的内容。',
     readMore: '阅读全文',
+    comingSoon: '即将上线',
     waitMore: '更多内容即将上线…',
   },
   contact: {
