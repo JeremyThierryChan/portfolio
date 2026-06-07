@@ -10,4 +10,11 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+  optimizeDeps: {
+    include: ['vue', 'vue-router', 'vue-i18n'],
+    holdUntilCrawlEnd: false,
+  },
+  server: {
+    host: 'localhost',
+  },
 })
