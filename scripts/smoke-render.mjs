@@ -40,6 +40,7 @@ import { createSSRApp, h } from 'vue';
 import { renderToString } from '@vue/server-renderer';
 import { createRouter, createMemoryHistory } from 'vue-router';
 import { createI18n } from 'vue-i18n';
+import { findWithheld } from './withheld-names.mjs';
 
 /* ── minimal DOM stub ──────────────────────────────────────────────────── */
 
@@ -205,6 +206,15 @@ try {
 
       if (text.length < 60) {
         bad(`${path} → ${name}`, `rendered almost no text (${text.length} chars)`);
+        continue;
+      }
+
+      // No route may render a name that was deliberately withheld from the published
+      // site. This is the surface that actually reaches a visitor, so it is checked
+      // here and not only in the content layer.
+      const withheld = findWithheld(text);
+      if (withheld.length) {
+        bad(`${path} → ${name}`, `renders a withheld name: ${withheld.join(', ')}`);
         continue;
       }
 
@@ -541,6 +551,10 @@ try {
 
     const enV = anchor.i18n.en[key];
     const zhV = anchor.i18n.zh[key];
+
+    const withheldZh = findWithheld(text);
+    if (withheldZh.length) bad(`${path} rendered in zh leaks a withheld name`, withheldZh.join(', '));
+    else ok(`${path} rendered in zh carries no withheld name`);
 
     if (text.includes(zhV)) ok(`${path} rendered in zh uses the zh copy`, zhV.slice(0, 22));
     else bad(`${path} rendered in zh is missing its zh copy`, `expected "${zhV}"`);

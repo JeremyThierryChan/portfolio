@@ -430,10 +430,12 @@ export const projects = [
        deleted; 'archived' means "not promoted", not "hidden". */
     tier: 'listed',
     audiences: ['web'],
-    slug: 'catherines-portfolio-website',
+    slug: 'designer-portfolio-website',
     status: 'in-progress',
     progress: 50,
-    link: 'https://catherinejanetsui.github.io/portfolio/',
+    /* Link withheld: the URL is the client's own name, which defeats the point of
+       describing her anonymously. See scripts/withheld-names.mjs. */
+    link: null,
     tech: ['Vue.js', 'CSS', 'JavaScript'],
     cofounder: null,
     stages: [],
@@ -456,10 +458,11 @@ export const projects = [
        deleted; 'archived' means "not promoted", not "hidden". */
     tier: 'listed',
     audiences: ['web'],
-    slug: 'letterresearchinst',
+    slug: 'research-institute-web-tool',
     status: 'in-progress',
     progress: 35,
-    link: 'https://letterresearchinst.vercel.app',
+    /* Link withheld — it is the client's name. See scripts/withheld-names.mjs. */
+    link: null,
     tech: ['JavaScript', 'Vue.js'],
     cofounder: null,
     stages: [],
@@ -595,7 +598,7 @@ export const projects = [
        deleted; 'archived' means "not promoted", not "hidden". */
     tier: 'listed',
     audiences: ['institutions','web'],
-    slug: 'muyang-education-intranet-website',
+    slug: 'training-centre-intranet-website',
     status: 'in-progress',
     progress: 80,
     link: null,
@@ -623,7 +626,7 @@ export const projects = [
        deleted; 'archived' means "not promoted", not "hidden". */
     tier: 'listed',
     audiences: ['web'],
-    slug: 'qianyuan-taoist-culture-website',
+    slug: 'taoist-culture-website',
     status: 'in-progress',
     progress: 15,
     link: 'https://jeremythierrychan.github.io/Taoism/',
@@ -679,10 +682,11 @@ export const projects = [
        deleted; 'archived' means "not promoted", not "hidden". */
     tier: 'listed',
     audiences: ['web'],
-    slug: 'inchief-printing-official-website',
+    slug: 'printing-company-official-website',
     status: 'paused',
     progress: 60,
-    link: 'https://inchiefprinting.github.io/MainWebsite/',
+    /* Link withheld — it is the client's name. See scripts/withheld-names.mjs. */
+    link: null,
     tech: ['Astro', 'CSS', 'JavaScript'],
     cofounder: null,
     stages: [],
@@ -733,7 +737,7 @@ export const projects = [
        deleted; 'archived' means "not promoted", not "hidden". */
     tier: 'archived',
     audiences: ['web'],
-    slug: 'wokete-brand-website',
+    slug: 'food-supplier-brand-website',
     status: 'paused',
     progress: 30,
     link: null,
@@ -761,7 +765,7 @@ export const projects = [
        deleted; 'archived' means "not promoted", not "hidden". */
     tier: 'archived',
     audiences: ['web'],
-    slug: 'qing-shan-kiln-website',
+    slug: 'ceramic-studio-website',
     status: 'paused',
     progress: 25,
     link: null,
@@ -789,7 +793,7 @@ export const projects = [
        deleted; 'archived' means "not promoted", not "hidden". */
     tier: 'archived',
     audiences: ['institutions','web'],
-    slug: 'wenzhou-lacquerware-gallery',
+    slug: 'lacquerware-gallery',
     status: 'paused',
     progress: 15,
     link: null,

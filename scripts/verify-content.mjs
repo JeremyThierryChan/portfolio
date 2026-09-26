@@ -13,9 +13,10 @@
  * Exit code 0 = no content lost. Exit code 1 = something is missing.
  */
 
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
+import { WITHHELD, findWithheld } from './withheld-names.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const p = (...s) => resolve(ROOT, ...s);
@@ -538,6 +539,34 @@ assert(
     ? `${localeProblems.length} 处问题，前几处：\n      - ${localeProblems.slice(0, 8).join('\n      - ')}`
     : `${bilingualRows} entries`,
 );
+
+/* ── no withheld name reaches a published surface ─────────────────────────
+   Anonymising `src/content` is not enough. Two other surfaces ship: every file
+   under `public/` (served byte-for-byte, including the ATS-facing résumé JSON the
+   /resume page links to) and the rendered HTML, which smoke-render checks. This
+   covers the content layer and `public/`; a future edit to either used to be able
+   to reintroduce a client's name with nothing to catch it.
+   ────────────────────────────────────────────────────────────────────────── */
+{
+  const leaks = [];
+
+  const contentBlob = JSON.stringify(NEW) + JSON.stringify(NEW_PROFILE);
+  const contentHits = findWithheld(contentBlob);
+  if (contentHits.length) leaks.push(`content layer: ${contentHits.join(', ')}`);
+
+  const publicDir = p('public');
+  const served = readdirSync(publicDir).filter((f) => /\.(json|txt|csv|xml|html)$/i.test(f));
+  for (const f of served) {
+    const hits = findWithheld(readFileSync(p('public', f), 'utf8'));
+    if (hits.length) leaks.push(`public/${f}: ${hits.join(', ')}`);
+  }
+
+  assert(
+    leaks.length === 0,
+    `no withheld name reaches a published surface (${WITHHELD.length} guarded, ${served.length} served file(s) scanned)`,
+    leaks.length ? leaks.join(' | ') : 'clean',
+  );
+}
 
 // Tech is an array now, not a comma string.
 const techNotArray = NEW.projects.filter((pr) => !Array.isArray(pr.tech));
