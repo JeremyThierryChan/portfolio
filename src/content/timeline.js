@@ -568,7 +568,7 @@ export const timeline = [
       },
       zh: {
         title: '股东 — JA Poultry Farm，乌干达',
-        description: '成为乌干达 Wakiso 的 JA Poultry Farm 的中方股东，参与一项海外农业投资。',
+        description: '成为乌干达瓦基索的 JA Poultry Farm 的中方股东，参与一项海外农业投资。',
       },
     },
   },
@@ -737,7 +737,7 @@ export const timeline = [
       },
       zh: {
         title: '初中毕业',
-        description: '从 Kunyang Second Middle School 正式毕业，在提前进入高中之后完成初中学业阶段。',
+        description: '从昆阳第二中学正式毕业，在提前进入高中之后完成初中学业阶段。',
       },
     },
   },
@@ -787,7 +787,7 @@ export const timeline = [
       },
       zh: {
         title: '进入初中',
-        description: '进入家乡的 Kunyang Second Middle School，开始初中学业阶段。',
+        description: '进入家乡的昆阳第二中学，开始初中学业阶段。',
       },
     },
   },
@@ -803,7 +803,7 @@ export const timeline = [
       },
       zh: {
         title: '小学毕业',
-        description: '从家乡的 Kunyang Third Primary School 毕业，完成小学教育阶段。',
+        description: '从家乡的昆阳第三小学毕业，完成小学教育阶段。',
       },
     },
   },
@@ -819,7 +819,7 @@ export const timeline = [
       },
       zh: {
         title: '进入小学',
-        description: '进入家乡的 Kunyang Third Primary School，开始正式教育的历程。',
+        description: '进入家乡的昆阳第三小学，开始正式教育的历程。',
       },
     },
   },

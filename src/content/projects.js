@@ -439,12 +439,12 @@ export const projects = [
     stages: [],
     i18n: {
       en: {
-        title: "Catherine's Portfolio Website",
-        description: 'A portfolio website built for a friend, using Vue.js. Currently in active development.',
+        title: 'A Designer Portfolio Website',
+        description: 'A portfolio website built for a designer friend, using Vue.js. Currently in active development.',
       },
       zh: {
-        title: 'Catherine 的作品集网站',
-        description: '为朋友制作的个人作品集网站，使用 Vue.js。目前正在积极开发中。',
+        title: '某设计师的作品集网站',
+        description: '为一位设计师朋友制作的个人作品集网站，使用 Vue.js。目前正在积极开发中。',
       },
     },
   },
@@ -465,12 +465,12 @@ export const projects = [
     stages: [],
     i18n: {
       en: {
-        title: 'LetterResearchINST',
+        title: 'Research Institute Web Tool',
         description:
           'A web application tool currently under active development. The most recently updated project in the workspace.',
       },
       zh: {
-        title: 'LetterResearchINST',
+        title: '某研究机构内部工具',
         description:
           '一个正在积极开发中的 Web 应用工具。是工作区中最近更新的项目。',
       },
@@ -604,14 +604,14 @@ export const projects = [
     stages: [],
     i18n: {
       en: {
-        title: 'Muyang Education — Intranet Website',
+        title: 'Training Centre — Intranet Website',
         description:
-          "Internal promotional website built for Muyang Education (沐阳教育), a local training centre. Deployed on the organisation's intranet. No public URL.",
+          "Internal promotional website built for a local training centre. Deployed on the organisation's intranet. No public URL.",
       },
       zh: {
-        title: '沐阳教育 — 内网网站',
+        title: '培训机构 — 内网网站',
         description:
-          '为本地培训机构沐阳教育制作的对内宣传网站。部署在该机构的内网环境中。没有公开网址。',
+          '为一家本地培训机构制作的对内宣传网站。部署在该机构的内网环境中。没有公开网址。',
       },
     },
   },
@@ -632,14 +632,14 @@ export const projects = [
     stages: [],
     i18n: {
       en: {
-        title: 'Qianyuan — Taoist Culture Website',
+        title: 'Taoist Culture Website',
         description:
-          'Bilingual website for Qianyuan (乾元), a professional fortune-teller and practitioner of Taoist culture, live and navigable at the link below: four pages (home, services, consultation, about) in Chinese and English, on the Next.js App Router with a locale segment and message catalogues. About 1,170 lines of application code plus the bilingual copy, deployed through GitHub Actions. All three commits are the author own, and the framework template survives in only the first of them — the two unused default SVGs still sitting in the public folder are the trace of a business layer written by hand on top of a scaffold. What remains is content rather than code: the site is complete and online while the practitioner is still supplying his material.',
+          'Bilingual website for a professional fortune-teller and practitioner of Taoist culture, live and navigable at the link below: four pages (home, services, consultation, about) in Chinese and English, on the Next.js App Router with a locale segment and message catalogues. About 1,170 lines of application code plus the bilingual copy, deployed through GitHub Actions. All three commits are the author own, and the framework template survives in only the first of them — the two unused default SVGs still sitting in the public folder are the trace of a business layer written by hand on top of a scaffold. What remains is content rather than code: the site is complete and online while the practitioner is still supplying his material.',
       },
       zh: {
-        title: '乾元 — 道家文化网站',
+        title: '道家文化网站',
         description:
-          '为乾元制作的网站，乾元是一名职业命理师，也是道家文化的实践者。下方链接可直接访问：首页、服务、预约、关于四个页面，中英双语，基于 Next.js App Router 的 locale 路由与语言包实现。应用代码约 1,170 行，另有双语文案，通过 GitHub Actions 自动部署。三次提交全部由本人完成，脚手架只存在于第一次提交里——public 目录下至今躺着两个未被引用的默认 SVG，正是业务层在脚手架上手写留下的痕迹。剩下的工作是内容而非代码：网站已完成并上线，命理师本人的素材仍在陆续提供。',
+          '为一位职业命理师、道家文化实践者制作的网站。下方链接可直接访问：首页、服务、预约、关于四个页面，中英双语，基于 Next.js App Router 的 locale 路由与语言包实现。应用代码约 1,170 行，另有双语文案，通过 GitHub Actions 自动部署。三次提交全部由本人完成，脚手架只存在于第一次提交里——public 目录下至今躺着两个未被引用的默认 SVG，正是业务层在脚手架上手写留下的痕迹。剩下的工作是内容而非代码：网站已完成并上线，命理师本人的素材仍在陆续提供。',
       },
     },
   },
@@ -656,18 +656,18 @@ export const projects = [
     progress: 30,
     link: 'https://jeremythierrychan.github.io/Lacquora/',
     tech: ['Vue.js', 'Node.js', 'Docker'],
-    cofounder: 'Pingyang Lacquer Art (平阳漆器)',
+    cofounder: 'A local heritage lacquer-art studio',
     stages: [],
     i18n: {
       en: {
         title: 'Lacquora — Lacquer Art Guitar',
         description:
-          'A niche project combining traditional intangible cultural heritage lacquer art with custom electric guitars. A collaboration between Jeremy and Pingyang Lacquer Art (平阳漆器), a local ICH studio. Includes a showcase website, product pages, and a backend server.',
+          'A niche project combining traditional intangible cultural heritage lacquer art with custom electric guitars. A collaboration between Jeremy and a local studio working in intangible cultural heritage lacquer art. Includes a showcase website, product pages, and a backend server.',
       },
       zh: {
         title: 'Lacquora — 漆艺吉他',
         description:
-          '将传统非物质文化遗产漆艺与定制电吉他结合的小众项目。由 Jeremy 与本地非遗工作室平阳漆器合作开展。包含展示网站、产品页面与一个后端服务器。',
+          '将传统非物质文化遗产漆艺与定制电吉他结合的小众项目。由 Jeremy 与一家本地非遗漆艺工作室合作开展。包含展示网站、产品页面与一个后端服务器。',
       },
     },
   },
@@ -688,12 +688,12 @@ export const projects = [
     stages: [],
     i18n: {
       en: {
-        title: 'InChief Printing — Official Website',
-        description: 'Official website for InChief Printing, built with Astro. Live on GitHub Pages.',
+        title: 'Printing Company — Official Website',
+        description: 'Official website for a printing company, built with Astro. Live on GitHub Pages.',
       },
       zh: {
-        title: 'InChief Printing — 官方网站',
-        description: '为 InChief Printing 制作的官方网站，使用 Astro 构建。已在 GitHub Pages 上线。',
+        title: '印刷企业 — 官方网站',
+        description: '为一家印刷企业制作的官方网站，使用 Astro 构建。已在 GitHub Pages 上线。',
       },
     },
   },
@@ -714,14 +714,14 @@ export const projects = [
     stages: [],
     i18n: {
       en: {
-        title: 'Family Genealogy Website (陳氏宗譜)',
+        title: 'Family Genealogy Website',
         description:
-          'Digitising and presenting the Chen family genealogy spanning multiple generations. Includes a website for browsing lineage records and an XMind knowledge map of historical clan information.',
+          'Digitising and presenting a family genealogy spanning sixteen generations. The website carries a relationship engine that resolves the most recent common ancestor between any two recorded people and renders the resulting Chinese kinship term, plus a lineage tree of 369 nodes drawn as hand-written SVG with pan, zoom and in-tree search. The underlying records are a private family archive, so the project is described here rather than linked.',
       },
       zh: {
-        title: '家族谱牒网站（陳氏宗譜）',
+        title: '家族谱牒网站',
         description:
-          '将跨越数代的陈氏家族谱系数字化并加以呈现。包括一个用于查阅世系记录的网站，以及一份整理宗族历史信息的 XMind 知识图谱。',
+          '把一份跨越十六代的家族谱系数字化并加以呈现。网站包含一个关系查询引擎：求出任意两位族人之间最近的共同祖先，并给出对应的中文亲属称谓；另有一棵 369 个节点的世系树，用手写 SVG 绘制，支持平移、缩放与树内搜索。族谱数据属于家族私密资料，因此这里只作说明，不提供访问入口。',
       },
     },
   },
@@ -742,14 +742,14 @@ export const projects = [
     stages: [],
     i18n: {
       en: {
-        title: 'Wokete Brand Website',
+        title: 'Food Supplier Brand Website',
         description:
-          'Full website project for the Wokete (沃可特) brand, including frontend client and site planning.',
+          'Full website project for a food supplier brand, including frontend client and site planning.',
       },
       zh: {
-        title: '沃可特品牌网站',
+        title: '食品供应商品牌网站',
         description:
-          '为沃可特品牌打造的完整网站项目，包含前端客户端与站点规划。',
+          '为一家食品供应商品牌打造的完整网站项目，包含前端客户端与站点规划。',
       },
     },
   },
@@ -770,12 +770,12 @@ export const projects = [
     stages: [],
     i18n: {
       en: {
-        title: 'Qing Shan Kiln Website (箐山隐)',
+        title: 'Ceramic Studio Website',
         description:
           'Website project for a ceramic kiln and studio. Includes site architecture planning and frontend development.',
       },
       zh: {
-        title: '箐山隐网站',
+        title: '陶艺工作室网站',
         description:
           '为一家陶瓷窑口与工作室制作的网站项目。包含站点架构规划与前端开发。',
       },
@@ -798,14 +798,14 @@ export const projects = [
     stages: [],
     i18n: {
       en: {
-        title: 'Wenzhou Lacquerware Gallery',
+        title: 'Lacquerware Gallery',
         description:
-          'Planning and technical setup for the Wenzhou Lacquerware Gallery (昆阳), including NAS infrastructure proposal and website design.',
+          'Planning and technical setup for a lacquerware gallery, including an NAS infrastructure proposal and website design.',
       },
       zh: {
-        title: '温州漆器馆',
+        title: '漆器馆',
         description:
-          '为温州漆器馆（昆阳）进行规划与技术搭建，包含 NAS 基础设施方案与网站设计。',
+          '为一家漆器馆进行规划与技术搭建，包含 NAS 基础设施方案与网站设计。',
       },
     },
   },
@@ -821,7 +821,7 @@ export const projects = [
     progress: 100,
     link: null,
     tech: ['Java', 'Minecraft Server'],
-    cofounder: 'Henry Young',
+    cofounder: 'A co-admin',
     stages: [],
     i18n: {
       en: {

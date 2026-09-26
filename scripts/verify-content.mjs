@@ -161,6 +161,70 @@ const INTENTIONAL_DEVIATIONS = new Map([
     'Financial APIs',
     'Replaced by the libraries the project actually depends on (ccxt, SQLAlchemy, FastAPI, Docker), all of which are verifiable in the dependency manifests. "Financial APIs" was a placeholder that named nothing a reader could look up.',
   ],
+  [
+    'Catherine\'s Portfolio Website',
+    'Anonymised at Jeremy direction: clients and collaborators are described by kind rather than named, so no third party appears on the site as his client without having agreed to it. The substance of the entry is otherwise unchanged.',
+  ],
+  [
+    'A portfolio website built for a friend, using Vue.js. Currently in active development.',
+    'Rewritten; see the checkpoint commit message.',
+  ],
+  [
+    'LetterResearchINST',
+    'Anonymised at Jeremy direction: clients and collaborators are described by kind rather than named, so no third party appears on the site as his client without having agreed to it. The substance of the entry is otherwise unchanged.',
+  ],
+  [
+    'Muyang Education — Intranet Website',
+    'Anonymised at Jeremy direction: clients and collaborators are described by kind rather than named, so no third party appears on the site as his client without having agreed to it. The substance of the entry is otherwise unchanged.',
+  ],
+  [
+    'Internal promotional website built for Muyang Education (沐阳教育), a local training centre. Deployed on the organisation\'s intranet. No public URL.',
+    'Anonymised at Jeremy direction: clients and collaborators are described by kind rather than named, so no third party appears on the site as his client without having agreed to it. The substance of the entry is otherwise unchanged.',
+  ],
+  [
+    'Qianyuan — Taoist Culture Website',
+    'Anonymised at Jeremy direction: clients and collaborators are described by kind rather than named, so no third party appears on the site as his client without having agreed to it. The substance of the entry is otherwise unchanged.',
+  ],
+  [
+    'A niche project combining traditional intangible cultural heritage lacquer art with custom electric guitars. A collaboration between Jeremy and Pingyang Lacquer Art (平阳漆器), a local ICH studio. Includes a showcase website, product pages, and a backend server.',
+    'Anonymised at Jeremy direction: clients and collaborators are described by kind rather than named, so no third party appears on the site as his client without having agreed to it. The substance of the entry is otherwise unchanged.',
+  ],
+  [
+    'InChief Printing — Official Website',
+    'Anonymised at Jeremy direction: clients and collaborators are described by kind rather than named, so no third party appears on the site as his client without having agreed to it. The substance of the entry is otherwise unchanged.',
+  ],
+  [
+    'Official website for InChief Printing, built with Astro. Live on GitHub Pages.',
+    'Anonymised at Jeremy direction: clients and collaborators are described by kind rather than named, so no third party appears on the site as his client without having agreed to it. The substance of the entry is otherwise unchanged.',
+  ],
+  [
+    'Family Genealogy Website (陳氏宗譜)',
+    'Reduced to a description carrying no identifying detail, at Jeremy direction: no surname, no lineage data and no link. What replaced it is the engineering facts — the most-recent-common-ancestor and Chinese kinship-term engine, and the 369-node lineage tree — which expose nothing about the family.',
+  ],
+  [
+    'Digitising and presenting the Chen family genealogy spanning multiple generations. Includes a website for browsing lineage records and an XMind knowledge map of historical clan information.',
+    'Reduced to a description carrying no identifying detail, at Jeremy direction: no surname, no lineage data and no link. What replaced it is the engineering facts — the most-recent-common-ancestor and Chinese kinship-term engine, and the 369-node lineage tree — which expose nothing about the family.',
+  ],
+  [
+    'Wokete Brand Website',
+    'Anonymised at Jeremy direction: clients and collaborators are described by kind rather than named, so no third party appears on the site as his client without having agreed to it. The substance of the entry is otherwise unchanged.',
+  ],
+  [
+    'Full website project for the Wokete (沃可特) brand, including frontend client and site planning.',
+    'Anonymised at Jeremy direction: clients and collaborators are described by kind rather than named, so no third party appears on the site as his client without having agreed to it. The substance of the entry is otherwise unchanged.',
+  ],
+  [
+    'Qing Shan Kiln Website (箐山隐)',
+    'Anonymised at Jeremy direction: clients and collaborators are described by kind rather than named, so no third party appears on the site as his client without having agreed to it. The substance of the entry is otherwise unchanged.',
+  ],
+  [
+    'Wenzhou Lacquerware Gallery',
+    'Anonymised at Jeremy direction: clients and collaborators are described by kind rather than named, so no third party appears on the site as his client without having agreed to it. The substance of the entry is otherwise unchanged.',
+  ],
+  [
+    'Planning and technical setup for the Wenzhou Lacquerware Gallery (昆阳), including NAS infrastructure proposal and website design.',
+    'Anonymised at Jeremy direction: clients and collaborators are described by kind rather than named, so no third party appears on the site as his client without having agreed to it. The substance of the entry is otherwise unchanged.',
+  ],
 ]);
 
 

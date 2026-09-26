@@ -189,8 +189,8 @@
   ],
   "projects": [
     {
-      "name": "Muyang Education — Intranet Website",
-      "description": "Internal promotional website built for Muyang Education (沐阳教育), a local training centre. Deployed on the organisation's intranet. No public URL.",
+      "name": "Training Centre — Intranet Website",
+      "description": "Internal promotional website built for a local training centre. Deployed on the organisation's intranet. No public URL.",
       "keywords": [
         "Vue.js",
         "CSS",

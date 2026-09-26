@@ -325,7 +325,7 @@
     },
     {
       "name": "Lacquora — Lacquer Art Guitar",
-      "description": "A niche project combining traditional intangible cultural heritage lacquer art with custom electric guitars. A collaboration between Jeremy and Pingyang Lacquer Art (平阳漆器), a local ICH studio. Includes a showcase website, product pages, and a backend server.",
+      "description": "A niche project combining traditional intangible cultural heritage lacquer art with custom electric guitars. A collaboration between Jeremy and a local studio working in intangible cultural heritage lacquer art. Includes a showcase website, product pages, and a backend server.",
       "keywords": [
         "Vue.js",
         "Node.js",
@@ -334,8 +334,8 @@
       "url": "https://jeremythierrychan.github.io/Lacquora/"
     },
     {
-      "name": "Catherine's Portfolio Website",
-      "description": "A portfolio website built for a friend, using Vue.js. Currently in active development.",
+      "name": "A Designer Portfolio Website",
+      "description": "A portfolio website built for a designer friend, using Vue.js. Currently in active development.",
       "keywords": [
         "Vue.js",
         "CSS",
@@ -344,7 +344,7 @@
       "url": "https://catherinejanetsui.github.io/portfolio/"
     },
     {
-      "name": "LetterResearchINST",
+      "name": "Research Institute Web Tool",
       "description": "A web application tool currently under active development. The most recently updated project in the workspace.",
       "keywords": [
         "JavaScript",

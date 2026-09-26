@@ -134,7 +134,7 @@
     },
     {
       "name": "Lacquora — Lacquer Art Guitar",
-      "description": "A niche project combining traditional intangible cultural heritage lacquer art with custom electric guitars. A collaboration between Jeremy and Pingyang Lacquer Art (平阳漆器), a local ICH studio. Includes a showcase website, product pages, and a backend server.",
+      "description": "A niche project combining traditional intangible cultural heritage lacquer art with custom electric guitars. A collaboration between Jeremy and a local studio working in intangible cultural heritage lacquer art. Includes a showcase website, product pages, and a backend server.",
       "keywords": [
         "Vue.js",
         "Node.js",
@@ -143,8 +143,8 @@
       "url": "https://jeremythierrychan.github.io/Lacquora/"
     },
     {
-      "name": "Catherine's Portfolio Website",
-      "description": "A portfolio website built for a friend, using Vue.js. Currently in active development.",
+      "name": "A Designer Portfolio Website",
+      "description": "A portfolio website built for a designer friend, using Vue.js. Currently in active development.",
       "keywords": [
         "Vue.js",
         "CSS",
@@ -153,7 +153,7 @@
       "url": "https://catherinejanetsui.github.io/portfolio/"
     },
     {
-      "name": "LetterResearchINST",
+      "name": "Research Institute Web Tool",
       "description": "A web application tool currently under active development. The most recently updated project in the workspace.",
       "keywords": [
         "JavaScript",
@@ -162,8 +162,8 @@
       "url": "https://letterresearchinst.vercel.app"
     },
     {
-      "name": "Muyang Education — Intranet Website",
-      "description": "Internal promotional website built for Muyang Education (沐阳教育), a local training centre. Deployed on the organisation's intranet. No public URL.",
+      "name": "Training Centre — Intranet Website",
+      "description": "Internal promotional website built for a local training centre. Deployed on the organisation's intranet. No public URL.",
       "keywords": [
         "Vue.js",
         "CSS",
@@ -171,8 +171,8 @@
       ]
     },
     {
-      "name": "Qianyuan — Taoist Culture Website",
-      "description": "Bilingual website for Qianyuan (乾元), a professional fortune-teller and practitioner of Taoist culture, live and navigable at the link below: four pages (home, services, consultation, about) in Chinese and English, on the Next.js App Router with a locale segment and message catalogues. About 1,170 lines of application code plus the bilingual copy, deployed through GitHub Actions. All three commits are the author own, and the framework template survives in only the first of them — the two unused default SVGs still sitting in the public folder are the trace of a business layer written by hand on top of a scaffold. What remains is content rather than code: the site is complete and online while the practitioner is still supplying his material.",
+      "name": "Taoist Culture Website",
+      "description": "Bilingual website for a professional fortune-teller and practitioner of Taoist culture, live and navigable at the link below: four pages (home, services, consultation, about) in Chinese and English, on the Next.js App Router with a locale segment and message catalogues. About 1,170 lines of application code plus the bilingual copy, deployed through GitHub Actions. All three commits are the author own, and the framework template survives in only the first of them — the two unused default SVGs still sitting in the public folder are the trace of a business layer written by hand on top of a scaffold. What remains is content rather than code: the site is complete and online while the practitioner is still supplying his material.",
       "keywords": [
         "Next.js",
         "JavaScript"
