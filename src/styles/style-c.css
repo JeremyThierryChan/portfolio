@@ -1,0 +1,141 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   style-c.css — "Magazine": cream paper, serif body as well as display, wide
+   leading, image-led blocks, terracotta accent, soft warm shadows. Warm and
+   human — the afternoon / lifestyle face.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── identity (mode-independent) ─────────────────────────────────────────── */
+
+[data-style="c"] {
+  --font-display: ui-serif, "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  /* Unlike A, the BODY is serif too — that is what makes this read as a magazine. */
+  --font-body: ui-serif, "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+
+  --weight-display: 400;
+  --weight-strong: 600;
+  --weight-body: 400;
+
+  --step--1: clamp(0.83rem, 0.81rem + 0.1vw, 0.88rem);
+  --step-0:  clamp(1rem, 0.96rem + 0.2vw, 1.1rem);
+  --step-1:  clamp(1.22rem, 1.1rem + 0.55vw, 1.5rem);
+  --step-2:  clamp(1.6rem, 1.3rem + 1.4vw, 2.5rem);
+  --step-3:  clamp(2.3rem, 1.5rem + 3.9vw, 5rem);
+  --step-4:  clamp(3rem, 1.7rem + 6.5vw, 7rem);
+
+  /* Wider than A: long-form reading is the point. */
+  --leading: 1.74;
+  --leading-tight: 1.04;
+  --leading-loose: 1.9;
+  --tracking: 0;
+  --tracking-tight: -0.026em;
+  --tracking-wide: 0.16em;
+
+  --measure: 1080px;
+  --measure-read: 640px;
+
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 12px;
+  --radius-full: 999px;
+
+  --border-width: 1px;
+
+  /* Warm, very soft — paper lifting off paper. */
+  --shadow-sm: 0 1px 2px rgba(60, 42, 20, 0.06);
+  --shadow-md: 0 10px 24px -16px rgba(60, 42, 20, 0.32);
+  --shadow-lg: 0 20px 44px -24px rgba(60, 42, 20, 0.4);
+
+  --card-bg: var(--bg-raised);
+  --card-border: var(--line);
+  --card-radius: var(--radius-md);
+  --card-shadow: var(--shadow-sm);
+  --hover-lift: -3px;
+  --overline-transform: uppercase;
+  --overline-spacing: var(--tracking-wide);
+  --display-decoration: none;
+  --section-index-size: 1.5rem;
+
+  /* No blueprint grid in this style. Declared explicitly rather than left to the
+     fallback, so this file fully describes how the style looks — the fallback is a
+     default for "no style set", never a source of a style's intended appearance. */
+  --grid-size: 44px;
+  --grid-line: transparent;
+  --tick-size: 9px;
+}
+
+/* ── light (the native mode: cream paper) ────────────────────────────────── */
+
+[data-style="c"][data-mode="light"] {
+  color-scheme: light;
+
+  --bg: #f7f2e8;
+  --bg-raised: #fffcf5;
+  --bg-sunken: #efe7d8;
+  --bg-input: #fffcf5;
+  --bg-overlay: rgba(35, 32, 27, 0.5);
+
+  --fg: #23201b;
+  --fg-muted: #635b4e;
+  /* 4.5:1 against --bg / --bg-raised / --bg-input / --bg-sunken — measured by
+       scripts/verify-contrast.mjs, not eyeballed. */
+  --fg-faint: #6e675a;
+  --fg-inverse: #f7f2e8;
+
+  --line: #ddd2bd;
+  --line-strong: #c7b99e;
+
+  --accent: #a8451f;
+  --accent-fg: #ffffff;
+  --accent-soft: #f4e2d7;
+
+  --ok: #5c6b4d;
+  --ok-soft: #e8eee0;
+  --warn: #8a5a00;
+  --warn-soft: #f9efd9;
+  --danger: #96271b;
+  --danger-soft: #f8e5e1;
+
+  --focus: #a8451f;
+}
+
+/* ── dark: warm charcoal, never a neutral black ──────────────────────────────
+   Inverting a cream palette gives grey sludge. This keeps the warmth and drops
+   the lightness — the paper becomes evening ink. */
+
+[data-style="c"][data-mode="dark"] {
+  color-scheme: dark;
+
+  --bg: #1a1815;
+  --bg-raised: #232019;
+  --bg-sunken: #121010;
+  --bg-input: #262218;
+  --bg-overlay: rgba(0, 0, 0, 0.68);
+
+  --fg: #f2ece0;
+  --fg-muted: #b8ad98;
+  /* 4.5:1 against --bg / --bg-raised / --bg-input / --bg-sunken — measured by
+       scripts/verify-contrast.mjs, not eyeballed. */
+  --fg-faint: #928979;
+  --fg-inverse: #1a1815;
+
+  --line: #362f28;
+  --line-strong: #4a4139;
+
+  --accent: #e79468;
+  --accent-fg: #1a1815;
+  --accent-soft: #362318;
+
+  --ok: #a9b892;
+  --ok-soft: #20261a;
+  --warn: #e2ba6d;
+  --warn-soft: #2b2415;
+  --danger: #f0a196;
+  --danger-soft: #331915;
+
+  --focus: #e79468;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 10px 26px -18px rgba(0, 0, 0, 0.7);
+  --shadow-lg: 0 22px 48px -26px rgba(0, 0, 0, 0.8);
+}

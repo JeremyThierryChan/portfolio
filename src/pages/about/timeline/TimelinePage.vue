@@ -1,138 +1,85 @@
-<template>
-  <section class="timeline">
-    <div class="content">
-      <h2>{{ $t('timeline.title') }}</h2>
-      <div v-for="(event, index) in events" :key="index" :class="['timeline-item', event.type]" :style="event.style">
-        <div class="timeline-date">
-          <p>{{ event.date }}</p>
-        </div>
-        <div class="timeline-content">
-          <h3>{{ event.title }}</h3>
-          <p>{{ event.description }}</p>
-        </div>
-      </div>
-    </div>
-  </section>
-</template>
-  
-<script>
-// 导入外部事件数据
-import { events } from './eventsData.js';
+<script setup>
+/**
+ * TimelinePage — 40 chronological entries.
+ *
+ * Fixed relative to the old page:
+ *   - Entries used `:key="index"` because the source data had 40 entries sharing only
+ *     30 ids. The content layer now gives every entry a unique slug, and that slug is
+ *     the key.
+ *   - The staggered animation delay counted DOWN (1.5s on the first entry, 0s on the
+ *     last), so the visual order was the reverse of the reading order.
+ *   - Every entry started at `opacity: 0` with `animation-fill-mode: forwards`, so when
+ *     animations were unavailable the entire page rendered blank.
+ *   - The page was a dead end with no link back to /about. The header now carries the
+ *     context and the category filter makes the 40 entries navigable.
+ */
+import { ref, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useContent, enumLabelKey, distinctValues } from '@/content/index.js';
+import PageShell from '@/components/layout/PageShell.vue';
+import PageHeader from '@/components/layout/PageHeader.vue';
+import FilterBar from '@/components/ui/FilterBar.vue';
+import EmptyState from '@/components/ui/EmptyState.vue';
+import TimelineList from '@/components/content/TimelineList.vue';
 
-export default {
-  data() {
-    return {
-      events, // 使用导入的事件数据
-    };
-  },
-};
+const { t } = useI18n();
+const { timeline } = useContent();
+
+const ALL = 'all';
+const selected = ref(ALL);
+
+const categories = computed(() => distinctValues(timeline.value, 'category'));
+
+const options = computed(() => {
+  const countFor = (value) =>
+    value === ALL ? timeline.value.length : timeline.value.filter((e) => e.category === value).length;
+
+  return [
+    { value: ALL, label: t('common.filterAll'), count: countFor(ALL) },
+    ...categories.value.map((value) => ({
+      value,
+      label: t(enumLabelKey('timeline', 'category', value)),
+      count: countFor(value),
+    })),
+  ];
+});
+
+const filtered = computed(() =>
+  selected.value === ALL
+    ? timeline.value
+    : timeline.value.filter((e) => e.category === selected.value),
+);
 </script>
-  
+
+<template>
+  <PageShell>
+    <PageHeader
+      :overline="t('timeline.overline')"
+      :title="t('timeline.title')"
+      :lede="t('timeline.lede')"
+      :meta="t('timeline.countLabel', { count: timeline.length })"
+    />
+
+    <FilterBar
+      v-model="selected"
+      class="timeline__filters"
+      :options="options"
+      :label="t('timeline.categoryLabel')"
+    />
+
+    <TimelineList v-if="filtered.length" :events="filtered" />
+
+    <EmptyState
+      v-else
+      :title="t('common.empty')"
+      :action-label="t('common.filterAll')"
+      @action="selected = ALL"
+    />
+  </PageShell>
+</template>
+
 <style scoped>
-.timeline {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-  min-height: 100vh;
-  background: var(--bg-gradient);
-  color: var(--text-primary);
-  font-family: 'Arial', sans-serif;
-  padding: 40px;
-  transition: background 0.3s ease, color 0.3s ease;
-}
-
-.content {
-  width: 100%; /* 容器宽度为 100% */
-  max-width: 1000px; /* 最大宽度为 1000px */
-}
-
-h2 {
-  font-size: 2.5rem; /* 设置标题字体大小为 2.5rem */
-  font-weight: 700; /* 设置字体加粗 */
-  margin-bottom: 30px; /* 底部外边距 30px */
-  text-align: center; /* 文本居中对齐 */
-  animation: fadeIn 1.5s ease-in-out; /* 动画效果 */
-}
-
-.timeline-item {
-  display: flex;
-  flex-direction: row; /* 保持水平排列 */
-  justify-content: flex-start; /* 左对齐所有项目 */
-  align-items: center; /* 垂直居中 */
-  margin-bottom: 30px;
-  opacity: 0;
-  animation: slideUp 1s ease-out forwards;
-  width: 100%; /* 使时间轴项占满宽度 */
-}
-
-.timeline-item.personal {
-  flex-direction: row; /* 个人事件按正常顺序显示 */
-}
-
-.timeline-item.career {
-  flex-direction: row; /* 职业事件按正常顺序显示 */
-}
-
-.timeline-content {
-  background: var(--bg-card);
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: 0 8px 20px var(--shadow);
-  width: 70%;
-  max-width: 800px;
-  transition: background 0.3s ease;
-}
-
-.timeline-date {
-  font-size: 1.2rem;
-  color: #ff6b6b;
-  font-weight: bold;
-  width: 100px;
-  text-align: left;
-  margin-right: 20px; /* 在日期和内容之间添加间距 */
-}
-
-@keyframes slideUp {
-  from {
-    transform: translateY(50px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@media (max-width: 768px) {
-  .timeline {
-    padding: 20px;
-  }
-
-  h2 {
-    font-size: 2rem;
-  }
-
-  .timeline-item {
-    flex-direction: column; /* 小屏时垂直排列 */
-  }
-
-  .timeline-content {
-    width: 100%;
-  }
-
-  .timeline-date {
-    margin-top: 10px;
-    text-align: center;
-  }
+.timeline__filters {
+  margin-block-end: var(--space-lg);
 }
 </style>

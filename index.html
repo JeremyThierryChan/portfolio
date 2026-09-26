@@ -6,13 +6,115 @@
   <meta name="description" content="Jeremy Thierry Chan's personal portfolio website.">
   <meta name="author" content="Jeremy Thierry Chan">
   <title>Jeremy Thierry Chan - Portfolio</title>
-  <link rel="icon" href="/favicon.ico">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <!-- %BASE_URL% is substituted by Vite, so the icon resolves under /portfolio/ on
+       GitHub Pages and under / in local dev without hardcoding either one. -->
+  <link rel="icon" href="%BASE_URL%favicon.ico">
+
+  <!--
+    ───────────────────────────────────────────────────────────────────────────
+    Theme bootstrap. MUST stay inline and MUST stay in <head>.
+
+    The site picks one of three visual styles and one of two light levels from
+    the visitor's clock. Both are attributes on <html>, so if they are missing at
+    first paint the page renders with the fallback theme and then visibly snaps to
+    the real one. Running this synchronously in <head> removes that flash entirely.
+
+    This mirrors src/theme/schedule.js + src/theme/theme.js. It cannot import them:
+    it has to execute before the module graph loads. tests/theme-boot.test.mjs
+    parses this block and asserts every constant agrees with those modules, so the
+    duplication is checked rather than trusted.
+    ───────────────────────────────────────────────────────────────────────────
+  -->
+  <script>
+    (function () {
+      'use strict';
+      var STYLE_IDS = ['a', 'b', 'c'];
+      // [startMinute, endMinute, styleId] — end < start means the window wraps midnight.
+      var WINDOWS = [[420, 720, 'a'], [720, 1080, 'c'], [1080, 420, 'b']];
+      var PREFERRED_MODE = { a: 'light', b: 'dark', c: 'light' };
+      var KEY_STYLE = 'theme.style';
+      var KEY_MODE = 'theme.mode';
+      var KEY_LEGACY = 'theme';
+
+      function store(key, value) {
+        try {
+          if (value === null) localStorage.removeItem(key);
+          else localStorage.setItem(key, value);
+        } catch (e) { /* private mode — carry on with defaults */ }
+      }
+      function load(key) {
+        try { return localStorage.getItem(key); } catch (e) { return null; }
+      }
+
+      var style, mode;
+      try {
+        var now = new Date();
+        var m = now.getHours() * 60 + now.getMinutes();
+
+        style = 'b'; // default, matching DEFAULT_STYLE
+        for (var i = 0; i < WINDOWS.length; i++) {
+          var s = WINDOWS[i][0], e = WINDOWS[i][1];
+          if (s < e ? (m >= s && m < e) : (m >= s || m < e)) { style = WINDOWS[i][2]; break; }
+        }
+
+        var savedStyle = load(KEY_STYLE);
+        if (savedStyle && STYLE_IDS.indexOf(savedStyle) > -1) style = savedStyle;
+
+        mode = load(KEY_MODE);
+        if (mode !== 'light' && mode !== 'dark') {
+          var legacy = load(KEY_LEGACY);
+          if (legacy === 'light' || legacy === 'dark') {
+            store(KEY_LEGACY, null);
+            store(KEY_MODE, legacy);
+            mode = legacy;
+          } else {
+            // RESPECT_SYSTEM_MODE is false in theme.js, so each style's designed
+            // light level wins over the OS preference.
+            mode = PREFERRED_MODE[style] || 'light';
+          }
+        }
+      } catch (e) {
+        style = 'a';
+        mode = 'light';
+      }
+
+      var el = document.documentElement;
+      el.setAttribute('data-style', style);
+      el.setAttribute('data-mode', mode);
+      el.className += ' theme-' + style + ' mode-' + mode;
+    })();
+  </script>
+
+  <!--
+    Critical background colours, duplicated from the token files so the very first
+    paint is already the right colour instead of white-then-flash. The boot test
+    asserts these six values equal what src/styles/style-*.css declares.
+  -->
   <style>
-    body { font-family: 'Arial', sans-serif; margin: 0; padding: 0; }
-    #app { display: flex; flex-direction: column; min-height: 100vh; }
+    html { background-color: #fbfbfa; }
+    html[data-style="a"][data-mode="light"] { background-color: #fbfbfa; }
+    html[data-style="a"][data-mode="dark"]  { background-color: #0c0c0d; }
+    html[data-style="b"][data-mode="light"] { background-color: #f7f9fc; }
+    html[data-style="b"][data-mode="dark"]  { background-color: #0b0e14; }
+    html[data-style="c"][data-mode="light"] { background-color: #f7f2e8; }
+    html[data-style="c"][data-mode="dark"]  { background-color: #1a1815; }
+    /* Before the stylesheet lands, keep the page from flashing a scrollbar. */
+    html, body { margin: 0; min-height: 100dvh; }
   </style>
+
+  <!--
+    Both third-party stylesheets have been removed.
+
+      * normalize.css  — superseded by the reset in src/styles/base.css.
+      * font-awesome   — it was pulled in for exactly FOUR icons on ContactPage
+                         (`<i class="fa-solid fa-envelope">` and friends) while the
+                         page already shipped inline SVGs for its whole social row.
+                         ContactPage now draws those four inline too.
+
+    That drops two render-blocking requests to a third-party CDN, which also removes
+    an external point of failure and a privacy/CSP dependency. Nothing in src/ uses a
+    `fa-` class any more, so nothing here can regress.
+  -->
 </head>
 <body>
   <div id="app"></div>

@@ -1,0 +1,31 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   index.css — the single stylesheet entry point (imported once from main.js).
+
+   ORDER IS LOAD-BEARING. Read this before adding a file here.
+
+     fallback.css    theme defaults, at ZERO specificity (`:where(:root)`)
+     base.css        reset + primitives + the tokens every style shares
+     style-{a,b,c}   per-style identity (fonts, type scale, radii, shadows) and
+                     its two colour modes
+
+   A fallback written at the BOTTOM of this file — as it originally was — is
+   concatenated LAST in the bundle, and because `:root` and `[data-style="a"]` have
+   identical specificity (0,1,0), the fallback won. It silently overrode every
+   mode-independent token in all three style files: `--card-bg` resolved to `#ffffff`
+   even in dark mode (white cards, light text), and the fonts, type scale, radii,
+   shadows, measures and hover distances became identical across all three styles.
+
+   Two things now prevent that:
+     1. the fallback is imported FIRST, and
+     2. it is written as `:where(:root)`, which has zero specificity, so it cannot beat
+        a style block regardless of concatenation order.
+
+   `scripts/verify-cascade.mjs` resolves the full cascade for all six style x mode
+   combinations and fails if any token resolves to the wrong declaration.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@import './fallback.css';
+@import './base.css';
+@import './style-a.css';
+@import './style-b.css';
+@import './style-c.css';

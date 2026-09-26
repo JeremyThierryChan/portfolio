@@ -1,521 +1,502 @@
-<template>
-  <section class="projects-page">
-    <div class="content">
-      <h2>{{ $t('projects.title') }}</h2>
+<script setup>
+/**
+ * ProjectsPage — selected work, then the complete index.
+ *
+ * THE TRIAGE PROBLEM THIS SOLVES: 21 entries of very uneven depth. Ranking them flat buries
+ * the six actually worth reading; deleting the weak ones would throw away real work. So the
+ * page has two halves:
+ *
+ *   1. SELECTED WORK — the `tier: 'featured'` projects as full cards, audience-filtered, so
+ *      a visitor meets their own kind of work first.
+ *
+ *   2. ALL PROJECTS — a compact index of every entry, `archived` included. This is the
+ *      page's guarantee: triage decides what is PROMOTED, never what EXISTS. Nothing is
+ *      hidden, and the index is deliberately NOT audience-filtered for exactly that reason.
+ *
+ * `archived` is surfaced as "Not promoted". The data field is internal shorthand, but to a
+ * visitor the word "archived" reads as "abandoned", which is not what it means here.
+ *
+ * Two splits compose because they apply to different halves:
+ *   featured grid → audience split (reorder + collapse)
+ *   full index    → status split (a filter the reader drives explicitly)
+ */
+import { ref, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useContent, enumLabelKey, distinctValues } from '@/content/index.js';
+import { splitByAudience } from '@/content/audiences.js';
+import { useAudience } from '@/composables/useAudience.js';
 
-      <!-- Filter -->
-      <div class="filter-section">
-        <button
-          v-for="filter in filters"
-          :key="filter.value"
-          :class="['filter-btn', { active: selectedFilter === filter.value }]"
-          @click="filterProjects(filter.value)"
-        >
-          {{ $t(filter.labelKey) }}
-        </button>
-      </div>
+import PageShell from '@/components/layout/PageShell.vue';
+import PageHeader from '@/components/layout/PageHeader.vue';
+import AudiencePicker from '@/components/ui/AudiencePicker.vue';
+import FilterBar from '@/components/ui/FilterBar.vue';
+import EmptyState from '@/components/ui/EmptyState.vue';
+import CollapsedGroup from '@/components/ui/CollapsedGroup.vue';
+import WorkCard from '@/components/content/WorkCard.vue';
+import AppModal from '@/components/ui/AppModal.vue';
+import AppButton from '@/components/ui/AppButton.vue';
+import StatusPill from '@/components/ui/StatusPill.vue';
+import TagList from '@/components/ui/TagList.vue';
+import ProgressMeter from '@/components/ui/ProgressMeter.vue';
 
-      <!-- Small card grid -->
-      <div class="projects-grid">
-        <div
-          v-for="project in filteredProjects"
-          :key="project.id"
-          class="project-card"
-          @click="openModal(project)"
-        >
-          <!-- Status dot -->
-          <span class="status-dot" :class="statusClass(project.status)"></span>
+const { t } = useI18n();
+const { projects } = useContent();
+const { current } = useAudience();
 
-          <!-- Default content -->
-          <div class="card-default">
-            <h3 class="card-title">{{ project.title }}</h3>
-            <div class="tech-tags">
-              <span v-for="t in techList(project.tech)" :key="t" class="tag">{{ t }}</span>
-            </div>
-          </div>
+const ALL = 'all';
+const selected = ref(ALL);
+const active = ref(null);
 
-          <!-- Hover overlay -->
-          <div class="card-hover">
-            <p class="hover-desc">{{ project.description }}</p>
-            <div class="hover-progress" v-if="project.progress !== undefined">
-              <div class="progress-track">
-                <div class="progress-fill" :style="{ width: project.progress + '%' }"></div>
-              </div>
-              <span class="progress-num">{{ project.progress }}%</span>
-            </div>
-            <span class="hint">{{ $t('projects.clickForMore') }}</span>
-          </div>
-        </div>
-      </div>
-    </div>
+/* ── the two halves ────────────────────────────────────────────────────── */
 
-    <!-- Modal -->
-    <div class="modal-backdrop" v-if="selected" @click.self="closeModal">
-      <div class="modal">
-        <button class="modal-close" @click="closeModal">✕</button>
+const featured = computed(() => projects.value.filter((p) => p.tier === 'featured'));
 
-        <div class="modal-header">
-          <span class="modal-status" :class="statusClass(selected.status)">
-            {{ $t('projects.status.' + selected.status.replace(' ', '')) }}
-          </span>
-          <h2>{{ selected.title }}</h2>
-          <p class="modal-tech">{{ selected.tech }}</p>
-        </div>
+/** Audience split applies to the promoted half only. */
+const featuredSplit = computed(() => splitByAudience(featured.value, current.value));
+const otherLabel = computed(() => t('audience.otherCount', { count: featuredSplit.value.other.length }));
 
-        <div class="modal-body">
-          <p class="modal-desc">{{ selected.description }}</p>
+/**
+ * The complete index: every project, ordered featured → listed → archived so the reader
+ * still meets the stronger work first, with nothing filtered out of the list itself.
+ */
+const TIER_ORDER = ['featured', 'listed', 'archived'];
+const indexList = computed(() =>
+  [...projects.value]
+    .filter((p) => selected.value === ALL || p.status === selected.value)
+    .sort((a, b) => TIER_ORDER.indexOf(a.tier) - TIER_ORDER.indexOf(b.tier)));
 
-          <p v-if="selected.cofounder && selected.cofounder.trim()">
-            <strong>{{ $t('projects.cofounder') }}:</strong> {{ selected.cofounder }}
-          </p>
+/* ── status filter, driving the index only ─────────────────────────────── */
 
-          <!-- Progress -->
-          <div class="modal-progress">
-            <div class="progress-track">
-              <div class="progress-fill" :style="{ width: selected.progress + '%' }"></div>
-            </div>
-            <span class="progress-num">{{ selected.progress }}%</span>
-          </div>
+const statuses = computed(() => distinctValues(projects.value, 'status'));
 
-          <!-- Stages -->
-          <div v-if="selected.displayType === 'detailed' && selected.stages" class="modal-stages">
-            <h4>{{ $t('projects.stages') }}</h4>
-            <ul>
-              <li v-for="stage in selected.stages" :key="stage.name" :class="{ done: stage.completed }">
-                <span class="stage-check">{{ stage.completed ? '✓' : '○' }}</span>
-                <div>
-                  <strong>{{ stage.name }}</strong>
-                  <p>{{ stage.description }}</p>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
+const options = computed(() => {
+  const countFor = (value) =>
+    value === ALL
+      ? projects.value.length
+      : projects.value.filter((p) => p.status === value).length;
 
-        <div class="modal-footer">
-          <a v-if="selected.link" :href="selected.link" class="btn-primary" target="_blank" rel="noopener noreferrer">
-            {{ $t('projects.viewProject') }}
-          </a>
-          <span v-else class="btn-disabled">{{ $t('projects.comingSoon') }}</span>
-        </div>
-      </div>
-    </div>
-  </section>
-</template>
+  return [
+    { value: ALL, label: t('common.filterAll'), count: countFor(ALL) },
+    ...statuses.value.map((value) => ({
+      value,
+      label: t(enumLabelKey('projects', 'status', value)),
+      count: countFor(value),
+    })),
+  ];
+});
 
-<script>
-import { projects } from './projectsData.js';
+/* ── detail dialog ─────────────────────────────────────────────────────── */
 
-export default {
-  data() {
-    return {
-      projects,
-      selectedFilter: 'all',
-      filteredProjects: projects,
-      selected: null,
-      filters: [
-        { labelKey: 'projects.filterAll',       value: 'all' },
-        { labelKey: 'projects.filterProgress',  value: 'In Progress' },
-        { labelKey: 'projects.filterPaused',    value: 'Paused' },
-        { labelKey: 'projects.filterCompleted', value: 'Completed' },
-      ],
-    };
-  },
-  methods: {
-    filterProjects(value) {
-      this.selectedFilter = value;
-      this.filteredProjects = value === 'all'
-        ? this.projects
-        : this.projects.filter(p => p.status === value);
-    },
-    openModal(project)  { this.selected = project; },
-    closeModal()        { this.selected = null; },
-    handleKey(e)        { if (e.key === 'Escape') this.closeModal(); },
-    statusClass(status) {
-      return {
-        'status-progress':  status === 'In Progress',
-        'status-paused':    status === 'Paused',
-        'status-completed': status === 'Completed',
-      };
-    },
-    techList(tech) {
-      return tech.split(',').map(t => t.trim()).slice(0, 3);
-    },
-  },
-  mounted()      { window.addEventListener('keydown', this.handleKey); },
-  beforeUnmount(){ window.removeEventListener('keydown', this.handleKey); },
-};
+function open(project) {
+  active.value = project;
+}
+
+const stageProgress = computed(() => {
+  const stages = active.value?.stages ?? [];
+  if (!stages.length) return null;
+  const done = stages.filter((s) => s.completed).length;
+  return { label: t('projects.stageOf', { current: done, total: stages.length }) };
+});
 </script>
 
+<template>
+  <PageShell>
+    <PageHeader
+      :overline="t('projects.overline')"
+      :title="t('projects.title')"
+      :lede="t('projects.lede')"
+      :meta="t('projects.countLabel', { count: projects.length })"
+    />
+
+    <AudiencePicker />
+
+    <!-- ── 1. selected work ──────────────────────────────────────────────── -->
+    <section aria-labelledby="projects-featured-title">
+      <header class="sec-head">
+        <h2 id="projects-featured-title" class="sec-head__title">{{ t('projects.featuredTitle') }}</h2>
+        <p class="sec-head__lede">{{ t('projects.featuredLede') }}</p>
+      </header>
+
+      <ul v-if="featuredSplit.relevant.length" class="grid">
+        <li v-for="project in featuredSplit.relevant" :key="project.id">
+          <WorkCard :project="project" @open="open(project)" />
+        </li>
+      </ul>
+
+      <CollapsedGroup
+        v-if="featuredSplit.other.length"
+        name="projects-featured-other"
+        :label="otherLabel"
+        :hint="t('audience.otherBody')"
+      >
+        <ul class="grid grid--other">
+          <li v-for="project in featuredSplit.other" :key="project.id">
+            <WorkCard :project="project" @open="open(project)" />
+          </li>
+        </ul>
+      </CollapsedGroup>
+    </section>
+
+    <!-- ── 2. the complete index ─────────────────────────────────────────── -->
+    <section class="index" aria-labelledby="projects-index-title">
+      <header class="sec-head">
+        <h2 id="projects-index-title" class="sec-head__title">{{ t('projects.indexTitle') }}</h2>
+        <p class="sec-head__lede">{{ t('projects.indexLede') }}</p>
+      </header>
+
+      <FilterBar
+        v-model="selected"
+        class="index__filter"
+        :options="options"
+        :label="t('projects.filterLabel')"
+        size="sm"
+      />
+
+      <p class="index__count">{{ t('projects.indexCount', { count: projects.length }) }}</p>
+
+      <ul v-if="indexList.length" class="index__list">
+        <li v-for="project in indexList" :key="project.id" class="row">
+          <span class="row__title">
+            <!-- A real button: every project opens its detail, including the unpromoted
+                 ones. The index is a complete door, not a display case. -->
+            <button type="button" class="row__button" @click="open(project)">
+              {{ project.title }}
+              <span class="visually-hidden">— {{ t('projects.clickForMore') }}</span>
+            </button>
+          </span>
+
+          <span class="row__status">
+            <StatusPill :status="project.status" size="sm" />
+          </span>
+
+          <span class="row__tech">
+            <TagList v-if="project.tech?.length" :items="project.tech" size="sm" :max="3" />
+          </span>
+
+          <span class="row__actions">
+            <span v-if="project.tier === 'archived'" class="row__archived">
+              {{ t('projects.archivedNote') }}
+            </span>
+            <a
+              v-if="project.link"
+              class="row__link"
+              :href="project.link"
+              target="_blank"
+              rel="noopener noreferrer"
+              :aria-label="`${t('projects.openLink')}: ${project.title}`"
+            >↗</a>
+          </span>
+        </li>
+      </ul>
+
+      <EmptyState
+        v-else
+        :title="t('projects.emptyTitle')"
+        :body="t('projects.emptyBody')"
+        :action-label="t('common.filterAll')"
+        @action="selected = ALL"
+      />
+    </section>
+
+    <!-- ── detail dialog ─────────────────────────────────────────────────── -->
+    <AppModal
+      :model-value="Boolean(active)"
+      :title="active?.title ?? ''"
+      size="md"
+      @update:model-value="(v) => { if (!v) active = null; }"
+    >
+      <div v-if="active" class="detail">
+        <div class="detail__row">
+          <StatusPill :status="active.status" />
+          <span v-if="stageProgress" class="detail__stages">{{ stageProgress.label }}</span>
+        </div>
+
+        <p class="detail__desc">{{ active.description }}</p>
+
+        <ProgressMeter
+          v-if="typeof active.progress === 'number'"
+          :value="active.progress"
+          :label="`${active.title} — ${t('projects.progressLabel')}`"
+        />
+
+        <section v-if="active.tech?.length" class="detail__section">
+          <h3 class="detail__heading">{{ t('projects.techStack') }}</h3>
+          <TagList :items="active.tech" :label="t('projects.techStack')" />
+        </section>
+
+        <p v-if="active.cofounder" class="detail__cofounder">
+          {{ t('projects.cofounderLabel', { name: active.cofounder }) }}
+        </p>
+
+        <section v-if="active.stages?.length" class="detail__section">
+          <h3 class="detail__heading">{{ t('projects.stages') }}</h3>
+          <ol class="stages">
+            <li
+              v-for="stage in active.stages"
+              :key="stage.id"
+              class="stage"
+              :class="{ 'stage--done': stage.completed }"
+            >
+              <span class="stage__mark" aria-hidden="true">{{ stage.completed ? '✓' : '·' }}</span>
+              <span class="stage__body">
+                <span class="stage__name">
+                  {{ stage.name }}
+                  <span class="visually-hidden">
+                    — {{ stage.completed ? t('projects.stageCompleted') : t('projects.stageInProgress') }}
+                  </span>
+                </span>
+                <span class="stage__desc">{{ stage.description }}</span>
+              </span>
+            </li>
+          </ol>
+        </section>
+      </div>
+
+      <template #footer>
+        <AppButton
+          v-if="active?.link"
+          variant="primary"
+          :href="active.link"
+          :sr-hint="t('common.externalLink')"
+        >
+          {{ t('projects.viewProject') }}
+        </AppButton>
+        <span v-else class="detail__nolink">{{ t('projects.noLink') }}</span>
+      </template>
+    </AppModal>
+  </PageShell>
+</template>
+
 <style scoped>
-.projects-page {
-  display: flex;
-  justify-content: center;
-  min-height: 100vh;
-  background: var(--bg-gradient);
-  color: var(--text-primary);
-  font-family: 'Arial', sans-serif;
-  padding: 40px;
-  transition: background 0.3s ease, color 0.3s ease;
+.sec-head {
+  margin-block-end: var(--space-lg);
 }
 
-.content {
-  width: 100%;
-  max-width: 1100px;
+.sec-head__title {
+  font-size: var(--step-2);
+  margin-block-end: var(--space-2xs);
 }
 
-h2 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  text-align: center;
-  margin-bottom: 30px;
-  animation: fadeIn 1.5s ease-in-out;
+.sec-head__lede {
+  font-size: var(--step--1);
+  line-height: var(--leading-loose);
+  color: var(--fg-muted);
+  max-inline-size: var(--measure-read);
 }
 
-/* ── Filter ─────────────────────────────── */
-.filter-section {
-  text-align: center;
-  margin-bottom: 32px;
-}
-
-.filter-btn {
-  padding: 6px 14px;
-  font-size: 0.75rem;
-  border-radius: 5px;
-  background-color: var(--bg-filter);
-  color: var(--text-primary);
-  border: 1px solid var(--border-filter);
-  cursor: pointer;
-  margin: 4px;
-  transition: background-color 0.2s ease;
-}
-.filter-btn:hover  { background-color: #ff6b6b; color: #fff; }
-.filter-btn.active { background-color: #ff4747; color: #fff; }
-
-/* ── Card grid ──────────────────────────── */
-.projects-grid {
+.grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 16px;
+  gap: var(--space-md);
+  list-style: none;
 }
 
-.project-card {
-  position: relative;
-  background: var(--bg-card);
-  border-radius: 12px;
-  padding: 18px 16px;
-  min-height: 130px;
-  cursor: pointer;
-  overflow: hidden;
-  box-shadow: 0 4px 12px var(--shadow);
-  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.3s ease;
+@media (min-width: 640px) {
+  .grid { grid-template-columns: repeat(2, 1fr); }
 }
 
-.project-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 28px var(--shadow);
+@media (min-width: 1040px) {
+  .grid { grid-template-columns: repeat(3, 1fr); }
 }
 
-/* Status dot */
-.status-dot {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-}
-.status-progress  { background: #ff6b6b; }
-.status-paused    { background: #f39c12; }
-.status-completed { background: #4caf50; }
-
-/* Default card content */
-.card-default {
-  transition: opacity 0.25s ease;
+.grid--other {
+  opacity: 0.9;
+  margin-block-start: var(--space-sm);
 }
 
-.card-title {
-  font-size: 0.95rem;
-  font-weight: 700;
-  line-height: 1.4;
-  margin: 0 0 10px;
-  padding-right: 16px;
-  color: var(--text-primary);
+/* ── the complete index ────────────────────────────────────────────────── */
+
+.index {
+  margin-block-start: var(--space-3xl);
 }
 
-.tech-tags {
+.index__filter {
+  margin-block-end: var(--space-sm);
+}
+
+.index__count {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  color: var(--fg-faint);
+  margin-block-end: var(--space-xs);
+}
+
+.index__list {
+  list-style: none;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--space-2xs) var(--space-sm);
+  align-items: center;
+  padding-block: var(--space-xs);
+  border-block-start: var(--border-width) solid var(--line);
+}
+
+.row:last-child {
+  border-block-end: var(--border-width) solid var(--line);
+}
+
+@media (min-width: 900px) {
+  .row {
+    grid-template-columns: minmax(0, 1.6fr) auto minmax(0, 1.2fr) auto;
+  }
+}
+
+.row__title {
+  min-inline-size: 0;
+}
+
+.row__button {
+  font-family: var(--font-display);
+  font-size: var(--step-0);
+  font-weight: var(--weight-display);
+  color: var(--fg);
+  background: none;
+  border: 0;
+  padding: 0;
+  text-align: start;
+  text-decoration: underline;
+  text-decoration-color: var(--line-strong);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.row__button:hover {
+  color: var(--accent);
+  text-decoration-color: var(--accent);
+}
+
+.row__button:focus-visible {
+  outline: var(--focus-width) solid var(--focus);
+  outline-offset: var(--focus-offset);
+  border-radius: var(--radius-sm);
+}
+
+.row__status {
+  justify-self: start;
+}
+
+.row__tech {
+  min-inline-size: 0;
+}
+
+.row__actions {
   display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
+  align-items: center;
+  gap: var(--space-xs);
+  justify-self: end;
 }
 
-.tag {
-  font-size: 0.65rem;
-  background: var(--bg-filter);
-  color: var(--text-muted);
-  padding: 2px 7px;
-  border-radius: 4px;
-  border: 1px solid var(--border-filter);
+.row__archived {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--fg-faint);
+  border: var(--border-width) dashed var(--line);
+  border-radius: var(--radius-sm);
+  padding: 0 var(--space-3xs);
   white-space: nowrap;
 }
 
-/* Hover overlay */
-.card-hover {
-  position: absolute;
-  inset: 0;
-  background: rgba(255, 107, 107, 0.92);
-  border-radius: 12px;
-  padding: 16px;
+.row__link {
+  font-family: var(--font-mono);
+  font-size: var(--step-0);
+  color: var(--accent);
+  text-decoration: none;
+  padding: var(--space-3xs) var(--space-2xs);
+  border: var(--border-width) solid var(--line);
+  border-radius: var(--radius-sm);
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+
+.row__link:hover {
+  border-color: var(--accent);
+}
+
+.row__link:focus-visible {
+  outline: var(--focus-width) solid var(--focus);
+  outline-offset: var(--focus-offset);
+}
+
+/* ── dialog content ────────────────────────────────────────────────────── */
+
+.detail {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  opacity: 0;
-  transform: translateY(8px);
-  transition: opacity 0.25s ease, transform 0.25s ease;
-  pointer-events: none;
+  gap: var(--space-md);
 }
 
-.project-card:hover .card-hover {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.hover-desc {
-  font-size: 0.78rem;
-  line-height: 1.5;
-  color: white;
-  margin: 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.hover-progress {
+.detail__row {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
-  margin-top: 8px;
+  gap: var(--space-xs);
 }
 
-.progress-track {
-  flex: 1;
-  height: 4px;
-  background: rgba(255,255,255,0.3);
-  border-radius: 2px;
-  overflow: hidden;
-}
-
-.progress-fill {
-  height: 100%;
-  background: white;
-  border-radius: 2px;
-}
-
-.progress-num {
-  font-size: 0.7rem;
-  color: white;
-  font-weight: 700;
-  white-space: nowrap;
-}
-
-.hint {
-  font-size: 0.68rem;
-  color: rgba(255,255,255,0.8);
-  text-align: center;
-  margin-top: 6px;
-}
-
-/* ── Modal ──────────────────────────────── */
-.modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.8);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 200;
-  padding: 20px;
-  animation: fadeIn 0.2s ease;
-}
-
-.modal {
-  background: var(--bg-nav);
-  border-radius: 16px;
-  max-width: 600px;
-  width: 100%;
-  max-height: 85vh;
-  overflow-y: auto;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-  position: relative;
-  animation: slideUp 0.25s ease;
-}
-
-.modal-close {
-  position: absolute;
-  top: 14px;
-  right: 16px;
-  background: none;
-  border: none;
-  color: var(--text-muted);
-  font-size: 1.1rem;
-  cursor: pointer;
-  transition: color 0.2s ease;
-  z-index: 1;
-}
-.modal-close:hover { color: #ff4747; }
-
-.modal-header {
-  padding: 28px 28px 20px;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.modal-status {
+.detail__stages {
+  font-family: var(--font-mono);
   font-size: 0.72rem;
-  font-weight: 700;
-  padding: 3px 10px;
-  border-radius: 20px;
-  color: white;
-  display: inline-block;
-  margin-bottom: 10px;
-  letter-spacing: 0.3px;
-}
-.modal-status.status-progress  { background: #ff6b6b; }
-.modal-status.status-paused    { background: #f39c12; }
-.modal-status.status-completed { background: #4caf50; }
-
-.modal-header h2 {
-  font-size: 1.4rem;
-  font-weight: 700;
-  margin: 0 0 8px;
-  color: var(--text-primary);
-  text-align: left;
-  animation: none;
+  color: var(--fg-faint);
 }
 
-.modal-tech {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  margin: 0;
+.detail__desc {
+  line-height: var(--leading-loose);
+  color: var(--fg-muted);
 }
 
-.modal-body {
-  padding: 20px 28px;
-}
-
-.modal-desc {
-  font-size: 0.95rem;
-  line-height: 1.7;
-  color: var(--text-primary);
-  margin-bottom: 16px;
-}
-
-.modal-progress {
+.detail__section {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 20px;
+  flex-direction: column;
+  gap: var(--space-xs);
 }
 
-.modal-progress .progress-track {
-  flex: 1;
-  height: 6px;
-  background: var(--skill-bg);
-  border-radius: 3px;
+.detail__heading {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--fg-faint);
 }
 
-.modal-progress .progress-fill {
-  height: 100%;
-  background: #ff6b6b;
-  border-radius: 3px;
+.detail__cofounder {
+  font-size: var(--step--1);
+  color: var(--fg-muted);
 }
 
-.modal-progress .progress-num {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  font-weight: 700;
-  white-space: nowrap;
+.detail__nolink {
+  font-size: var(--step--1);
+  color: var(--fg-faint);
 }
 
-.modal-stages h4 {
-  font-size: 0.9rem;
-  font-weight: 700;
-  margin-bottom: 12px;
-  color: var(--text-primary);
-}
-
-.modal-stages ul {
+.stages {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
   list-style: none;
-  padding: 0;
-  margin: 0;
 }
 
-.modal-stages li {
-  display: flex;
-  gap: 12px;
-  padding: 8px 0;
-  border-bottom: 1px solid var(--border-color);
-  opacity: 0.5;
+.stage {
+  display: grid;
+  grid-template-columns: 1.25rem 1fr;
+  gap: var(--space-xs);
+  align-items: start;
+  font-size: var(--step--1);
+  color: var(--fg-faint);
 }
 
-.modal-stages li.done { opacity: 1; }
-
-.stage-check {
-  font-size: 0.9rem;
-  color: #4caf50;
-  flex-shrink: 0;
-  width: 16px;
+.stage__mark {
+  font-family: var(--font-mono);
+  color: var(--line-strong);
+  text-align: center;
 }
 
-.modal-stages li strong {
-  font-size: 0.85rem;
-  color: var(--text-primary);
-  display: block;
-}
+.stage--done { color: var(--fg-muted); }
+.stage--done .stage__mark { color: var(--ok); }
 
-.modal-stages li p {
-  font-size: 0.78rem;
-  color: var(--text-muted);
-  margin: 3px 0 0;
-}
-
-.modal-footer {
-  padding: 16px 28px 24px;
-}
-
-.btn-primary {
-  display: inline-block;
-  background-color: #ff6b6b;
-  color: white;
-  padding: 10px 24px;
-  border-radius: 25px;
-  font-size: 0.9rem;
-  text-decoration: none;
-  transition: background-color 0.2s ease, transform 0.2s ease;
-}
-.btn-primary:hover {
-  background-color: #ff4747;
-  transform: translateY(-2px);
-}
-
-.btn-disabled {
-  display: inline-block;
-  background: var(--bg-filter);
-  color: var(--text-muted);
-  padding: 10px 24px;
-  border-radius: 25px;
-  font-size: 0.9rem;
-  border: 1px solid var(--border-filter);
-}
-
-@keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
-@keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-
-@media (max-width: 768px) {
-  .projects-page { padding: 20px; }
-  h2 { font-size: 2rem; }
-  .projects-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
-  .modal { max-height: 90vh; }
-  .modal-header, .modal-body, .modal-footer { padding-left: 20px; padding-right: 20px; }
-}
+.stage__body { display: flex; flex-direction: column; gap: 0.1rem; }
+.stage__name { font-weight: var(--weight-strong); color: var(--fg); }
+.stage__desc { color: var(--fg-muted); }
 </style>

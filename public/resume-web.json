@@ -1,0 +1,218 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/v1.0.0/schema.json",
+  "basics": {
+    "name": "陈林维祎 (Jeremy Thierry Chan)",
+    "label": "Web developer and systems builder",
+    "email": "jeremy.thierry.chan@gmail.com",
+    "phone": "+86 138-6853-0992",
+    "location": {},
+    "summary": "I interpret between Chinese, English, French and German. I help cross-border businesses find suppliers, agree specifications and ship. And I build the websites and internal systems that hold it together. Based in Wenzhou, working across China and abroad.",
+    "profiles": []
+  },
+  "work": [
+    {
+      "name": "Co-founded Carpe Lucem Brand",
+      "position": "Co-founded Carpe Lucem Brand",
+      "summary": "Co-founded the Carpe Lucem brand in Hangzhou, focused on imported food and international lifestyle products targeting high-net-worth clients. Currently in the planning and development phase.",
+      "startDate": "2025"
+    },
+    {
+      "name": "Arbitrage Trading System Engineer",
+      "position": "Arbitrage Trading System Engineer",
+      "summary": "Developed and maintained an arbitrage trading system as part of a fintech project based in Wenzhou, Zhejiang.",
+      "startDate": "2025"
+    },
+    {
+      "name": "Industrial AI Engineer",
+      "position": "Industrial AI Engineer",
+      "summary": "Worked as an Industrial Artificial Intelligence Engineer on a project based in Hangzhou, Zhejiang, developing and integrating AI systems for industrial applications.",
+      "startDate": "2024"
+    },
+    {
+      "name": "English Teacher & NAS System Builder",
+      "position": "SE Research Society",
+      "summary": "Taught English and wrote question banks, and built an internal NAS system for the SE Research Society in Qingdao. Left voluntarily — the pay was low relative to the workload.",
+      "startDate": "2023"
+    },
+    {
+      "name": "Started Developing My Personal Website",
+      "position": "Started Developing My Personal Website",
+      "summary": "Started developing a personal portfolio website using Vue.js, showcasing skills, projects, and achievements.",
+      "startDate": "2023"
+    },
+    {
+      "name": "Head Sommelier",
+      "position": "Sunac Aduo Village Resort",
+      "summary": "Served as Head Sommelier at the Sunac Aduo Village resort in Qingdao.",
+      "startDate": "2021"
+    }
+  ],
+  "education": [
+    {
+      "institution": "Graduated from Shandong University of Science and Technology",
+      "summary": "Graduated in 2024 from Shandong University of Science and Technology with a Bachelor's degree in Surveying Engineering and Technology (Marine Direction — Hydrographic Surveying), marking the completion of the formal academic path.",
+      "startDate": "2024-06-01"
+    },
+    {
+      "institution": "Entered High School early due to academic excellence",
+      "summary": "Entered Pingyang High School early due to academic excellence, starting the senior high education phase one semester earlier than ordinary students.",
+      "startDate": "2016"
+    }
+  ],
+  "skills": [
+    {
+      "name": "Languages",
+      "keywords": [
+        "English",
+        "Mandarin Chinese",
+        "French",
+        "German",
+        "Spanish",
+        "Italian",
+        "Arabic"
+      ]
+    },
+    {
+      "name": "Technical",
+      "keywords": [
+        "Vue.js",
+        "JavaScript",
+        "CSS / HTML",
+        "Node.js",
+        "Python",
+        "C",
+        "C++",
+        "Java",
+        "Matlab",
+        "Microsoft Office / LibreOffice",
+        "Docker",
+        "Git / GitHub",
+        "NAS & Home Server Setup",
+        "AI Integration (Ollama / OpenClaw)"
+      ]
+    },
+    {
+      "name": "Services",
+      "keywords": [
+        "Websites for brands and small businesses",
+        "Local servers & on-premise AI"
+      ]
+    }
+  ],
+  "awards": [],
+  "projects": [
+    {
+      "name": "Jeremy's Portfolio Website",
+      "description": "Personal portfolio website built with Vue.js, showcasing skills, work history, timeline and projects. Continuously updated.",
+      "keywords": [
+        "Vue.js",
+        "CSS",
+        "JavaScript"
+      ],
+      "url": "https://jeremythierrychan.github.io/portfolio/"
+    },
+    {
+      "name": "Carpe Lucem Brand",
+      "description": "Co-founded Carpe Lucem, an imported food and drink brand for high-net-worth clients. What exists today is a complete operating kit rather than a concept: an eleven-category product knowledge base of 19 documents and roughly 6,000 lines, running from Iberian ham through caviar to wine; a 289-line SKU ledger with origins and supply-chain costs; dossiers on six suppliers; a 124-page bilingual product catalogue; a brand identity extended across cigar bands, a wax seal, business cards and event material; a membership scheme; and seven tasting-event templates with six fully written run-sheets. Still outstanding: most of the ledger has no supplier or retail price recorded, and there is no product photography yet.",
+      "keywords": [
+        "Brand Strategy",
+        "International Trade",
+        "Product Sourcing"
+      ],
+      "url": "https://jeremythierrychan.github.io/CarpeLucem/"
+    },
+    {
+      "name": "Parallel Offset — Band Website",
+      "description": "Official website for Parallel Offset. Built with Next.js and React, and genuinely multilingual rather than an English site with a switcher bolted on: eight locales ship, including Arabic with full right-to-left layout. About 1,350 lines covering the band biography, discography and release pages, deployed to GitHub Pages and live at the link below, where every locale answers.",
+      "keywords": [
+        "Next.js",
+        "React",
+        "TypeScript",
+        "next-intl"
+      ],
+      "url": "https://jeremythierrychan.github.io/ParallelOffset/"
+    },
+    {
+      "name": "Lacquora — Lacquer Art Guitar",
+      "description": "A niche project combining traditional intangible cultural heritage lacquer art with custom electric guitars. A collaboration between Jeremy and Pingyang Lacquer Art (平阳漆器), a local ICH studio. Includes a showcase website, product pages, and a backend server.",
+      "keywords": [
+        "Vue.js",
+        "Node.js",
+        "Docker"
+      ],
+      "url": "https://jeremythierrychan.github.io/Lacquora/"
+    },
+    {
+      "name": "Catherine's Portfolio Website",
+      "description": "A portfolio website built for a friend, using Vue.js. Currently in active development.",
+      "keywords": [
+        "Vue.js",
+        "CSS",
+        "JavaScript"
+      ],
+      "url": "https://catherinejanetsui.github.io/portfolio/"
+    },
+    {
+      "name": "LetterResearchINST",
+      "description": "A web application tool currently under active development. The most recently updated project in the workspace.",
+      "keywords": [
+        "JavaScript",
+        "Vue.js"
+      ],
+      "url": "https://letterresearchinst.vercel.app"
+    },
+    {
+      "name": "Muyang Education — Intranet Website",
+      "description": "Internal promotional website built for Muyang Education (沐阳教育), a local training centre. Deployed on the organisation's intranet. No public URL.",
+      "keywords": [
+        "Vue.js",
+        "CSS",
+        "JavaScript"
+      ]
+    },
+    {
+      "name": "Qianyuan — Taoist Culture Website",
+      "description": "Bilingual website for Qianyuan (乾元), a professional fortune-teller and practitioner of Taoist culture, live and navigable at the link below: four pages (home, services, consultation, about) in Chinese and English, on the Next.js App Router with a locale segment and message catalogues. About 1,170 lines of application code plus the bilingual copy, deployed through GitHub Actions. All three commits are the author own, and the framework template survives in only the first of them — the two unused default SVGs still sitting in the public folder are the trace of a business layer written by hand on top of a scaffold. What remains is content rather than code: the site is complete and online while the practitioner is still supplying his material.",
+      "keywords": [
+        "Next.js",
+        "JavaScript"
+      ],
+      "url": "https://jeremythierrychan.github.io/Taoism/"
+    }
+  ],
+  "languages": [
+    {
+      "language": "English",
+      "fluency": "professional"
+    },
+    {
+      "language": "Mandarin Chinese",
+      "fluency": "professional"
+    },
+    {
+      "language": "French",
+      "fluency": "working"
+    },
+    {
+      "language": "German",
+      "fluency": "working"
+    },
+    {
+      "language": "Spanish",
+      "fluency": "learning"
+    },
+    {
+      "language": "Italian",
+      "fluency": "learning"
+    },
+    {
+      "language": "Arabic",
+      "fluency": "learning"
+    }
+  ],
+  "meta": {
+    "variant": "web",
+    "locale": "en",
+    "generatedBy": "my-portfolio/src/content/resume.js"
+  }
+}

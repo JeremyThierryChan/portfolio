@@ -1,0 +1,261 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/v1.0.0/schema.json",
+  "basics": {
+    "name": "陈林维祎 (Jeremy Thierry Chan)",
+    "label": "Interpreter and event planner — CN / EN / FR / DE",
+    "email": "jeremy.thierry.chan@gmail.com",
+    "phone": "+86 138-6853-0992",
+    "location": {},
+    "summary": "I interpret between Chinese, English, French and German. I help cross-border businesses find suppliers, agree specifications and ship. And I build the websites and internal systems that hold it together. Based in Wenzhou, working across China and abroad.",
+    "profiles": []
+  },
+  "work": [
+    {
+      "name": "Arbitrage Trading System Engineer",
+      "position": "Arbitrage Trading System Engineer",
+      "summary": "Developed and maintained an arbitrage trading system as part of a fintech project based in Wenzhou, Zhejiang.",
+      "startDate": "2025"
+    },
+    {
+      "name": "2025 Qingdao Beer Festival",
+      "position": "English Translator & Event Planner",
+      "summary": "Served as English translator and peripheral event planner for the 2025 Qingdao Beer Festival · \"Flavour Trilogy\" event, Qingdao, Shandong.",
+      "startDate": "2025"
+    },
+    {
+      "name": "Hisense Plaza Black Gold Member Event",
+      "position": "Translator & Event Planner",
+      "summary": "Served as English translator and event planner for the Hisense Plaza Black Gold VIP Member Event \"Three Seas · Amber Promise\", Qingdao.",
+      "startDate": "2025"
+    },
+    {
+      "name": "Great Wall Cigars × Maybach",
+      "position": "North China Car Owner Event Planner",
+      "summary": "Planned and coordinated the Great Wall Cigars × Maybach North China car owner exclusive event in Qingdao.",
+      "startDate": "2025"
+    },
+    {
+      "name": "Industrial AI Engineer",
+      "position": "Industrial AI Engineer",
+      "summary": "Worked as an Industrial Artificial Intelligence Engineer on a project based in Hangzhou, Zhejiang, developing and integrating AI systems for industrial applications.",
+      "startDate": "2024"
+    },
+    {
+      "name": "Mercedes-AMG & G-Class Test Drive",
+      "position": "English Translator & VIP Guest",
+      "summary": "Served as English interpreter and special invited guest at the 2024 Mercedes-AMG and G-Class full-range test drive event in Qingdao.",
+      "startDate": "2024"
+    },
+    {
+      "name": "Taishan Cigars",
+      "position": "International Brand Ambassador",
+      "summary": "Appointed as International Brand Ambassador for Taishan Cigars, Qingdao, representing the brand in international communications and events.",
+      "startDate": "2024"
+    },
+    {
+      "name": "Taishan Cigars × Qingdao International Whisky Festival",
+      "position": "Translator & VIP Guest",
+      "summary": "Served as English translator and special invited guest at the Taishan Cigars Qingdao International Whisky Festival.",
+      "startDate": "2024"
+    },
+    {
+      "name": "Great Wall Cigars Cameroon Formula",
+      "position": "French Translator & VIP Guest",
+      "summary": "Served as French translator and special invited guest at the Great Wall Cigars Cameroon International Formula domestic tasting tour in Qingdao.",
+      "startDate": "2024"
+    },
+    {
+      "name": "Lamborghini Urus SE Launch",
+      "position": "English Translator & VIP Guest",
+      "summary": "\"Dare To Live More\" — Lamborghini Urus SE new car launch event, Qingdao. Served as English interpreter and special invited guest.",
+      "startDate": "2024"
+    },
+    {
+      "name": "Ferrari Certified Pre-Owned Day",
+      "position": "English Translator & VIP Guest",
+      "summary": "\"A Ferrari Day\" certified pre-owned experience event, Qingdao. Served as English interpreter and special invited guest.",
+      "startDate": "2024"
+    },
+    {
+      "name": "Porsche New Panamera Launch",
+      "position": "German Translator",
+      "summary": "Served as German interpreter at the all-new Porsche Panamera launch event in Qingdao.",
+      "startDate": "2024"
+    },
+    {
+      "name": "Interpreter for International Students",
+      "position": "Shandong University of Science and Technology",
+      "summary": "Provided interpreting so international students at SDUST could live, seek medical care and study in China, and organised cross-cultural events and student societies. From 2020 to 2024.",
+      "startDate": "2024"
+    },
+    {
+      "name": "IRONMAN China Wenzhou",
+      "position": "Chief Translator (EN/FR/ZH)",
+      "summary": "Served as Chief Translator (Chinese, English, French) at the 2023 IRONMAN China · Wenzhou Long-Distance Triathlon International Open. Met the Le Lostec family from Lorient, France, which led to an ongoing professional relationship.",
+      "startDate": "2023"
+    }
+  ],
+  "education": [
+    {
+      "institution": "Graduated from Shandong University of Science and Technology",
+      "summary": "Graduated in 2024 from Shandong University of Science and Technology with a Bachelor's degree in Surveying Engineering and Technology (Marine Direction — Hydrographic Surveying), marking the completion of the formal academic path.",
+      "startDate": "2024-06-01"
+    },
+    {
+      "institution": "Entered High School early due to academic excellence",
+      "summary": "Entered Pingyang High School early due to academic excellence, starting the senior high education phase one semester earlier than ordinary students.",
+      "startDate": "2016"
+    }
+  ],
+  "skills": [
+    {
+      "name": "Languages",
+      "keywords": [
+        "English",
+        "Mandarin Chinese",
+        "French",
+        "German",
+        "Spanish",
+        "Italian",
+        "Arabic"
+      ]
+    },
+    {
+      "name": "Technical",
+      "keywords": [
+        "Vue.js",
+        "JavaScript",
+        "CSS / HTML",
+        "Node.js",
+        "Python",
+        "C",
+        "C++",
+        "Java",
+        "Matlab",
+        "Microsoft Office / LibreOffice",
+        "Docker",
+        "Git / GitHub",
+        "NAS & Home Server Setup",
+        "AI Integration (Ollama / OpenClaw)"
+      ]
+    },
+    {
+      "name": "Services",
+      "keywords": [
+        "Business interpreting",
+        "Premium event interpreting",
+        "Event planning & on-site execution"
+      ]
+    }
+  ],
+  "awards": [
+    {
+      "title": "ETIC International English Test — Advanced",
+      "awarder": "International Talent English Test",
+      "date": "2023",
+      "summary": "Pass"
+    },
+    {
+      "title": "Cidi Words Cup — preliminary round",
+      "awarder": "National College English Competition",
+      "date": "2023",
+      "summary": "Advanced from the preliminary round"
+    },
+    {
+      "title": "CET-6 — College English Test, Band 6",
+      "awarder": "National College English Test",
+      "date": "2022",
+      "summary": "583"
+    },
+    {
+      "title": "LSCAT National English Interpreting Competition, 10th edition",
+      "awarder": "LSCAT",
+      "date": "2022",
+      "summary": ""
+    },
+    {
+      "title": "Shandong Provincial Translation Competition, 6th edition — Chinese to English",
+      "awarder": "Shandong Province",
+      "date": "2022",
+      "summary": ""
+    },
+    {
+      "title": "Shandong Provincial Translation Competition, 6th edition — English to Chinese",
+      "awarder": "Shandong Province",
+      "date": "2022",
+      "summary": ""
+    },
+    {
+      "title": "CET-4 — College English Test, Band 4",
+      "awarder": "National College English Test",
+      "date": "2021",
+      "summary": "599"
+    },
+    {
+      "title": "Cidi Words Cup — National College English Competition, Shandong division",
+      "awarder": "Shandong Province",
+      "date": "2021",
+      "summary": "Third prize, undergraduate group"
+    },
+    {
+      "title": "ETIC International English Test — Intermediate",
+      "awarder": "International Talent English Test",
+      "date": "2021",
+      "summary": "Pass with Merit"
+    },
+    {
+      "title": "ETIC International English Test — Basic",
+      "awarder": "International Talent English Test",
+      "date": "2021",
+      "summary": "Pass with Merit"
+    },
+    {
+      "title": "SIA Shanghai Advanced Interpreting Exam",
+      "awarder": "Shanghai Interpretation Accreditation",
+      "date": "2020",
+      "summary": ""
+    },
+    {
+      "title": "ICCT Cross-Cultural Communication Competition",
+      "awarder": "ICCT",
+      "date": "2018",
+      "summary": "Provincial second prize"
+    }
+  ],
+  "projects": [],
+  "languages": [
+    {
+      "language": "English",
+      "fluency": "professional"
+    },
+    {
+      "language": "Mandarin Chinese",
+      "fluency": "professional"
+    },
+    {
+      "language": "French",
+      "fluency": "working"
+    },
+    {
+      "language": "German",
+      "fluency": "working"
+    },
+    {
+      "language": "Spanish",
+      "fluency": "learning"
+    },
+    {
+      "language": "Italian",
+      "fluency": "learning"
+    },
+    {
+      "language": "Arabic",
+      "fluency": "learning"
+    }
+  ],
+  "meta": {
+    "variant": "interpretation",
+    "locale": "en",
+    "generatedBy": "my-portfolio/src/content/resume.js"
+  }
+}

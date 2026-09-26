@@ -1,0 +1,254 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/v1.0.0/schema.json",
+  "basics": {
+    "name": "陈林维祎 (Jeremy Thierry Chan)",
+    "label": "Language teacher and academic interpreter",
+    "email": "jeremy.thierry.chan@gmail.com",
+    "phone": "+86 138-6853-0992",
+    "location": {},
+    "summary": "I interpret between Chinese, English, French and German. I help cross-border businesses find suppliers, agree specifications and ship. And I build the websites and internal systems that hold it together. Based in Wenzhou, working across China and abroad.",
+    "profiles": []
+  },
+  "work": [
+    {
+      "name": "Arbitrage Trading System Engineer",
+      "position": "Arbitrage Trading System Engineer",
+      "summary": "Developed and maintained an arbitrage trading system as part of a fintech project based in Wenzhou, Zhejiang.",
+      "startDate": "2025"
+    },
+    {
+      "name": "Graduated from Shandong University of Science and Technology",
+      "position": "Graduated from Shandong University of Science and Technology",
+      "summary": "Graduated in 2024 from Shandong University of Science and Technology with a Bachelor's degree in Surveying Engineering and Technology (Marine Direction — Hydrographic Surveying), marking the completion of the formal academic path.",
+      "startDate": "2024-06-01"
+    },
+    {
+      "name": "Industrial AI Engineer",
+      "position": "Industrial AI Engineer",
+      "summary": "Worked as an Industrial Artificial Intelligence Engineer on a project based in Hangzhou, Zhejiang, developing and integrating AI systems for industrial applications.",
+      "startDate": "2024"
+    },
+    {
+      "name": "Interpreter for International Students",
+      "position": "Shandong University of Science and Technology",
+      "summary": "Provided interpreting so international students at SDUST could live, seek medical care and study in China, and organised cross-cultural events and student societies. From 2020 to 2024.",
+      "startDate": "2024"
+    },
+    {
+      "name": "Founded \"Yicai Fencheng\" Innovation Studio & Transplendid Society",
+      "position": "Founded \"Yicai Fencheng\" Innovation Studio & Transplendid Society",
+      "summary": "Founded the \"译彩纷呈\" (Yicai Fencheng) innovation and entrepreneurship studio, the Transplendid multilingual interest society, and the \"United Nations\" international exchange club at Shandong University of Science and Technology.",
+      "startDate": "2023"
+    },
+    {
+      "name": "English Teacher & NAS System Builder",
+      "position": "SE Research Society",
+      "summary": "Taught English and wrote question banks, and built an internal NAS system for the SE Research Society in Qingdao. Left voluntarily — the pay was low relative to the workload.",
+      "startDate": "2023"
+    }
+  ],
+  "education": [
+    {
+      "institution": "Graduated from Shandong University of Science and Technology",
+      "summary": "Graduated in 2024 from Shandong University of Science and Technology with a Bachelor's degree in Surveying Engineering and Technology (Marine Direction — Hydrographic Surveying), marking the completion of the formal academic path.",
+      "startDate": "2024-06-01"
+    },
+    {
+      "institution": "Entered High School early due to academic excellence",
+      "summary": "Entered Pingyang High School early due to academic excellence, starting the senior high education phase one semester earlier than ordinary students.",
+      "startDate": "2016"
+    }
+  ],
+  "skills": [
+    {
+      "name": "Languages",
+      "keywords": [
+        "English",
+        "Mandarin Chinese",
+        "French",
+        "German",
+        "Spanish",
+        "Italian",
+        "Arabic"
+      ]
+    },
+    {
+      "name": "Technical",
+      "keywords": [
+        "Vue.js",
+        "JavaScript",
+        "CSS / HTML",
+        "Node.js",
+        "Python",
+        "C",
+        "C++",
+        "Java",
+        "Matlab",
+        "Microsoft Office / LibreOffice",
+        "Docker",
+        "Git / GitHub",
+        "NAS & Home Server Setup",
+        "AI Integration (Ollama / OpenClaw)"
+      ]
+    },
+    {
+      "name": "Services",
+      "keywords": [
+        "Websites for brands and small businesses",
+        "Document translation",
+        "Language teaching — English, French, German",
+        "Local servers & on-premise AI"
+      ]
+    }
+  ],
+  "awards": [
+    {
+      "title": "ETIC International English Test — Advanced",
+      "awarder": "International Talent English Test",
+      "date": "2023",
+      "summary": "Pass"
+    },
+    {
+      "title": "Cidi Words Cup — preliminary round",
+      "awarder": "National College English Competition",
+      "date": "2023",
+      "summary": "Advanced from the preliminary round"
+    },
+    {
+      "title": "CET-6 — College English Test, Band 6",
+      "awarder": "National College English Test",
+      "date": "2022",
+      "summary": "583"
+    },
+    {
+      "title": "LSCAT National English Interpreting Competition, 10th edition",
+      "awarder": "LSCAT",
+      "date": "2022",
+      "summary": ""
+    },
+    {
+      "title": "Shandong Provincial Translation Competition, 6th edition — Chinese to English",
+      "awarder": "Shandong Province",
+      "date": "2022",
+      "summary": ""
+    },
+    {
+      "title": "Shandong Provincial Translation Competition, 6th edition — English to Chinese",
+      "awarder": "Shandong Province",
+      "date": "2022",
+      "summary": ""
+    },
+    {
+      "title": "CET-4 — College English Test, Band 4",
+      "awarder": "National College English Test",
+      "date": "2021",
+      "summary": "599"
+    },
+    {
+      "title": "Cidi Words Cup — National College English Competition, Shandong division",
+      "awarder": "Shandong Province",
+      "date": "2021",
+      "summary": "Third prize, undergraduate group"
+    },
+    {
+      "title": "ETIC International English Test — Intermediate",
+      "awarder": "International Talent English Test",
+      "date": "2021",
+      "summary": "Pass with Merit"
+    },
+    {
+      "title": "ETIC International English Test — Basic",
+      "awarder": "International Talent English Test",
+      "date": "2021",
+      "summary": "Pass with Merit"
+    },
+    {
+      "title": "Shandong University of Science and Technology vocabulary competition",
+      "awarder": "Shandong University of Science and Technology",
+      "date": "2020",
+      "summary": "First place"
+    },
+    {
+      "title": "SIA Shanghai Advanced Interpreting Exam",
+      "awarder": "Shanghai Interpretation Accreditation",
+      "date": "2020",
+      "summary": ""
+    },
+    {
+      "title": "American Heart Association HeartSaver first aid",
+      "awarder": "Shanghai Yuean Health Promotion Centre",
+      "date": "2019",
+      "summary": "Certified"
+    },
+    {
+      "title": "ICCT Cross-Cultural Communication Competition",
+      "awarder": "ICCT",
+      "date": "2018",
+      "summary": "Provincial second prize"
+    }
+  ],
+  "projects": [
+    {
+      "name": "Muyang Education — Intranet Website",
+      "description": "Internal promotional website built for Muyang Education (沐阳教育), a local training centre. Deployed on the organisation's intranet. No public URL.",
+      "keywords": [
+        "Vue.js",
+        "CSS",
+        "JavaScript"
+      ]
+    },
+    {
+      "name": "Internal NAS System — SE Research Society",
+      "description": "Designed and built an internal NAS system for the SE Research Society at Shandong University of Science and Technology, enabling secure file sharing and team collaboration.",
+      "keywords": [
+        "OpenMediaVault",
+        "Linux",
+        "Networking"
+      ]
+    },
+    {
+      "name": "CSDN Teaching Blog",
+      "description": "Technical articles on Python and programming, written in Chinese for a Chinese developer audience. The same teaching work as the public GitHub Python repository, and still being added to.",
+      "keywords": [
+        "Python",
+        "Technical writing"
+      ],
+      "url": "https://blog.csdn.net/JeremyTC"
+    }
+  ],
+  "languages": [
+    {
+      "language": "English",
+      "fluency": "professional"
+    },
+    {
+      "language": "Mandarin Chinese",
+      "fluency": "professional"
+    },
+    {
+      "language": "French",
+      "fluency": "working"
+    },
+    {
+      "language": "German",
+      "fluency": "working"
+    },
+    {
+      "language": "Spanish",
+      "fluency": "learning"
+    },
+    {
+      "language": "Italian",
+      "fluency": "learning"
+    },
+    {
+      "language": "Arabic",
+      "fluency": "learning"
+    }
+  ],
+  "meta": {
+    "variant": "education",
+    "locale": "en",
+    "generatedBy": "my-portfolio/src/content/resume.js"
+  }
+}

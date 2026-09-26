@@ -1,214 +1,258 @@
+<script setup>
+/**
+ * SkillsPage — evidence instead of self-assessment.
+ *
+ * WHAT CHANGED AND WHY: every skill used to carry `level: 90`, rendered as a progress bar.
+ * A visitor cannot verify a self-awarded percentage, cannot act on it, and it invites the
+ * reader to argue about the number instead of reading what is behind it. What Jeremy
+ * actually has is a stack of checkable credentials — IELTS 8.0, ETIC Advanced, CET-6 583,
+ * Gaokao English 135/150, chief interpreter at IRONMAN China — and none of them were
+ * visible in that model.
+ *
+ * So the bar is gone. Each skill now carries:
+ *
+ *   usage     'professional' | 'working' | 'learning'
+ *             A statement about whether client work depends on it. A fact, not a boast,
+ *             which gives the page an honest triage without inventing a ranking.
+ *
+ *   evidence  the checkable facts themselves, listed on the card.
+ *
+ * The filter follows the same axis — how a skill is used rather than its category —
+ * because "what do you actually deliver with" is the question a client has. Category
+ * survives as a small badge on each card.
+ */
+import { ref, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useContent, enumLabelKey, distinctValues } from '@/content/index.js';
+import PageShell from '@/components/layout/PageShell.vue';
+import PageHeader from '@/components/layout/PageHeader.vue';
+import FilterBar from '@/components/ui/FilterBar.vue';
+import EmptyState from '@/components/ui/EmptyState.vue';
+
+const { t } = useI18n();
+const { skills } = useContent();
+
+const ALL = 'all';
+const selected = ref(ALL);
+
+/** Strongest usage first, so the default reading order leads with delivered work. */
+const USAGE_ORDER = ['professional', 'working', 'learning'];
+
+const usages = computed(() =>
+  distinctValues(skills.value, 'usage')
+    .slice()
+    .sort((a, b) => USAGE_ORDER.indexOf(a) - USAGE_ORDER.indexOf(b)));
+
+const options = computed(() => {
+  const countFor = (value) =>
+    value === ALL ? skills.value.length : skills.value.filter((s) => s.usage === value).length;
+
+  return [
+    { value: ALL, label: t('common.filterAll'), count: countFor(ALL) },
+    ...usages.value.map((value) => ({
+      value,
+      // Short form: the long one ("Client work depends on it") is a sentence, and a
+      // filter chip is not the place for a sentence.
+      label: t(enumLabelKey('skills', 'usageShort', value)),
+      count: countFor(value),
+    })),
+  ];
+});
+
+const filtered = computed(() =>
+  selected.value === ALL
+    ? skills.value
+    : skills.value.filter((s) => s.usage === selected.value),
+);
+</script>
+
 <template>
-    <section class="skills">
-      <div class="content">
-        <h2>{{ $t('skills.title') }}</h2>
+  <PageShell>
+    <PageHeader
+      :overline="t('skills.overline')"
+      :title="t('skills.title')"
+      :lede="t('skills.lede')"
+      :meta="t('skills.countLabel', { count: skills.length })"
+    />
 
-        <!-- 筛选按钮 -->
-        <div class="filter">
-          <button v-for="filter in filters"
-                  :key="filter.value"
-                  :class="['filter-btn', { active: selectedFilter === filter.value }]"
-                  @click="filterSkills(filter.value)">
-            {{ $t(filter.labelKey) }}
-          </button>
-        </div>
-  
-        <!-- 技能列表 - 网格展示 -->
-        <div class="skills-grid">
-          <div v-for="skill in filteredSkills" :key="skill.id" class="skill-card">
-            <h3>{{ skill.name }}</h3>
-            <p>{{ skill.description }}</p>
-            <div class="skill-level">
-              <div class="level-bar" :style="{ width: skill.level + '%' }"></div>
-            </div>
-          </div>
-        </div>
-  
-      </div>
-    </section>
-  </template>
-  
-  <script>
-  export default {
-    data() {
-      return {
-        skills: [
-          { id: 1, name: 'Vue.js', description: 'JavaScript framework for building user interfaces. Used to build this portfolio website and several SPA projects with multi-language support and dark mode.', level: 90, category: 'Programming Language' },
-          { id: 2, name: 'JavaScript', description: 'Core language for dynamic and interactive web applications, used across frontend and backend projects.', level: 85, category: 'Programming Language' },
-          { id: 3, name: 'CSS / HTML', description: 'Styling and markup for responsive, modern web interfaces. Comfortable with animations, grid, and flexbox layouts.', level: 80, category: 'Programming Language' },
-          { id: 4, name: 'Node.js', description: 'Server-side JavaScript runtime for building backend services and APIs.', level: 70, category: 'Programming Language' },
-          { id: 5, name: 'Python', description: 'Used for automation, data processing, AI model integration, and open-source project customisation (OpenClaw, Ollama, etc.).', level: 75, category: 'Programming Language' },
-          { id: 6, name: 'C', description: 'General-purpose language widely used for system programming, embedded systems and low-level development.', level: 80, category: 'Programming Language' },
-          { id: 7, name: 'C++', description: 'Extension of C with object-oriented capabilities, used for performance-critical applications.', level: 75, category: 'Programming Language' },
-          { id: 8, name: 'Java', description: 'Used for server-side development and applications including Minecraft server setup and plugin management.', level: 65, category: 'Programming Language' },
-          { id: 9, name: 'Matlab', description: 'High-level environment for numerical computing, data analysis, and algorithm development. Used during university coursework.', level: 70, category: 'Programming Language' },
-          { id: 10, name: 'Microsoft Office / LibreOffice', description: 'Full proficiency across Word, Excel, PowerPoint, and their open-source equivalents.', level: 92, category: 'Other' },
-          { id: 11, name: 'Docker', description: 'Container-based deployment for application isolation and reproducible environments.', level: 65, category: 'Other' },
-          { id: 12, name: 'Git / GitHub', description: 'Version control and team collaboration. All projects maintained on GitHub with structured branching and commit history.', level: 85, category: 'Other' },
-          { id: 13, name: 'NAS & Home Server Setup', description: 'Built and maintained internal NAS systems using OpenMediaVault. Experience with Fedora, Ubuntu, Debian, and Kali Linux.', level: 70, category: 'Other' },
-          { id: 14, name: 'AI Integration (Ollama / OpenClaw)', description: 'Secondary development and application of open-source AI models. Planning to train specialised models for Chinese and French language teaching.', level: 68, category: 'Other' },
-          { id: 15, name: 'English', description: 'Native-level proficiency. IELTS 8.0 (expired). Gaokao 135/150. University English 91/100. Simultaneous and consecutive interpretation experience across high-profile events.', level: 97, category: 'Language' },
-          { id: 16, name: 'Mandarin Chinese', description: 'Native language. Also speaks Wenzhou dialect, Shanghai dialect, Sichuan dialect, and Shandong dialect.', level: 99, category: 'Language' },
-          { id: 17, name: 'French', description: 'Self-taught. Conversational proficiency. Served as French interpreter at IRONMAN China Wenzhou (2023) and Great Wall Cigars Cameroon Formula tasting event (2024). ETIC Advanced: Pass.', level: 68, category: 'Language' },
-          { id: 18, name: 'German', description: 'Self-taught. Working proficiency. Served as German interpreter at the Porsche new Panamera launch (2024). Hosted German exchange students from Martin Luther Gymnasium, Eisenach (2018).', level: 62, category: 'Language' },
-          { id: 19, name: 'Spanish', description: 'Currently learning. Beginner level.', level: 20, category: 'Language' },
-          { id: 20, name: 'Italian', description: 'Currently learning. Beginner level.', level: 15, category: 'Language' },
-          { id: 21, name: 'Arabic', description: 'Currently learning. Beginner level.', level: 10, category: 'Language' },
-        ],
-        selectedFilter: 'all',
-        filteredSkills: [],
-        filters: [
-          { labelKey: 'skills.filterAll',         value: 'all' },
-          { labelKey: 'skills.filterProgramming', value: 'Programming Language' },
-          { labelKey: 'skills.filterLanguage',    value: 'Language' },
-          { labelKey: 'skills.filterOther',       value: 'Other' },
-        ]
-      };
-    },
-    methods: {
-      filterSkills(filterValue) {
-        this.selectedFilter = filterValue;
-        
-        if (filterValue === 'Programming Language') {
-          // 筛选编程语言
-          this.filteredSkills = this.skills.filter(skill => skill.category === 'Programming Language');
-        } else if (filterValue === 'Language') {
-          // 筛选语言
-          this.filteredSkills = this.skills.filter(skill => skill.category === 'Language');
-        } else if (filterValue === 'Other') {
-          // 筛选其他技能
-          this.filteredSkills = this.skills.filter(skill => skill.category === 'Other');
-        } else {
-          // 如果选择了所有技能，显示所有技能
-          this.filteredSkills = this.skills;
-        }
-      }
-    },
-    created() {
-      this.filteredSkills = this.skills;  // 初始化时显示所有技能
-    }
-  };
-  </script>
-  
-  <style scoped>
-  .skills {
-    display: flex;
-    justify-content: center;
-    min-height: 100vh;
-    background: var(--bg-gradient);
-    color: var(--text-primary);
-    font-family: 'Arial', sans-serif;
-    padding: 40px;
-    transition: background 0.3s ease, color 0.3s ease;
-  }
-  
-  .content {
-    width: 100%;
-    max-width: 1000px;
-  }
-  
-  h2 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 30px;
-    text-align: center;
-    animation: fadeIn 1.5s ease-in-out;
-  }
-  
-  .filter {
-    text-align: center;
-    margin-bottom: 30px;
-  }
-  
-  .filter-btn {
-    padding: 6px 10px;
-    font-size: 0.8rem;
-    border-radius: 5px;
-    background-color: var(--bg-filter);
-    color: var(--text-primary);
-    border: 1px solid var(--border-filter);
-    cursor: pointer;
-    margin: 10px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-  }
+    <FilterBar
+      v-model="selected"
+      class="skills__filters"
+      :options="options"
+      :label="t('skills.filterLabel')"
+    />
 
-  .filter-btn:hover  { background-color: #ff6b6b; color: #fff; }
-  .filter-btn.active { background-color: #ff4747; color: #fff; }
-  
-  /* 网格布局 */
-  .skills-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* 根据屏幕宽度自动调整列数 */
-    gap: 20px;
-  }
-  
-  .skill-card {
-    background: var(--bg-card);
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 8px 20px var(--shadow);
-    transform: translateY(20px);
-    animation: slideUp 1s ease-out forwards;
-    transition: background 0.3s ease;
-  }
-  
-  .skill-card h3 {
-    font-size: 1.8rem;
-    font-weight: 600;
-    margin-bottom: 10px;
-  }
-  
-  .skill-card p {
-    font-size: 1.2rem;
-    line-height: 1.6;
-    margin-bottom: 10px;
-  }
-  
-  .skill-level {
-    width: 100%;
-    background-color: var(--skill-bg);
-    border-radius: 25px;
-    height: 10px;
-    margin-top: 10px;
-  }
-  
-  .level-bar {
-    height: 100%;
-    background-color: #ff6b6b;
-    border-radius: 25px;
-  }
-  
-  @keyframes slideUp {
-    from {
-      transform: translateY(50px);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
-  
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-  
-  @media (max-width: 768px) {
-    .skills {
-      padding: 20px;
-    }
-  
-    h2 {
-      font-size: 2rem;
-    }
-  
-    .skill-card {
-      padding: 15px;
-    }
-  }
-  </style>
+    <ul v-if="filtered.length" class="skills__grid">
+      <li v-for="skill in filtered" :key="skill.id" class="skill">
+        <header class="skill__head">
+          <h2 class="skill__name">{{ skill.name }}</h2>
+          <span class="skill__category">
+            {{ t(enumLabelKey('skills', 'category', skill.category)) }}
+          </span>
+        </header>
+
+        <!--
+          The usage band is stated in words, not drawn as a bar. It is the honest
+          replacement for the percentage: it says whether client work depends on the
+          skill, which is a fact the reader can weigh.
+        -->
+        <p
+          class="skill__usage"
+          :class="`skill__usage--${skill.usage}`"
+          :title="t(enumLabelKey('skills', 'usage', skill.usage))"
+        >
+          {{ t(enumLabelKey('skills', 'usageShort', skill.usage)) }}
+          <span class="visually-hidden">— {{ t(enumLabelKey('skills', 'usage', skill.usage)) }}</span>
+        </p>
+
+        <p class="skill__desc">{{ skill.description }}</p>
+
+        <template v-if="skill.evidence?.length">
+          <h3 class="skill__evidence-label">{{ t('skills.evidenceLabel') }}</h3>
+          <ul class="skill__evidence">
+            <li v-for="item in skill.evidence" :key="item" class="skill__fact">{{ item }}</li>
+          </ul>
+        </template>
+      </li>
+    </ul>
+
+    <EmptyState
+      v-else
+      :title="t('common.empty')"
+      :action-label="t('common.filterAll')"
+      @action="selected = ALL"
+    />
+  </PageShell>
+</template>
+
+<style scoped>
+.skills__filters {
+  margin-block-end: var(--space-lg);
+}
+
+.skills__grid {
+  display: grid;
+  gap: var(--space-md);
+  list-style: none;
+}
+
+@media (min-width: 640px) {
+  .skills__grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 1060px) {
+  .skills__grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+.skill {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+  padding: var(--space-md);
+  background-color: var(--card-bg);
+  border: var(--border-width) solid var(--card-border);
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.skill:hover {
+  transform: translateY(var(--hover-lift));
+}
+
+.skill__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-xs);
+  flex-wrap: wrap;
+}
+
+.skill__name {
+  font-size: var(--step-1);
+}
+
+.skill__category {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--fg-faint);
+  white-space: nowrap;
+}
+
+/* ── the usage band ────────────────────────────────────────────────────── */
+
+.skill__usage {
+  position: relative;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: var(--weight-strong);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  padding-inline-start: var(--space-sm);
+}
+
+/* A coloured marker, not a bar: it classifies rather than scoring. */
+.skill__usage::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-start: 0.45em;
+  inline-size: 0.35rem;
+  block-size: 0.35rem;
+  border-radius: var(--radius-full);
+  background-color: currentColor;
+}
+
+.skill__usage--professional { color: var(--ok); }
+.skill__usage--working { color: var(--accent); }
+.skill__usage--learning { color: var(--fg-faint); }
+
+.skill__desc {
+  margin-block-start: var(--space-2xs);
+  font-size: var(--step--1);
+  line-height: var(--leading);
+  color: var(--fg-muted);
+}
+
+/* ── evidence ──────────────────────────────────────────────────────────── */
+
+.skill__evidence-label {
+  margin-block-start: var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  font-weight: var(--weight-strong);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--fg-faint);
+}
+
+.skill__evidence {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xs);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.skill__fact {
+  position: relative;
+  padding-inline-start: var(--space-sm);
+  font-size: var(--step--1);
+  line-height: var(--leading);
+  color: var(--fg);
+}
+
+.skill__fact::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-start: 0.55em;
+  inline-size: 0.25rem;
+  block-size: 0.25rem;
+  border-radius: var(--radius-full);
+  background-color: var(--line-strong);
+}
+</style>

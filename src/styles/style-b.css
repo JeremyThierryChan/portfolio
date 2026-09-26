@@ -1,0 +1,138 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   style-b.css — "Terminal": visible grid, monospace metadata, sharp corners,
+   zero border-radius, terminal-green accent. Nocturnal and technical — the
+   evening / creative face.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── identity (mode-independent) ─────────────────────────────────────────── */
+
+[data-style="b"] {
+  --font-display: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+
+  --weight-display: 700;
+  --weight-strong: 650;
+  --weight-body: 400;
+
+  --step--1: 0.8rem;
+  --step-0:  0.95rem;
+  --step-1:  1.2rem;
+  --step-2:  clamp(1.45rem, 1.2rem + 1.2vw, 2.05rem);
+  --step-3:  clamp(1.95rem, 1.3rem + 3.2vw, 3.7rem);
+  --step-4:  clamp(2.4rem, 1.4rem + 5.2vw, 5rem);
+
+  --leading: 1.62;
+  --leading-tight: 1.06;
+  --leading-loose: 1.75;
+  --tracking: 0;
+  --tracking-tight: -0.028em;
+  --tracking-wide: 0.13em;
+
+  --measure: 1120px;
+  --measure-read: 660px;
+
+  /* The whole point of this style: nothing is rounded. */
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-full: 0;
+
+  --border-width: 1px;
+
+  /* Depth comes from borders and corner ticks, never from blur. */
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+
+  --card-bg: var(--bg-raised);
+  --card-border: var(--line);
+  --card-radius: 0;
+  --card-shadow: none;
+  --hover-lift: -3px;
+  --overline-transform: uppercase;
+  --overline-spacing: var(--tracking-wide);
+  --display-decoration: none;
+  --section-index-size: 1.35rem;
+
+  /* Flavour unique to this style: the blueprint grid behind everything. */
+  --grid-size: 44px;
+  --grid-line: rgba(120, 150, 190, 0.045);
+  --tick-size: 9px;
+}
+
+/* ── dark (the native mode for this style) ───────────────────────────────── */
+
+[data-style="b"][data-mode="dark"] {
+  color-scheme: dark;
+
+  --bg: #0b0e14;
+  --bg-raised: #11151d;
+  --bg-sunken: #080a0f;
+  --bg-input: #131822;
+  --bg-overlay: rgba(0, 0, 0, 0.72);
+
+  --fg: #e3e6eb;
+  --fg-muted: #98a2b3;
+  /* 4.5:1 against --bg / --bg-raised / --bg-input / --bg-sunken — measured by
+       scripts/verify-contrast.mjs, not eyeballed. */
+  --fg-faint: #79828f;
+  --fg-inverse: #0b0e14;
+
+  --line: #1e2530;
+  --line-strong: #2d3846;
+
+  --accent: #4ade80;
+  --accent-fg: #06110a;
+  --accent-soft: #10231a;
+
+  --ok: #4ade80;
+  --ok-soft: #10231a;
+  --warn: #fbbf24;
+  --warn-soft: #2b2211;
+  --danger: #ff8f8f;
+  --danger-soft: #2e1513;
+
+  --focus: #4ade80;
+
+  --grid-line: rgba(120, 150, 190, 0.045);
+}
+
+/* ── light: "blueprint", not an inversion ────────────────────────────────────
+   A terminal in daylight is a schematic: cool paper, hairline grid, and the
+   green pushed much darker so it still passes contrast on white. */
+
+[data-style="b"][data-mode="light"] {
+  color-scheme: light;
+
+  --bg: #f7f9fc;
+  --bg-raised: #ffffff;
+  --bg-sunken: #eef2f7;
+  --bg-input: #ffffff;
+  --bg-overlay: rgba(13, 18, 25, 0.45);
+
+  --fg: #0d1219;
+  --fg-muted: #55606f;
+  /* 4.5:1 against --bg / --bg-raised / --bg-input / --bg-sunken — measured by
+       scripts/verify-contrast.mjs, not eyeballed. */
+  --fg-faint: #656e7b;
+  --fg-inverse: #f7f9fc;
+
+  --line: #dde3ea;
+  --line-strong: #bfcad7;
+
+  --accent: #0f7a43;
+  --accent-fg: #ffffff;
+  --accent-soft: #e2f4e9;
+
+  --ok: #0f7a43;
+  --ok-soft: #e2f4e9;
+  --warn: #8a5a00;
+  --warn-soft: #fbf0dc;
+  --danger: #a52118;
+  --danger-soft: #fbe9e7;
+
+  --focus: #0f7a43;
+
+  --grid-line: rgba(20, 40, 70, 0.045);
+}

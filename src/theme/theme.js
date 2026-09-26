@@ -1,0 +1,182 @@
+/**
+ * Theme runtime — pure, framework-free half.
+ *
+ * The Vue composable in `useTimeTheme.js` builds on this. Keeping the policy in
+ * plain functions means the same rules can also be expressed in the tiny inline
+ * bootstrap in `index.html`, which must run before first paint and therefore
+ * cannot import a module.
+ *
+ * `tests/theme-boot.test.mjs` asserts that the inline copy and this module agree
+ * on the schedule boundaries and the storage keys, so the duplication cannot drift.
+ */
+
+import { STYLES, styleForDate, slotForMinutes, nextChangeAfter, minutesOf } from './schedule.js';
+
+/* ── storage ──────────────────────────────────────────────────────────────
+   Two independent keys, because style and mode are two independent axes.
+   The legacy single key ('theme' = 'light'|'dark') is migrated on read. */
+
+export const STORAGE_STYLE = 'theme.style';
+export const STORAGE_MODE = 'theme.mode';
+export const LEGACY_STORAGE_MODE = 'theme';
+
+/** Style override: 'auto' follows the clock; 'a'|'b'|'c' pins one. */
+export const STYLE_AUTO = 'auto';
+
+/** Mode override: 'style' follows the style's design intent; else 'light'|'dark'. */
+export const MODE_FOLLOWS_STYLE = 'style';
+export const MODE_OPTIONS = [MODE_FOLLOWS_STYLE, 'light', 'dark'];
+
+/**
+ * When true, the *first* visit follows `prefers-color-scheme` instead of each
+ * style's designed light level.
+ *
+ * Default is false on purpose: A and C are light "paper" identities and B is a
+ * dark night interface, so honouring a dark OS preference would turn the morning
+ * editorial page dark and fight the whole point of the schedule. The visitor can
+ * always pin light or dark in one click, and that choice sticks.
+ *
+ * Flip this to `true` if you would rather defer to the OS.
+ */
+export const RESPECT_SYSTEM_MODE = false;
+
+const isBrowser = typeof window !== 'undefined';
+
+/* ── reading persisted choices ─────────────────────────────────────────── */
+
+function safeGet(key) {
+  if (!isBrowser) return null;
+  try {
+    return window.localStorage.getItem(key);
+  } catch {
+    // localStorage throws in some privacy modes — never let that break the page.
+    return null;
+  }
+}
+
+function safeSet(key, value) {
+  if (!isBrowser) return;
+  try {
+    if (value === null) window.localStorage.removeItem(key);
+    else window.localStorage.setItem(key, value);
+  } catch {
+    /* ignore */
+  }
+}
+
+/** Valid style override, or 'auto'. */
+export function readStyleOverride() {
+  const raw = safeGet(STORAGE_STYLE);
+  if (raw === STYLE_AUTO) return STYLE_AUTO;
+  return raw && STYLES[raw] ? raw : STYLE_AUTO;
+}
+
+/** Valid mode override, or 'style'. Migrates the legacy single 'theme' key. */
+export function readModeOverride() {
+  const raw = safeGet(STORAGE_MODE);
+  if (MODE_OPTIONS.includes(raw)) return raw;
+
+  // Migration path: the old build stored a single 'theme' = 'dark' | 'light'.
+  const legacy = safeGet(LEGACY_STORAGE_MODE);
+  if (legacy === 'dark' || legacy === 'light') {
+    safeSet(LEGACY_STORAGE_MODE, null);
+    safeSet(STORAGE_MODE, legacy);
+    return legacy;
+  }
+  return MODE_FOLLOWS_STYLE;
+}
+
+export function writeStyleOverride(value) {
+  safeSet(STORAGE_STYLE, value === STYLE_AUTO ? null : value);
+}
+
+export function writeModeOverride(value) {
+  safeSet(STORAGE_MODE, value === MODE_FOLLOWS_STYLE ? null : value);
+}
+
+/* ── resolving the two axes ────────────────────────────────────────────── */
+
+/** Does the OS express a preference? Returns 'light' | 'dark' | null. */
+export function systemMode() {
+  if (!isBrowser || typeof window.matchMedia !== 'function') return null;
+  if (window.matchMedia('(prefers-color-scheme: dark)').matches) return 'dark';
+  if (window.matchMedia('(prefers-color-scheme: light)').matches) return 'light';
+  return null;
+}
+
+/**
+ * Which style applies right now.
+ * @param {Date} now
+ * @param {string} override  'auto' | 'a' | 'b' | 'c'
+ */
+export function resolveStyle(now = new Date(), override = STYLE_AUTO) {
+  return override === STYLE_AUTO ? styleForDate(now) : override;
+}
+
+/**
+ * Which mode applies for a given style.
+ * @param {string} styleId
+ * @param {string} override  'style' | 'light' | 'dark'
+ */
+export function resolveMode(styleId, override = MODE_FOLLOWS_STYLE) {
+  if (override === 'light' || override === 'dark') return override;
+
+  const designed = STYLES[styleId]?.preferredMode ?? 'light';
+  if (!RESPECT_SYSTEM_MODE) return designed;
+
+  // Only defer to the OS when it is actually expressed.
+  return systemMode() ?? designed;
+}
+
+/** Both axes at once, as a single descriptor. */
+export function resolveTheme(now = new Date(), styleOverride = STYLE_AUTO, modeOverride = MODE_FOLLOWS_STYLE) {
+  const style = resolveStyle(now, styleOverride);
+  const mode = resolveMode(style, modeOverride);
+  return {
+    style,
+    mode,
+    /** True when the clock (not the visitor) chose the style. */
+    styleIsAuto: styleOverride === STYLE_AUTO,
+    /** True when the style's own intent (not the visitor, not the OS) chose the mode. */
+    modeIsAuto: modeOverride === MODE_FOLLOWS_STYLE,
+    slot: slotForMinutes(minutesOf(now)),
+    nextChange: nextChangeAfter(now),
+  };
+}
+
+/* ── applying to the document ──────────────────────────────────────────── */
+
+/**
+ * Write the two axis attributes onto an element (normally <html>).
+ * Returns true when something actually changed, so callers can skip work.
+ */
+export function applyTheme(el, style, mode) {
+  if (!el) return false;
+  const changed = el.getAttribute('data-style') !== style || el.getAttribute('data-mode') !== mode;
+  if (changed) {
+    el.setAttribute('data-style', style);
+    el.setAttribute('data-mode', mode);
+  }
+  return changed;
+}
+
+/** Snapshot of what is currently on the document, for verification and tooling. */
+export function readAppliedTheme(el = isBrowser ? document.documentElement : null) {
+  if (!el) return { style: null, mode: null };
+  return { style: el.getAttribute('data-style'), mode: el.getAttribute('data-mode') };
+}
+
+/* ── first-visit explainer ────────────────────────────────────────────────
+   The site changes appearance on a schedule, which is unusual enough to be
+   mistaken for a bug. We tell the visitor once, and offer to pin the current
+   look. Dismissal is remembered. */
+
+export const STORAGE_EXPLAINER_SEEN = 'theme.explainerSeen';
+
+export function hasSeenExplainer() {
+  return safeGet(STORAGE_EXPLAINER_SEEN) === '1';
+}
+
+export function markExplainerSeen() {
+  safeSet(STORAGE_EXPLAINER_SEEN, '1');
+}

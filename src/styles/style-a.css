@@ -1,0 +1,133 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   style-a.css — "Editorial": serif display, hairline rules, numbered sections,
+   no shadows. Formal and calm — the morning / professional face.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── identity (mode-independent) ─────────────────────────────────────────── */
+
+[data-style="a"] {
+  --font-display: ui-serif, "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+
+  --weight-display: 500;
+  --weight-strong: 600;
+  --weight-body: 400;
+
+  --step--1: clamp(0.79rem, 0.77rem + 0.1vw, 0.85rem);
+  --step-0:  clamp(0.97rem, 0.94rem + 0.15vw, 1.06rem);
+  --step-1:  clamp(1.15rem, 1.06rem + 0.45vw, 1.42rem);
+  --step-2:  clamp(1.5rem, 1.25rem + 1.25vw, 2.35rem);
+  --step-3:  clamp(2.15rem, 1.45rem + 3.5vw, 4.4rem);
+  --step-4:  clamp(2.8rem, 1.6rem + 6vw, 6.5rem);
+
+  --leading: 1.62;
+  --leading-tight: 1.04;
+  --leading-loose: 1.8;
+  --tracking: 0;
+  --tracking-tight: -0.022em;
+  --tracking-wide: 0.14em;
+
+  --measure: 1160px;
+  --measure-read: 690px;
+
+  --radius-sm: 3px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --radius-full: 999px;
+
+  --border-width: 1px;
+
+  /* Editorial does not use drop shadows — depth comes from hairlines. */
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+
+  /* Flavour tokens consumed by components. */
+  --card-bg: var(--bg-raised);
+  --card-border: var(--line);
+  --card-radius: var(--radius-md);
+  --card-shadow: none;
+  --hover-lift: -2px;
+  --overline-transform: uppercase;
+  --overline-spacing: var(--tracking-wide);
+  --display-decoration: none;
+  --section-index-size: 1.6rem;
+
+  /* No blueprint grid in this style. Declared explicitly rather than left to the
+     fallback, so this file fully describes how the style looks — the fallback is a
+     default for "no style set", never a source of a style's intended appearance. */
+  --grid-size: 44px;
+  --grid-line: transparent;
+  --tick-size: 9px;
+}
+
+/* ── light ───────────────────────────────────────────────────────────────── */
+
+[data-style="a"][data-mode="light"] {
+  color-scheme: light;
+
+  --bg: #fbfbfa;
+  --bg-raised: #ffffff;
+  --bg-sunken: #f3f3f1;
+  --bg-input: #ffffff;
+  --bg-overlay: rgba(17, 17, 19, 0.42);
+
+  --fg: #111113;
+  --fg-muted: #5f5f66;
+  /* 4.5:1 against --bg / --bg-raised / --bg-input / --bg-sunken — measured by
+       scripts/verify-contrast.mjs, not eyeballed. */
+  --fg-faint: #6e6e74;
+  --fg-inverse: #fbfbfa;
+
+  --line: #e4e4e1;
+  --line-strong: #cbcbc6;
+
+  --accent: #1f4fd0;
+  --accent-fg: #ffffff;
+  --accent-soft: #e9eefb;
+
+  --ok: #1a6f42;
+  --ok-soft: #e5f3ea;
+  --warn: #8a5a00;
+  --warn-soft: #fbf0dc;
+  --danger: #a52118;
+  --danger-soft: #fbe9e7;
+
+  --focus: #1f4fd0;
+}
+
+/* ── dark ────────────────────────────────────────────────────────────────── */
+
+[data-style="a"][data-mode="dark"] {
+  color-scheme: dark;
+
+  --bg: #0c0c0d;
+  --bg-raised: #151517;
+  --bg-sunken: #070708;
+  --bg-input: #1a1a1d;
+  --bg-overlay: rgba(0, 0, 0, 0.66);
+
+  --fg: #f2f2f0;
+  --fg-muted: #a0a0a8;
+  /* 4.5:1 against --bg / --bg-raised / --bg-input / --bg-sunken — measured by
+       scripts/verify-contrast.mjs, not eyeballed. */
+  --fg-faint: #82828a;
+  --fg-inverse: #0c0c0d;
+
+  --line: #26262c;
+  --line-strong: #3a3a43;
+
+  --accent: #8fa9ff;
+  --accent-fg: #0c0c0d;
+  --accent-soft: #1b2340;
+
+  --ok: #6ee7a0;
+  --ok-soft: #10281b;
+  --warn: #f4c15c;
+  --warn-soft: #2b2211;
+  --danger: #ff9a8f;
+  --danger-soft: #2e1513;
+
+  --focus: #8fa9ff;
+}

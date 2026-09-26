@@ -1,72 +1,61 @@
-<template>
-  <div id="app">
-    <Navbar />
-    <router-view />
-    <Footer />
-  </div>
-</template>
+<script setup>
+/**
+ * App — the shell.
+ *
+ * A fragment root on purpose: `#app` in index.html is the flex column, so the nav,
+ * the routed page and the footer must be its direct children. The previous version
+ * wrapped them in another `<div id="app">`, which put a duplicate `id="app"` in the
+ * DOM (invalid HTML) and nested the flex context one level deeper than intended.
+ *
+ * All theme tokens, the reset and the base primitives are imported once in main.js.
+ * This file no longer owns a `:root` block of theme variables — that used to be the
+ * second source of truth that the navbar's toggle disagreed with.
+ */
+import { watch, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRoute } from 'vue-router';
 
-<script>
-import Navbar from './components/NavigationBar.vue';
-import Footer from './components/PageFooter.vue';
+import SiteNav from '@/components/layout/SiteNav.vue';
+import SiteFooter from '@/components/layout/SiteFooter.vue';
+import ThemeExplainer from '@/components/theme/ThemeExplainer.vue';
 
-export default {
-  components: { Navbar, Footer },
-};
+const { t } = useI18n();
+const route = useRoute();
+
+/*
+ * Per-route document title. It used to be one static string, so every page in the
+ * tab bar, the history and every bookmark carried the same name. The brand name is a
+ * proper noun and is not translated.
+ */
+const BRAND = 'Jeremy Thierry Chan';
+const title = computed(() => {
+  const key = route.meta?.titleKey;
+  const page = key ? t(key) : '';
+  return page ? `${page} — ${BRAND}` : BRAND;
+});
+
+watch(title, (value) => { document.title = value; }, { immediate: true });
 </script>
 
-<style>
-/* ── Theme variables ─────────────────────────────────────── */
-:root,
-[data-theme="dark"] {
-  --bg-gradient:    linear-gradient(135deg, #2b2b2b, #3c3c3c);
-  --bg-nav:         #2b2b2b;
-  --bg-nav-hover:   #3c3c3c;
-  --bg-card:        rgba(0, 0, 0, 0.7);
-  --bg-input:       #444;
-  --bg-filter:      #444;
-  --bg-footer:      #333;
-  --bg-social:      #444;
-  --text-primary:   #ffffff;
-  --text-nav:       #dcdcdc;
-  --text-muted:     #aaa;
-  --text-role:      #777;
-  --text-footer:    #ffffff;
-  --border-color:   #555;
-  --border-filter:  #666;
-  --shadow:         rgba(0, 0, 0, 0.5);
-  --shadow-sm:      rgba(0, 0, 0, 0.3);
-  --skill-bg:       #444;
-}
+<template>
+  <!--
+    First tabbable element on the page: lets a keyboard visitor skip the navigation
+    on every route instead of tabbing through it each time.
+  -->
+  <a class="skip-link" href="#main">{{ t('nav.skipToContent') }}</a>
 
-[data-theme="light"] {
-  --bg-gradient:    linear-gradient(135deg, #e8eaf0, #f0f2f8);
-  --bg-nav:         #ffffff;
-  --bg-nav-hover:   #f0f0f0;
-  --bg-card:        rgba(255, 255, 255, 0.92);
-  --bg-input:       #f0f0f0;
-  --bg-filter:      #e4e4e4;
-  --bg-footer:      #ebebeb;
-  --bg-social:      #e0e0e0;
-  --text-primary:   #1a1a1a;
-  --text-nav:       #333333;
-  --text-muted:     #666666;
-  --text-role:      #888888;
-  --text-footer:    #333333;
-  --border-color:   #cccccc;
-  --border-filter:  #bbbbbb;
-  --shadow:         rgba(0, 0, 0, 0.12);
-  --shadow-sm:      rgba(0, 0, 0, 0.08);
-  --skill-bg:       #d8d8d8;
-}
+  <SiteNav />
 
-/* ── Base ────────────────────────────────────────────────── */
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background: var(--bg-gradient);
-  color: var(--text-primary);
-  transition: background 0.3s ease, color 0.3s ease;
-}
-</style>
+  <RouterView v-slot="{ Component }">
+    <component :is="Component" />
+  </RouterView>
+
+  <SiteFooter />
+
+  <!--
+    Shown when the clock changes the style while the visitor is present. A site that
+    silently restyles itself reads as a bug; this says what happened and offers to
+    stop it.
+  -->
+  <ThemeExplainer />
+</template>

@@ -6,8 +6,17 @@
   "scripts": {
     "dev": "vite",
     "serve": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "build": "node scripts/build-resume-json.mjs && vite build",
+    "preview": "vite preview",
+    "test": "node --test tests/schedule.test.mjs tests/theme-boot.test.mjs tests/audience.test.mjs",
+    "verify:content": "node scripts/verify-content.mjs",
+    "verify:i18n": "node scripts/verify-i18n.mjs",
+    "verify:contrast": "node scripts/verify-contrast.mjs",
+    "verify:cascade": "node scripts/verify-cascade.mjs",
+    "smoke": "node scripts/smoke-render.mjs",
+    "verify": "npm run test && npm run verify:content && npm run verify:i18n && npm run verify:contrast && npm run verify:cascade && npm run verify:resume && npm run smoke && npm run build",
+    "resume:json": "node scripts/build-resume-json.mjs",
+    "verify:resume": "node scripts/build-resume-json.mjs"
   },
   "dependencies": {
     "vue": "^3.4.0",

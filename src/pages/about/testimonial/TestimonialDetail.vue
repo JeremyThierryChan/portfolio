@@ -1,138 +1,165 @@
-<template>
-  <div class="testimonial-detail" v-if="testimonial">
-    <section class="detail-header">
-      <div class="avatar-lg" :style="{ backgroundColor: testimonial.color }">
-        {{ testimonial.initials }}
-      </div>
-      <h1>{{ testimonial.name }}</h1>
-      <p class="role">{{ testimonial.role }}</p>
-      <p class="context">{{ testimonial.context }}</p>
-      <p class="date">{{ testimonial.date }}</p>
-    </section>
+<script setup>
+/**
+ * TestimonialDetail — one full letter.
+ *
+ * Fixed relative to the old page:
+ *   - The whole letter was stuffed into a single `<p>` wrapped in literal quote
+ *     characters, with no `<blockquote>` and no `<cite>`. A 900-character quotation
+ *     is now marked up as a quotation, with the attribution beside it rather than
+ *     inside the quoted text.
+ *   - The not-found branch hard-coded "Testimonial not found." in English and reused
+ *     the detail URL, so a non-English visitor got English and stayed put. It is now
+ *     translated and offers a real way back.
+ *   - `props: ['id']` was untyped and compared with `==`, so `/about/testimonials/01`
+ *     and `/about/testimonials/1` behaved differently depending on coercion. The id is
+ *     now normalised once.
+ *   - Both branches repeated the entire root structure; there is now one shell.
+ */
+import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useContent } from '@/content/index.js';
+import PageShell from '@/components/layout/PageShell.vue';
+import PageHeader from '@/components/layout/PageHeader.vue';
+import AppButton from '@/components/ui/AppButton.vue';
 
-    <section class="detail-body">
-      <p>"{{ testimonial.full }}"</p>
-    </section>
+const props = defineProps({
+  /** Route param — always a string from the URL. */
+  id: { type: [String, Number], required: true },
+});
 
-    <div class="back-button">
-      <router-link to="/about/testimonials" class="button">
-        {{ $t('testimonials.backBtn') }}
-      </router-link>
-    </div>
-  </div>
+const { t } = useI18n();
+const { testimonials } = useContent();
 
-  <div class="testimonial-detail not-found" v-else>
-    <p>Testimonial not found.</p>
-    <router-link to="/about/testimonials" class="button">
-      {{ $t('testimonials.backBtn') }}
-    </router-link>
-  </div>
-</template>
+/** Normalise once so '01' and '1' resolve to the same letter. */
+const wanted = computed(() => String(props.id));
 
-<script>
-import { testimonials } from './testimonialsData.js';
-
-export default {
-  name: 'TestimonialDetail',
-  props: ['id'],
-  computed: {
-    testimonial() {
-      return testimonials.find(t => t.id == this.id);
-    },
-  },
-};
+const testimonial = computed(
+  () => testimonials.value.find((item) => String(item.id) === wanted.value) ?? null,
+);
 </script>
 
+<template>
+  <PageShell width="read">
+    <!-- ── found ─────────────────────────────────────────────────────── -->
+    <template v-if="testimonial">
+      <PageHeader
+        :overline="t('testimonials.overline')"
+        :title="testimonial.name"
+        :lede="testimonial.role"
+      />
+
+      <article class="letter">
+        <div class="letter__meta">
+          <p v-if="testimonial.context" class="letter__context">
+            <span class="letter__label">{{ t('testimonials.contextLabel') }}</span>
+            {{ testimonial.context }}
+          </p>
+          <time v-if="testimonial.date" class="letter__date" :datetime="testimonial.date">
+            {{ testimonial.date }}
+          </time>
+        </div>
+
+        <figure class="letter__figure">
+          <blockquote class="letter__quote">
+            <p>{{ testimonial.full }}</p>
+          </blockquote>
+          <figcaption class="letter__caption">
+            <cite>{{ testimonial.name }}</cite>
+            <span>{{ testimonial.role }}</span>
+          </figcaption>
+        </figure>
+      </article>
+
+      <AppButton
+        class="letter__back"
+        variant="secondary"
+        :to="{ name: 'testimonials' }"
+      >
+        {{ t('testimonials.backBtn') }}
+      </AppButton>
+    </template>
+
+    <!-- ── not found ─────────────────────────────────────────────────── -->
+    <template v-else>
+      <PageHeader
+        :overline="t('testimonials.overline')"
+        :title="t('testimonials.notFoundTitle')"
+        :lede="t('testimonials.notFoundBody')"
+      />
+      <AppButton variant="primary" :to="{ name: 'testimonials' }">
+        {{ t('testimonials.notFoundCta') }}
+      </AppButton>
+    </template>
+  </PageShell>
+</template>
+
 <style scoped>
-.testimonial-detail {
+.letter {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  min-height: 100vh;
-  background: var(--bg-gradient);
-  color: var(--text-primary);
-  font-family: 'Arial', sans-serif;
-  padding: 60px 40px;
-  text-align: center;
-  transition: background 0.3s ease, color 0.3s ease;
+  gap: var(--space-lg);
 }
 
-.avatar-lg {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
+.letter__meta {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.6rem;
-  font-weight: 700;
-  color: white;
-  margin-bottom: 20px;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-xs);
+  padding-block-end: var(--space-sm);
+  border-block-end: var(--border-width) solid var(--line);
 }
 
-.detail-header h1 {
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 8px;
+.letter__context {
+  font-size: var(--step--1);
+  color: var(--fg-muted);
 }
 
-.detail-header .role {
-  font-size: 1rem;
-  color: var(--text-muted);
-  margin-bottom: 6px;
+.letter__label {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  font-size: 0.68rem;
+  color: var(--fg-faint);
+  margin-inline-end: var(--space-2xs);
 }
 
-.detail-header .context {
-  font-size: 0.9rem;
-  color: #ff6b6b;
-  font-style: italic;
-  margin-bottom: 6px;
+.letter__date {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  color: var(--fg-faint);
 }
 
-.detail-header .date {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  margin-bottom: 30px;
+.letter__figure {
+  margin: 0;
 }
 
-.detail-body {
-  max-width: 720px;
-  background: var(--bg-card);
-  border-radius: 15px;
-  padding: 32px;
-  box-shadow: 0 8px 20px var(--shadow);
-  margin-bottom: 36px;
-  transition: background 0.3s ease;
+.letter__quote {
+  margin: 0;
+  padding-inline-start: var(--space-md);
+  border-inline-start: 2px solid var(--accent);
+  font-size: var(--step-1);
+  line-height: var(--leading-loose);
+  color: var(--fg);
 }
 
-.detail-body p {
-  font-style: italic;
-  font-size: 1.05rem;
-  line-height: 1.8;
-  color: var(--text-primary);
+.letter__caption {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xs);
+  margin-block-start: var(--space-md);
+  padding-inline-start: var(--space-md);
+  font-size: var(--step--1);
+  color: var(--fg-muted);
 }
 
-.button {
-  display: inline-block;
-  background-color: #ff6b6b;
-  color: white;
-  padding: 12px 28px;
-  font-size: 1rem;
-  border-radius: 25px;
-  text-decoration: none;
-  transition: background-color 0.3s ease, transform 0.3s ease;
+.letter__caption cite {
+  font-style: normal;
+  font-weight: var(--weight-strong);
+  color: var(--fg);
 }
 
-.button:hover {
-  background-color: #ff4747;
-  transform: translateY(-3px);
-}
-
-.not-found { justify-content: center; gap: 20px; }
-
-@media (max-width: 768px) {
-  .testimonial-detail { padding: 40px 20px; }
-  .detail-header h1 { font-size: 1.5rem; }
-  .detail-body { padding: 20px; }
+.letter__back {
+  margin-block-start: var(--space-xl);
 }
 </style>
