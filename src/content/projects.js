@@ -894,4 +894,60 @@ export const projects = [
       },
     },
   },
+  {
+    id: 22,
+    tier: 'listed',
+    slug: 'tarot-knowledge-system-and-course',
+    audiences: ['institutions', 'events'],
+    status: 'in-progress',
+    link: null,
+    tech: ['Obsidian', 'CorelDraw', 'XMind', 'Knowledge base design'],
+    cofounder: null,
+    stages: [],
+    /* TODO(verify): no percentage is set on purpose — an audit found the project stalled
+       with no measurable completion, so a number would be invented. The two things that
+       would move it are both content: the 78 cards have no artwork, and the course has no
+       written introduction (项目介绍.md is a 0-byte file). */
+    i18n: {
+      en: {
+        title: 'Tarot Knowledge System & Course Design',
+        description:
+          'A tarot practice treated as a structured body of work rather than a hobby. The knowledge base runs to 97 documents: all 78 cards written up individually, plus nineteen methodology notes on spreads, reversed readings, the symbol vocabulary, astrological and Kabbalistic correspondences, reading cases and a learning path. On top of that sits a designed course — a recorded-course outline and its content plan, each as a mind map — and two CorelDraw pieces: a Tree of Life diagram and, more usefully, a divination cloth that re-lays that diagram as a layout you can actually deal onto. Stated plainly: the cards have text but no artwork, the course introduction was never written, and nothing has been sold.',
+      },
+      zh: {
+        title: '塔罗知识体系与课程设计',
+        description:
+          '把塔罗当成一套成体系的东西来做，而不是当爱好。知识库共 97 篇文档：78 张牌逐张成文，另有 19 篇方法论，涵盖牌阵、逆位解读、符号辞典、占星与卡巴拉对应、解读案例与学习路径。在此之上是一套设计过的课程——录播课大纲与具体内容计划各一份思维导图——以及两件 CorelDraw 设计稿：一幅卡巴拉生命之树，以及更有用处的——一块把生命之树重新编排成能真正在布面上摊牌使用的占卜桌布。如实说明进度：78 张牌只有文字、没有配图，课程的项目介绍从未落笔，至今没有产生任何销售。',
+      },
+    },
+  },
+  {
+    id: 23,
+    tier: 'listed',
+    slug: 'custom-guitar-design-engineering',
+    audiences: ['trade', 'web'],
+    status: 'in-progress',
+    link: null,
+    tech: ['CorelDraw', 'Parametric design', 'Python', 'XMind'],
+    cofounder: null,
+    stages: [],
+    /* TODO(verify): two open questions from the audit. (1) The drawings are 27 .cdr files
+       — CorelDraw's own format, which no browser and no Mac preview can open. Until they
+       are exported to PNG/SVG/PDF this entry has no visual evidence at all, so the entry
+       currently argues from design decisions alone. (2) The internal brand name used in
+       the source files (JTC) was never confirmed as Jeremy's own, so it is deliberately
+       not named here. */
+    i18n: {
+      en: {
+        title: 'Custom Guitar Design Engineering',
+        description:
+          'The engineering behind a self-directed line of custom electric guitars. The strongest evidence is a set of design decisions rather than a finished instrument: twenty-seven CorelDraw drawings covering bodies, necks, fret spacing and string spacing, including a nine-string whose multi-scale (fan-fret) lengths are derived from the Fibonacci sequence rather than copied from an existing combination, and a body drawn to accept a Jackson 57.5 mm neck — cross-brand parts compatibility, not decoration. A separate folder holds eleven designs under revision, one of which records its own failure in its filename: string spacing too wide. Supporting it are a product and BOM workbook, a scale-length pairing table, a string-gauge and tension table, and a library organised by string count from five strings to a Bass VI. Stated plainly: no finished instrument has been photographed or delivered, the drawings need exporting before they can be shown, and the only script in the project — nineteen lines of Python solving the first string position on a multi-scale bridge with Pythagoras — is a first step, not a generator.',
+      },
+      zh: {
+        title: '定制电吉他设计工程',
+        description:
+          '一套自研定制电吉他背后的设计工程。最硬的证据不是成品琴，而是一批设计决策：27 张 CorelDraw 图纸，覆盖琴体、琴颈、品距与弦距，其中包括一把九弦琴——它的多弦长（扇品）尺寸由斐波那契数列推导得出，而不是照抄现成的弦长组合——以及一个为容纳 Jackson 57.5mm 琴颈而绘制的琴体，这是跨品牌零件兼容性设计，不是装饰。另有一个目录收着 11 张「需调整」的设计稿，其中一张干脆把失败写进了文件名：弦距过宽。支撑材料包括产品与 BOM 表、弦长搭配表、琴弦规格与张力表，以及一个按弦数切分产品线的资料库，从五弦一直到 Bass VI。如实说明：没有任何成品琴被拍过照或交付过，图纸是 CorelDraw 格式、必须先导出才能展示，而项目里唯一的脚本——19 行 Python，用勾股关系解出多弦长琴桥处第一弦的位置——是第一步，不是生成器。',
+      },
+    },
+  },
 ];

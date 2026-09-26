@@ -14,6 +14,18 @@
  * This check protects what visitors receive. It does not, and cannot, protect the
  * repository — if that matters, the answer is a private repository, not tree hygiene.
  *
+ * TWO DECISIONS ALREADY MADE — do not "fix" either of these:
+ *
+ * 1. Repository history is accepted as-is. The names below are also in
+ *    `scripts/fixtures/legacy/projectsData.js` and in INTENTIONAL_DEVIATIONS, and
+ *    commit 4ca6d36 (2026-05-30) is an ancestor of origin/main, so they are already
+ *    public in this repository's history. Jeremy's call: guarantee the SITE is clean,
+ *    do not chase history. Rewriting history or making the repository private is
+ *    therefore not a pending task.
+ * 2. The Taoism link on the fortune-teller entry is KEPT on purpose. Its URL is
+ *    neutral, so this check cannot flag it, but the site behind it names the client.
+ *    That was raised and accepted — it is an informed exception, not an oversight.
+ *
  * `Pingyang` is deliberately NOT listed. Pingyang High School is Jeremy's own school
  * and stays named; only `Pingyang Lacquer Art` was withdrawn. Keep entries specific
  * enough that a genuine credential is never caught by them.

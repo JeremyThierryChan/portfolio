@@ -240,6 +240,16 @@
         "Docker"
       ],
       "url": "https://jeremythierrychan.github.io/Lacquora/"
+    },
+    {
+      "name": "Custom Guitar Design Engineering",
+      "description": "The engineering behind a self-directed line of custom electric guitars. The strongest evidence is a set of design decisions rather than a finished instrument: twenty-seven CorelDraw drawings covering bodies, necks, fret spacing and string spacing, including a nine-string whose multi-scale (fan-fret) lengths are derived from the Fibonacci sequence rather than copied from an existing combination, and a body drawn to accept a Jackson 57.5 mm neck — cross-brand parts compatibility, not decoration. A separate folder holds eleven designs under revision, one of which records its own failure in its filename: string spacing too wide. Supporting it are a product and BOM workbook, a scale-length pairing table, a string-gauge and tension table, and a library organised by string count from five strings to a Bass VI. Stated plainly: no finished instrument has been photographed or delivered, the drawings need exporting before they can be shown, and the only script in the project — nineteen lines of Python solving the first string position on a multi-scale bridge with Pythagoras — is a first step, not a generator.",
+      "keywords": [
+        "CorelDraw",
+        "Parametric design",
+        "Python",
+        "XMind"
+      ]
     }
   ],
   "languages": [

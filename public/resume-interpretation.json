@@ -222,7 +222,18 @@
       "summary": "Provincial second prize"
     }
   ],
-  "projects": [],
+  "projects": [
+    {
+      "name": "Tarot Knowledge System & Course Design",
+      "description": "A tarot practice treated as a structured body of work rather than a hobby. The knowledge base runs to 97 documents: all 78 cards written up individually, plus nineteen methodology notes on spreads, reversed readings, the symbol vocabulary, astrological and Kabbalistic correspondences, reading cases and a learning path. On top of that sits a designed course — a recorded-course outline and its content plan, each as a mind map — and two CorelDraw pieces: a Tree of Life diagram and, more usefully, a divination cloth that re-lays that diagram as a layout you can actually deal onto. Stated plainly: the cards have text but no artwork, the course introduction was never written, and nothing has been sold.",
+      "keywords": [
+        "Obsidian",
+        "CorelDraw",
+        "XMind",
+        "Knowledge base design"
+      ]
+    }
+  ],
   "languages": [
     {
       "language": "English",
