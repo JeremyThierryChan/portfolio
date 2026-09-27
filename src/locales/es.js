@@ -439,6 +439,9 @@ export default {
     styleNow: 'Ahora mismo {style} · {window}',
     sourceLabel: 'Código fuente',
     socialLabel: 'Redes sociales',
+    /* The footer's outgoing-links heading. It doubles as the nav landmark's
+       accessible name via aria-labelledby, so it is the words on screen. */
+    friendLinks: 'Enlaces',
   },
 
   /* ── 404 ─────────────────────────────────────────────────────────────── */

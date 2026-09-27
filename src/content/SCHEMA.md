@@ -143,6 +143,7 @@ resolver and by the UI's safe-degradation rules.
 | `awards.js` | `awards` | 15 entries. `result: null` means the CV states no outcome — see the TODO list at the foot of that file. |
 | `services.js` | `services` | 9 entries. What can be *hired*, as opposed to what has been *built*. `order` is a curated render order; `includes` is an array of strings inside `i18n.<locale>`. |
 | `audiences.js` | `audiences` | 4 identities plus the `all` option. Drives the visitor-identity control and the CV variant mapping. |
+| `links.js` | `links` | The footer's outgoing links. `name` is a proper noun at the top level; `url` must be a real absolute `http(s)` address, asserted by `verify-content` — a control with no destination is a defect here, not a placeholder. `order` is curated. |
 
 ### Field additions beyond the original contract
 

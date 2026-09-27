@@ -746,6 +746,56 @@ try {
     theme.setStyle(themeApi.STYLE_AUTO);
   }
 
+  /* ── 11. the footer's outgoing links actually go somewhere ───────────── */
+
+  /*
+   * The footer this replaced shipped anchors with no real destination: a click jumped to
+   * the top of the page and a screen reader was told nothing about it. So the four rules
+   * that defect broke are asserted here rather than assumed — a real href, an external
+   * target, a safe rel, and a landmark named by the heading that is on screen.
+   */
+  console.log('\n\x1b[1mThe footer links go somewhere\x1b[0m');
+
+  {
+    const packs = { en, zh };
+    for (const code of ['fr', 'de', 'es', 'it']) {
+      packs[code] = (await vite.ssrLoadModule(`/src/locales/${code}.js`)).default;
+    }
+    const outgoing = (await vite.ssrLoadModule('/src/content/links.js')).links;
+
+    const page = (await vite.ssrLoadModule('/src/pages/HomePage.vue')).default;
+    const { app, router } = mount(page, 'home', 'en', packs);
+    await router.push('/');
+    await router.isReady();
+    const html = await renderToString(app);
+
+    const start = html.indexOf('site-footer__links');
+    if (start === -1) {
+      bad('the footer has no outgoing-links section');
+    } else {
+      ok('the footer renders the outgoing-links section');
+      const slice = html.slice(start);
+
+      const absent = outgoing.filter((l) => !slice.includes(l.url));
+      if (absent.length) bad('a footer link is missing from the markup', absent.map((l) => l.id).join(', '));
+      else ok('every footer link is rendered', `${outgoing.length} urls`);
+
+      const targets = (slice.match(/target="_blank"/g) ?? []).length;
+      if (targets >= outgoing.length) ok('every footer link opens in a new tab', `${targets}`);
+      else bad('a footer link does not open in a new tab', `${targets} of ${outgoing.length}`);
+
+      const rels = (slice.match(/rel="noopener noreferrer"/g) ?? []).length;
+      if (rels >= outgoing.length) ok('every footer link carries a safe rel', `${rels}`);
+      else bad('a footer link is missing rel="noopener noreferrer"', `${rels} of ${outgoing.length}`);
+
+      if (html.includes('aria-labelledby="footer-links-heading"') && html.includes('id="footer-links-heading"')) {
+        ok('the links landmark is named by its visible heading');
+      } else {
+        bad('the links landmark is not named by its heading');
+      }
+    }
+  }
+
 } finally {
   await vite.close();
   delete globalThis.document;

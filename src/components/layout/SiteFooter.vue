@@ -26,7 +26,7 @@ import { formatMinutes, scheduleSummary } from '@/theme/schedule.js';
 import { useTimeTheme } from '@/theme/useTimeTheme.js';
 
 const { t } = useI18n();
-const { profile } = useContent();
+const { profile, links } = useContent();
 const { style, styleMeta } = useTimeTheme();
 
 /*
@@ -34,6 +34,22 @@ const { style, styleMeta } = useTimeTheme();
  * oversight — so both cases are rendered from this one list.
  */
 const socials = computed(() => profile.value.socials ?? []);
+
+/*
+ * The outgoing links row. Ordered by the content layer's curated `order`, and hidden
+ * entirely when there is nothing to show — an empty heading with no list under it reads
+ * as a broken section.
+ */
+const friendLinks = computed(() => links.value ?? []);
+
+/* Static: there is exactly one footer, so a generated id would only add indirection. */
+const linksHeadingId = 'footer-links-heading';
+
+/** Link text is the name and its note; the accessible name adds where it goes. */
+function linkLabel(link) {
+  const parts = [link.name, link.note].filter(Boolean);
+  return `${parts.join(' — ')} — ${t('common.externalLink')}`;
+}
 
 /** Current schedule window, shown next to the style name. */
 const currentSlot = computed(
@@ -124,6 +140,36 @@ function unlinkedLabel(social) {
           </li>
         </ul>
       </nav>
+
+      <!--
+        "友情链接". A real <nav> with a heading the visitor can see, labelled by that
+        heading rather than by a bare aria-label, so the landmark is announced with the
+        same words that are on screen.
+      -->
+      <nav
+        v-if="friendLinks.length"
+        class="site-footer__links"
+        :aria-labelledby="linksHeadingId"
+      >
+        <h2 :id="linksHeadingId" class="site-footer__links-heading">
+          {{ t('footer.friendLinks') }}
+        </h2>
+        <ul class="site-footer__links-list">
+          <li v-for="link in friendLinks" :key="link.id">
+            <a
+              class="friend-link"
+              :href="link.url"
+              target="_blank"
+              rel="noopener noreferrer"
+              :aria-label="linkLabel(link)"
+              :title="t('common.externalLink')"
+            >
+              <span class="friend-link__name">{{ link.name }}</span>
+              <span v-if="link.note" class="friend-link__note">{{ link.note }}</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
     </div>
   </footer>
 </template>
@@ -168,6 +214,69 @@ function unlinkedLabel(social) {
 
 .site-footer__style {
   font-family: var(--font-mono);
+  color: var(--fg-faint);
+}
+
+/* ── outgoing links (友情链接) ─────────────────────────────────────────────── */
+
+.site-footer__links {
+  min-inline-size: 0;
+}
+
+.site-footer__links-heading {
+  margin: 0 0 var(--space-2xs);
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  font-weight: var(--weight-strong);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--fg-faint);
+}
+
+.site-footer__links-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xs);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.friend-link {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2xs);
+  min-block-size: var(--tap-target);
+  padding-inline: var(--space-xs);
+
+  border: var(--border-width) solid transparent;
+  border-radius: var(--radius-sm);
+  color: var(--fg-muted);
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-out),
+              background-color var(--dur-fast) var(--ease-out),
+              border-color var(--dur-fast) var(--ease-out);
+}
+
+.friend-link:hover {
+  background-color: var(--bg-raised);
+  border-color: var(--line);
+  color: var(--fg);
+}
+
+.friend-link:focus-visible {
+  outline: var(--focus-width) solid var(--focus);
+  outline-offset: var(--focus-offset);
+}
+
+.friend-link__name {
+  font-weight: var(--weight-strong);
+  white-space: nowrap;
+}
+
+/* The note gives way first when the column is narrow. */
+.friend-link__note {
   color: var(--fg-faint);
 }
 
@@ -254,6 +363,10 @@ function unlinkedLabel(social) {
 }
 
 @media (min-width: 768px) {
+  .site-footer__links {
+    flex: 1 1 12rem;
+  }
+
   .site-footer__socials {
     flex: 1 1 22rem;
   }

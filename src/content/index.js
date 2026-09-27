@@ -21,17 +21,18 @@ import { posts } from './posts.js';
 import { services, SERVICE_DOMAINS } from './services.js';
 import { awards } from './awards.js';
 import { audiences, AUDIENCE_ALL, AUDIENCE_IDS, splitByAudience, isRelevant } from './audiences.js';
+import { links } from './links.js';
 
 import { pick, pickAll, byDateDesc, availableLocales, isTranslated } from './resolve.js';
 
-export { profile, projects, timeline, skills, gallery, testimonials, posts, services, awards };
+export { profile, projects, timeline, skills, gallery, testimonials, posts, services, awards, links };
 export { SERVICE_DOMAINS };
 export { audiences, AUDIENCE_ALL, AUDIENCE_IDS, splitByAudience, isRelevant };
 export { pick, pickAll, byDateDesc, availableLocales, isTranslated };
 export { FALLBACK_LOCALE } from './resolve.js';
 
 /** Raw modules, handy for tooling and the i18n coverage checker. */
-export const content = { profile, projects, timeline, skills, gallery, testimonials, posts, services, awards };
+export const content = { profile, projects, timeline, skills, gallery, testimonials, posts, services, awards, links };
 
 /* ── locales ──────────────────────────────────────────────────────────────
    Single source of truth for the language list. The navigation bar used to
@@ -141,6 +142,13 @@ export function useContent() {
 
     /** The undated timeline entry (e.g. "learned to speak") sinks to the end. */
     timelineWithUndatedLast: computed(() => pickAll(timeline, L.value).sort(byDateDesc)),
+
+    /**
+     * The footer's outgoing links. Ordered by the curated `order`, never by insertion:
+     * the array order should not be the thing that decides who appears first.
+     */
+    links: computed(() =>
+      pickAll(links, L.value).sort((a, b) => (a.order ?? 99) - (b.order ?? 99))),
 
     /** True when the active locale is a non-English one that is still untranslated. */
     isFallbackOnly: computed(() => L.value === FALLBACK_LOCALE_CODE),

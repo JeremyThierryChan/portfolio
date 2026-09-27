@@ -502,6 +502,7 @@ const EXTRA_COLLECTIONS = [
   ['services', 'services'],
   ['audiences', 'audiences'],
   ['resume', 'RESUME_VARIANTS'],
+  ['links', 'links'],
 ];
 
 const bilingual = [];
@@ -547,6 +548,32 @@ assert(
    covers the content layer and `public/`; a future edit to either used to be able
    to reintroduce a client's name with nothing to catch it.
    ────────────────────────────────────────────────────────────────────────── */
+{
+  /*
+   * The outgoing links are the one collection whose whole job is to be clickable, so the
+   * failure mode is specific: a `'#'`, a relative path, an empty string or a duplicate.
+   * The footer this replaced shipped anchors with no real destination, which jumped to the
+   * top of the page and lied to a screen reader — so the rule is asserted, not assumed.
+   */
+  const mod = await import(p('src/content', 'links.js'));
+  const rows = mod.links ?? [];
+  const badUrls = rows
+    .filter((l) => typeof l.url !== 'string' || !/^https?:\/\/\S+$/.test(l.url))
+    .map((l) => `${l.id}: ${JSON.stringify(l.url)}`);
+  assert(badUrls.length === 0, 'every footer link has a real absolute http(s) url',
+    badUrls.length ? badUrls.join(', ') : `${rows.length} link(s)`);
+
+  const ids = rows.map((l) => l.id);
+  assert(new Set(ids).size === ids.length, 'footer link ids are unique', `${ids.length} ids`);
+
+  const urls = rows.map((l) => l.url);
+  assert(new Set(urls).size === urls.length, 'footer link urls are unique', `${urls.length} urls`);
+
+  const unordered = rows.filter((l) => typeof l.order !== 'number');
+  assert(unordered.length === 0, 'every footer link carries a curated order', 
+    unordered.map((l) => l.id).join(', '));
+}
+
 {
   const leaks = [];
 
