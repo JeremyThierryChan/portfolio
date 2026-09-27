@@ -24,6 +24,9 @@
  *
  * The strip is chrome, like the nav and the footer, so it sets its own typography from
  * tokens instead of relying on `.page-shell`.
+ *
+ * It renders as the last row INSIDE the nav header (see SiteNav.vue). That header is
+ * sticky, so the strip stays put with the nav instead of scrolling away.
  */
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -87,7 +90,9 @@ const track = computed(() => [...messages.value, ...messages.value]);
 
   background-color: var(--bg-sunken);
   color: var(--fg-muted);
-  border-block-end: var(--border-width) solid var(--line);
+  /* A hairline ABOVE it, not below: this strip is the last row inside the nav header,
+     which draws its own bottom border, so a bottom border here would double it. */
+  border-block-start: var(--border-width) solid var(--line);
 
   font-family: var(--font-mono);
   font-size: var(--step--1);
@@ -107,11 +112,9 @@ const track = computed(() => [...messages.value, ...messages.value]);
   animation: site-notice-scroll var(--notice-loop) linear infinite;
 }
 
-/* Pausing on hover is the difference between a notice and an irritation. */
-.site-notice:hover .site-notice__track,
-.site-notice:focus-within .site-notice__track {
-  animation-play-state: paused;
-}
+/* Deliberately NOT paused on hover or focus: Jeremy's call. The strip is ambient
+   information rather than a control, and a notice that stops when the pointer crosses it
+   reads as interactive when it is not. */
 
 .site-notice__item {
   display: inline-flex;

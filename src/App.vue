@@ -16,7 +16,6 @@ import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
 import SiteNav from '@/components/layout/SiteNav.vue';
-import SiteNotice from '@/components/layout/SiteNotice.vue';
 import SiteFooter from '@/components/layout/SiteFooter.vue';
 import ThemeExplainer from '@/components/theme/ThemeExplainer.vue';
 
@@ -46,13 +45,6 @@ watch(title, (value) => { document.title = value; }, { immediate: true });
   <a class="skip-link" href="#main">{{ t('nav.skipToContent') }}</a>
 
   <SiteNav />
-
-  <!--
-    Sits directly under the nav, on every route: the site is still being built, and a
-    visitor who lands on one project should know that before they judge the rest.
-    Deliberately not sticky — the nav is, and two stacked sticky bars eat the viewport.
-  -->
-  <SiteNotice />
 
   <RouterView v-slot="{ Component }">
     <component :is="Component" />

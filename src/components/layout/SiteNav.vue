@@ -29,6 +29,7 @@ import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
 import ThemeControl from '@/components/theme/ThemeControl.vue';
+import SiteNotice from '@/components/layout/SiteNotice.vue';
 import { LOCALE_META, normalizeLocale } from '@/content';
 import { formatMinutes, scheduleSummary } from '@/theme/schedule.js';
 import { useTimeTheme } from '@/theme/useTimeTheme.js';
@@ -338,7 +339,12 @@ const nextChangeText = computed(() => {
 
 <template>
   <header ref="headerEl" class="site-nav">
-    <div class="container site-nav__inner">
+    <!--
+      NOT `.container`. The bar spans the viewport so its four groups can spread across
+      it, while every other surface stays inside `--measure`. Same gutter, so the brand
+      still lines up with the content underneath.
+    -->
+    <div class="site-nav__inner">
       <router-link class="site-nav__brand" to="/">
         {{ SITE_NAME }}
       </router-link>
@@ -542,6 +548,13 @@ const nextChangeText = computed(() => {
         </button>
       </div>
     </div>
+
+    <!--
+      The build-status strip, as the last row INSIDE the header rather than as a sibling
+      after it. It stays attached to the nav it describes, and since the header is sticky
+      the strip stays with it.
+    -->
+    <SiteNotice />
   </header>
 </template>
 
@@ -570,9 +583,26 @@ const nextChangeText = computed(() => {
 
 .site-nav__inner {
   display: flex;
-  flex-wrap: wrap;
+
+  /*
+   * ONE ROW, ALWAYS — and this is the fix for "the title and the two controls are not on
+   * the same line".
+   *
+   * Line breaking uses each item's flex BASE size, not its shrunk size. The nav's basis
+   * was `auto`, i.e. its full content width — about 790px for eleven links. Brand, style
+   * line, links and controls came to roughly 1310px against the ~968px `--measure` left
+   * inside `.container`, so the row broke after the style line and the language and
+   * appearance controls landed on the second row while the brand sat alone on the first.
+   * `nowrap` here plus a zero basis on the nav removes the possibility instead of tuning
+   * it: the links are the thing that yields, by wrapping inside their own column.
+   */
+  flex-wrap: nowrap;
   align-items: center;
+  justify-content: space-between;
   gap: var(--space-sm) var(--space-md);
+
+  inline-size: 100%;
+  padding-inline: var(--gutter);
   padding-block: var(--space-xs);
   min-block-size: var(--control-height-lg);
 }
@@ -583,7 +613,9 @@ const nextChangeText = computed(() => {
   display: inline-flex;
   align-items: center;
   min-block-size: var(--tap-target);
-  margin-inline-end: auto;
+  /* Placement is `space-between` on the row; an auto margin here fought it. */
+  flex: none;
+  white-space: nowrap;
 
   font-family: var(--font-display);
   font-weight: var(--weight-display);
@@ -604,6 +636,8 @@ const nextChangeText = computed(() => {
   align-items: center;
   gap: var(--space-2xs);
   margin: 0;
+  flex: none;
+  white-space: nowrap;
   color: var(--fg-muted);
   font-size: var(--step--1);
 }
@@ -625,7 +659,9 @@ const nextChangeText = computed(() => {
 /* ── primary navigation ──────────────────────────────────────────────────── */
 
 .site-nav__nav {
-  flex: 1 1 auto;
+  /* A zero basis is the other half of the fix: it keeps the links from ever forcing the
+     row to break, so they wrap internally instead of pushing the controls down. */
+  flex: 1 1 0;
   min-inline-size: 0;
 }
 
@@ -633,6 +669,7 @@ const nextChangeText = computed(() => {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
   gap: var(--space-3xs);
   margin: 0;
   padding: 0;
@@ -775,7 +812,7 @@ const nextChangeText = computed(() => {
   display: flex;
   align-items: center;
   gap: var(--space-xs);
-  margin-inline-start: auto;
+  flex: none;
 }
 
 .lang {
@@ -892,7 +929,37 @@ const nextChangeText = computed(() => {
 
 /* ── mobile: the primary nav collapses into one panel ────────────────────── */
 
+/*
+ * WHERE THIS BOUNDARY COMES FROM, rather than being a round number.
+ *
+ * The full bar is roughly 1184px wide: eight links (about 630px including their 12px
+ * padding), the brand (about 170px), the style line (about 200px), the two controls
+ * (about 136px) and three 16px gaps. Below 1440px the viewport does not offer that once
+ * the gutters are taken, so one item has to give. The style prose is the least
+ * load-bearing thing up there — the appearance control already names the current style,
+ * and its trigger carries the letter — so the prose steps aside and the dot stays. That
+ * is the same trade this file already makes below 768px.
+ *
+ * The figures are estimated from the type scale, not measured in a browser (this project
+ * has no browser harness), so the boundary is deliberately generous rather than exact.
+ */
+@media (max-width: 1439.98px) {
+  .site-nav__style-name,
+  .site-nav__style-window {
+    display: none;
+  }
+}
+
 @media (max-width: 767.98px) {
+  /*
+   * Below the collapse point the links move into the panel, but brand, dot, language,
+   * appearance and the menu button still do not fit on one line at 320px — so the row is
+   * allowed to wrap again here. `nowrap` above is for the desktop bar only.
+   */
+  .site-nav__inner {
+    flex-wrap: wrap;
+  }
+
   .site-nav__brand {
     font-size: var(--step--1);
   }

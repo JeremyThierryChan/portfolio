@@ -617,6 +617,26 @@ try {
     if (html.includes('visually-hidden')) ok('the accessible copy is exposed once, outside the track');
     else bad('no accessible copy for the notice', 'the only text would be the aria-hidden marquee');
 
+    // Inside the header, not a sibling after it. The header is sticky, and that is what
+    // keeps the strip attached to the nav it describes instead of scrolling away — the
+    // whole reason it was moved in there.
+    const noticeAt = html.indexOf('site-notice__track');
+    const headerOpen = html.indexOf('<header');
+    const headerClose = html.indexOf('</header>');
+    if (headerOpen !== -1 && noticeAt > headerOpen && noticeAt < headerClose) {
+      ok('the notice renders inside the nav header');
+    } else {
+      bad('the notice is not inside the nav header', 'it would scroll away from the nav');
+    }
+
+    // And the nav row must not be constrained to the centred page measure, which is what
+    // squeezed the links and broke the row in the first place.
+    if (/class="site-nav__inner"/.test(html) && !/class="[^"]*container[^"]*site-nav__inner/.test(html)) {
+      ok('the nav row is not wrapped in .container');
+    } else {
+      bad('the nav row is still inside .container', 'the bar would stay confined to the middle of the screen');
+    }
+
     // Every route, not just the one: the notice lives in the shell.
     const withoutNotice = [];
     for (const [path2, routeName, label, modulePath] of ROUTES) {
