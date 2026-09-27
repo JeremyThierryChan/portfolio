@@ -55,6 +55,8 @@ const {
   nextStyleMeta,
   minutesUntilChange,
   nextChangeLabel,
+  styleIsTemporarilyPinned,
+  temporaryExpiresLabel,
   setStyle,
   setMode,
   pinCurrentStyle,
@@ -158,8 +160,19 @@ const scheduleRows = computed(() =>
 
 const currentStyleName = computed(() => t(styleNameKey(style.value)));
 
-/** Auto vs pinned is stated in words, not implied by a colour. */
-const styleStateLabel = computed(() => (styleIsAuto.value ? t('theme.followsClock') : t('theme.pinned')));
+/**
+ * Auto vs pinned is stated in words, not implied by a colour — and a pin that will
+ * lapse on its own says so, with the time, rather than claiming to be permanent. A
+ * "Pinned" chip that silently expires later would be the same class of half-truth the
+ * trigger's own label was fixed for.
+ */
+const styleStateLabel = computed(() => {
+  if (styleIsAuto.value) return t('theme.followsClock');
+  if (styleIsTemporarilyPinned.value && temporaryExpiresLabel.value) {
+    return t('theme.pinnedUntil', { time: temporaryExpiresLabel.value });
+  }
+  return t('theme.pinned');
+});
 
 /**
  * What the trigger announces, and what it shows.

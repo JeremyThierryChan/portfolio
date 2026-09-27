@@ -20,6 +20,24 @@ export const STORAGE_STYLE = 'theme.style';
 export const STORAGE_MODE = 'theme.mode';
 export const LEGACY_STORAGE_MODE = 'theme';
 
+/**
+ * A second, TIME-BOXED style override: `<styleId>@<epochMs>`.
+ *
+ * WHY THERE ARE TWO. "Keep this look" means two different things depending on which
+ * button was pressed:
+ *
+ *   the switch notice  — which appears *because* the page just changed under the
+ *                        visitor — means "not while I am reading". That intent belongs
+ *                        to the schedule window the visitor is in, and nothing longer.
+ *   the appearance panel means "I prefer this". That one is meant to last.
+ *
+ * Both wrote the same permanent key, so a momentary request became permanent and
+ * silently disabled the schedule — which is how a working schedule came to be reported
+ * as broken by the person who specified it. The permanent key still wins when both are
+ * set, and an entry whose moment has passed is cleared on read rather than honoured.
+ */
+export const STORAGE_STYLE_UNTIL = 'theme.styleUntil';
+
 /** Style override: 'auto' follows the clock; 'a'|'b'|'c' pins one. */
 export const STYLE_AUTO = 'auto';
 
@@ -64,11 +82,58 @@ function safeSet(key, value) {
   }
 }
 
-/** Valid style override, or 'auto'. */
-export function readStyleOverride() {
+/**
+ * The time-boxed override, if its window is still open.
+ *
+ * Returns `{ style, until }`, or null. A malformed or expired value is REMOVED rather
+ * than left in storage: leaving it would mean re-parsing a dead entry on every read and
+ * in the pre-paint bootstrap, and would make "why is this here" unanswerable later.
+ *
+ * @param {number} nowMs epoch milliseconds, injectable so the expiry is testable
+ */
+export function readTemporaryStyle(nowMs = Date.now()) {
+  const raw = safeGet(STORAGE_STYLE_UNTIL);
+  if (!raw) return null;
+
+  const at = raw.lastIndexOf('@');
+  if (at < 1) {
+    safeSet(STORAGE_STYLE_UNTIL, null);
+    return null;
+  }
+
+  const style = raw.slice(0, at);
+  const until = Number(raw.slice(at + 1));
+  if (!STYLES[style] || !Number.isFinite(until) || until <= nowMs) {
+    safeSet(STORAGE_STYLE_UNTIL, null);
+    return null;
+  }
+  return { style, until };
+}
+
+/** Hold `styleId` until `untilMs`. Anything invalid clears the key instead. */
+export function writeTemporaryStyle(styleId, untilMs) {
+  if (!STYLES[styleId] || !Number.isFinite(untilMs)) {
+    safeSet(STORAGE_STYLE_UNTIL, null);
+    return;
+  }
+  safeSet(STORAGE_STYLE_UNTIL, `${styleId}@${untilMs}`);
+}
+
+export function clearTemporaryStyle() {
+  safeSet(STORAGE_STYLE_UNTIL, null);
+}
+
+/**
+ * Valid style override, or 'auto'.
+ *
+ * A permanent pin outranks a time-boxed one, so pinning from the panel during a window
+ * the switch notice is holding does what the visitor plainly meant.
+ */
+export function readStyleOverride(nowMs = Date.now()) {
   const raw = safeGet(STORAGE_STYLE);
   if (raw === STYLE_AUTO) return STYLE_AUTO;
-  return raw && STYLES[raw] ? raw : STYLE_AUTO;
+  if (raw && STYLES[raw]) return raw;
+  return readTemporaryStyle(nowMs)?.style ?? STYLE_AUTO;
 }
 
 /** Valid mode override, or 'style'. Migrates the legacy single 'theme' key. */

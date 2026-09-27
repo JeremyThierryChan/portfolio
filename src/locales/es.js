@@ -461,7 +461,13 @@ export default {
        the panel. A pinned style silently overrules the schedule, and when that
        state is invisible the schedule gets reported as broken. */
     triggerAuto: 'Apariencia — sigue el reloj',
-    triggerPinned: 'Apariencia — fijada, no sigue el reloj',
+    triggerPinned: 'Apariencia — fijada, cambio automático en pausa',
+    /* The switch notice's button: a momentary request, so the pin it writes
+       lapses at the next boundary. The panel's button stays permanent. */
+    keepForNow: 'Mantener por ahora',
+    /* The panel chip for that kind of pin: it says when it ends rather than
+       implying it lasts. The placeholder is 'HH:MM'. */
+    pinnedUntil: 'Mantenido hasta {time}',
     styleAutoHint: 'Cambia solo a lo largo del día',
     modeFollowsStyle: 'Según el diseño',
     modeFollowsStyleHint: 'El nivel de luz previsto para cada estilo',

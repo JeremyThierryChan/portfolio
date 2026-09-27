@@ -459,7 +459,13 @@ export default {
        the panel. A pinned style silently overrules the schedule, and when that
        state is invisible the schedule gets reported as broken. */
     triggerAuto: '外观 — 跟随时间变化',
-    triggerPinned: '外观 — 已固定，不跟随时间',
+    triggerPinned: '外观 — 已固定，自动切换已暂停',
+    /* The switch notice's button: a momentary request, so the pin it writes
+       lapses at the next boundary. The panel's button stays permanent. */
+    keepForNow: '本次先不变',
+    /* The panel chip for that kind of pin: it says when it ends rather than
+       implying it lasts. The placeholder is 'HH:MM'. */
+    pinnedUntil: '保持至 {time}',
     styleAutoHint: '一天之中自动切换',
     modeFollowsStyle: '按设计',
     modeFollowsStyleHint: '每种风格预设的明暗程度',

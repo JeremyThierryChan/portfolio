@@ -21,7 +21,13 @@ import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 
 import { SCHEDULE, STYLES, STYLE_IDS, DEFAULT_STYLE, MINUTES_PER_DAY } from '../src/theme/schedule.js';
-import { STORAGE_STYLE, STORAGE_MODE, LEGACY_STORAGE_MODE, STYLE_AUTO } from '../src/theme/theme.js';
+import {
+  STORAGE_STYLE,
+  STORAGE_STYLE_UNTIL,
+  STORAGE_MODE,
+  LEGACY_STORAGE_MODE,
+  STYLE_AUTO,
+} from '../src/theme/theme.js';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (p) => readFileSync(resolve(ROOT, p), 'utf8');
@@ -125,6 +131,45 @@ test('a stored style overrides the clock', () => {
   assert.equal(attrs['data-mode'], 'light', "mode follows the pinned style's intent");
 });
 
+/*
+ * The two kinds of pin, from the bootstrap's side. The bootstrap runs before first paint
+ * and cannot import theme.js, so these rules exist twice; testing only the module would
+ * leave the copy that actually decides the first frame unverified.
+ */
+const FAKE_NOW = new Date(2026, 0, 15, 9, 0, 0).getTime();
+
+test('a time-boxed pin holds the style while its window is open', () => {
+  const { attrs } = runBoot({
+    minutes: 9 * 60,
+    stored: { [STORAGE_STYLE_UNTIL]: `c@${FAKE_NOW + 60 * 60 * 1000}` },
+  });
+  assert.equal(attrs['data-style'], 'c', 'a live time-boxed pin should hold');
+});
+
+test('a lapsed time-boxed pin is ignored, and removed before first paint', () => {
+  const { attrs, store } = runBoot({
+    minutes: 9 * 60,
+    stored: { [STORAGE_STYLE_UNTIL]: `c@${FAKE_NOW - 1000}` },
+  });
+  assert.equal(attrs['data-style'], 'a', 'at 09:00 the clock asks for A, not the lapsed pin');
+  assert.ok(!(STORAGE_STYLE_UNTIL in store), 'the dead entry must not survive the bootstrap');
+});
+
+test('a permanent pin outranks a time-boxed one in the bootstrap too', () => {
+  const { attrs } = runBoot({
+    minutes: 9 * 60,
+    stored: { [STORAGE_STYLE]: 'b', [STORAGE_STYLE_UNTIL]: `c@${FAKE_NOW + 60 * 60 * 1000}` },
+  });
+  assert.equal(attrs['data-style'], 'b', 'the permanent choice wins');
+});
+
+test('a malformed time-boxed pin is discarded by the bootstrap', () => {
+  for (const junk of ['c', '@1', 'zzz@9999999999999', 'c@nope']) {
+    const { attrs } = runBoot({ minutes: 9 * 60, stored: { [STORAGE_STYLE_UNTIL]: junk } });
+    assert.equal(attrs['data-style'], 'a', `junk "${junk}" must fall through to the clock`);
+  }
+});
+
 test('a stored mode overrides the style intent', () => {
   const { attrs } = runBoot({ minutes: 21 * 60, stored: { [STORAGE_MODE]: 'light' } });
   assert.equal(attrs['data-style'], 'b');
@@ -210,6 +255,7 @@ test('duplicated storage keys match theme.js', () => {
   assert.ok(BOOT.includes(`KEY_STYLE = '${STORAGE_STYLE}'`), 'style key');
   assert.ok(BOOT.includes(`KEY_MODE = '${STORAGE_MODE}'`), 'mode key');
   assert.ok(BOOT.includes(`KEY_LEGACY = '${LEGACY_STORAGE_MODE}'`), 'legacy key');
+  assert.ok(BOOT.includes(`KEY_STYLE_UNTIL = '${STORAGE_STYLE_UNTIL}'`), 'time-boxed style key');
 });
 
 test('the bootstrap default style matches DEFAULT_STYLE', () => {

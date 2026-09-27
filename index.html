@@ -33,6 +33,7 @@
       var WINDOWS = [[420, 720, 'a'], [720, 1080, 'c'], [1080, 420, 'b']];
       var PREFERRED_MODE = { a: 'light', b: 'dark', c: 'light' };
       var KEY_STYLE = 'theme.style';
+      var KEY_STYLE_UNTIL = 'theme.styleUntil'; // time-boxed: '<styleId>@<epochMs>'
       var KEY_MODE = 'theme.mode';
       var KEY_LEGACY = 'theme';
 
@@ -58,7 +59,26 @@
         }
 
         var savedStyle = load(KEY_STYLE);
-        if (savedStyle && STYLE_IDS.indexOf(savedStyle) > -1) style = savedStyle;
+        if (savedStyle && STYLE_IDS.indexOf(savedStyle) > -1) {
+          // A permanent pin, chosen from the appearance panel. It outranks everything.
+          style = savedStyle;
+        } else {
+          // A time-boxed pin — "not while I am reading" — honoured only while its
+          // window is still open. Compared against the injected Date rather than
+          // Date.now() so the expiry is testable, and kept in step with theme.js by
+          // tests/theme-boot.test.mjs. Anything expired is removed, not left behind.
+          var temp = load(KEY_STYLE_UNTIL);
+          if (temp) {
+            var at = temp.lastIndexOf('@');
+            var tempStyle = at > 0 ? temp.slice(0, at) : '';
+            var tempUntil = at > 0 ? Number(temp.slice(at + 1)) : NaN;
+            if (STYLE_IDS.indexOf(tempStyle) > -1 && isFinite(tempUntil) && tempUntil > now.getTime()) {
+              style = tempStyle;
+            } else {
+              store(KEY_STYLE_UNTIL, null);
+            }
+          }
+        }
 
         mode = load(KEY_MODE);
         if (mode !== 'light' && mode !== 'dark') {

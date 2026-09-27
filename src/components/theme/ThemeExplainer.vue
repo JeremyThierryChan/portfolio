@@ -54,6 +54,7 @@ const {
   openExplainer,
   dismissExplainer,
   pinCurrentStyle,
+  pinCurrentStyleForWindow,
 } = useTimeTheme();
 
 /* ── i18n keys, written out ─────────────────────────────────────────────── */
@@ -158,9 +159,17 @@ function dismissFull() {
   clearPendingSwitch();
 }
 
+/**
+ * The switch notice's button holds the look only until the clock's next boundary.
+ *
+ * This button appears *because* the page just changed under the reader, so what it
+ * answers is "not while I am reading" — a complaint about this moment, not a
+ * preference. The full first-visit explainer and the appearance panel keep the
+ * permanent pin, because those are where a visitor chooses a look on purpose.
+ */
 function keepBrief() {
   if (switchNoticeStyle.value) announced.add(switchNoticeStyle.value);
-  pinCurrentStyle();
+  pinCurrentStyleForWindow();
   acknowledgeSwitch();
   switchNoticeStyle.value = null;
 }
@@ -250,7 +259,7 @@ function dismissBrief() {
             class="theme-explainer__action theme-explainer__action--primary"
             @click="keepBrief"
           >
-            {{ t('theme.pin') }}
+            {{ t('theme.keepForNow') }}
           </button>
           <button type="button" class="theme-explainer__action" @click="dismissBrief">
             {{ t('theme.explainer.gotIt') }}

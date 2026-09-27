@@ -16,7 +16,14 @@
 
 import { ref, computed, readonly, watch, onScopeDispose } from 'vue';
 
-import { STYLES, STYLE_IDS, msUntilNextChange, formatMinutes, minutesOf } from './schedule.js';
+import {
+  STYLES,
+  STYLE_IDS,
+  msUntilNextChange,
+  nextChangeAfter,
+  formatMinutes,
+  minutesOf,
+} from './schedule.js';
 import {
   STYLE_AUTO,
   MODE_FOLLOWS_STYLE,
@@ -28,8 +35,11 @@ import {
   applyTheme,
   readStyleOverride,
   readModeOverride,
+  readTemporaryStyle,
   writeStyleOverride,
   writeModeOverride,
+  writeTemporaryStyle,
+  clearTemporaryStyle,
   hasSeenExplainer,
   markExplainerSeen,
 } from './theme.js';
@@ -39,7 +49,20 @@ const isBrowser = typeof window !== 'undefined';
 /* ── module-level singleton state ──────────────────────────────────────── */
 
 const now = ref(isBrowser ? new Date() : new Date(0));
-const styleOverride = ref(isBrowser ? readStyleOverride() : STYLE_AUTO);
+
+/*
+ * The time-boxed pin is persisted as `<styleId>@<epochMs>`, so its expiry has to be
+ * known in memory as well: `styleOverride` is a ref, and a ref does not notice that a
+ * moment has passed. Both values come from the same startup read, so they cannot end up
+ * disagreeing about which pin is actually in force.
+ */
+const initialTemporary = isBrowser ? readTemporaryStyle() : null;
+const initialOverride = isBrowser ? readStyleOverride() : STYLE_AUTO;
+const styleOverride = ref(initialOverride);
+/** Epoch ms at which a time-boxed pin lapses, or null when there is none. */
+const temporaryExpiresAt = ref(
+  initialTemporary && initialTemporary.style === initialOverride ? initialTemporary.until : null,
+);
 const modeOverride = ref(isBrowser ? readModeOverride() : MODE_FOLLOWS_STYLE);
 
 /** Set when the CLOCK changed the style (not when the visitor did). */
@@ -57,6 +80,19 @@ let mounted = false;
 const style = computed(() => resolveStyle(now.value, styleOverride.value));
 const mode = computed(() => resolveMode(style.value, modeOverride.value));
 const styleIsAuto = computed(() => styleOverride.value === STYLE_AUTO);
+/** Pinned, but only until the current window ends — the switch notice's kind of pin. */
+const styleIsTemporarilyPinned = computed(
+  () => temporaryExpiresAt.value !== null && !styleIsAuto.value,
+);
+
+/**
+ * 'HH:MM' at which that pin lapses, or null. Formatted here rather than in the
+ * component, matching `nextChangeLabel`: time formatting belongs to the theme layer.
+ */
+const temporaryExpiresLabel = computed(() =>
+  temporaryExpiresAt.value === null
+    ? null
+    : formatMinutes(minutesOf(new Date(temporaryExpiresAt.value))));
 const modeIsAuto = computed(() => modeOverride.value === MODE_FOLLOWS_STYLE);
 const styleMeta = computed(() => STYLES[style.value]);
 
@@ -84,6 +120,21 @@ const nextStyleMeta = computed(() => {
 
 function tick() {
   now.value = new Date();
+  expireTemporaryPin();
+}
+
+/**
+ * Hand the style back to the clock once the window a time-boxed pin belonged to is over.
+ *
+ * Storage is re-read rather than assumed to be 'auto': the visitor may have pressed the
+ * permanent pin in the meantime, and that choice has to survive the other one lapsing.
+ */
+function expireTemporaryPin() {
+  const until = temporaryExpiresAt.value;
+  if (until === null || Date.now() < until) return;
+  temporaryExpiresAt.value = null;
+  clearTemporaryStyle();
+  styleOverride.value = readStyleOverride();
 }
 
 /** Sleep until the exact boundary, then re-arm. */
@@ -178,6 +229,9 @@ export function useTimeTheme() {
 
     /* auto vs pinned */
     styleIsAuto,
+    styleIsTemporarilyPinned,
+    temporaryExpiresAt: readonly(temporaryExpiresAt),
+    temporaryExpiresLabel,
     modeIsAuto,
     styleOverride: readonly(styleOverride),
     modeOverride: readonly(modeOverride),
@@ -213,17 +267,38 @@ export function useTimeTheme() {
       modeOverride.value = value;
       writeModeOverride(value);
     },
-    /** Pin whatever is showing right now, then stop following the clock. */
+    /** Pin whatever is showing right now, permanently. This is the panel's button. */
     pinCurrentStyle() {
       styleOverride.value = style.value;
+      temporaryExpiresAt.value = null;
       writeStyleOverride(style.value);
+      // Drop any time-boxed pin, so a stale entry cannot outlive the choice just made.
+      clearTemporaryStyle();
+      autoSwitchedTo.value = null;
+    },
+    /**
+     * "Not while I am reading": hold the current look only until the clock's next
+     * boundary. This is the switch notice's button, and the reason the two pins are
+     * separate — the notice appears *because* the page moved under the visitor, which
+     * is a momentary complaint, not a preference.
+     */
+    pinCurrentStyleForWindow() {
+      // `new Date()`, not `now.value`: the tick that refreshes `now` runs every 30s, so a
+      // stale read taken next to a boundary could compute an expiry that has already
+      // passed and expire the pin on the spot.
+      const until = nextChangeAfter(new Date()).getTime();
+      writeTemporaryStyle(style.value, until);
+      temporaryExpiresAt.value = until;
+      styleOverride.value = style.value;
       autoSwitchedTo.value = null;
     },
     /** Clear every override and hand control back to the clock and the style. */
     resetToAuto() {
       styleOverride.value = STYLE_AUTO;
       modeOverride.value = MODE_FOLLOWS_STYLE;
+      temporaryExpiresAt.value = null;
       writeStyleOverride(STYLE_AUTO);
+      clearTemporaryStyle();
       writeModeOverride(MODE_FOLLOWS_STYLE);
     },
 
