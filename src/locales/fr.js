@@ -6,6 +6,16 @@
  * refonte des compétences et des projets).
  */
 export default {
+  /* ── site notice ──────────────────────────────────────────────────────
+     The slim strip at the top of every page. It is read by SiteNotice.vue,
+     which renders this sentence in ALL six locales at once, not just the
+     visitor's — so a missing translation would show up as an English line
+     inside another language's slot. Keep every pack filled. */
+  notice: {
+    label: 'État du site',
+    building: 'Ce site est encore en construction — il est mis à jour au fur et à mesure.',
+  },
+
   /* ── habillage du site ───────────────────────────────────────────────── */
   nav: {
     home: 'Accueil',

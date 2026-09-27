@@ -13,6 +13,16 @@
  * values; they are kept separate because the two pages may want different wording.
  */
 export default {
+  /* ── site notice ──────────────────────────────────────────────────────
+     The slim strip at the top of every page. It is read by SiteNotice.vue,
+     which renders this sentence in ALL six locales at once, not just the
+     visitor's — so a missing translation would show up as an English line
+     inside another language's slot. Keep every pack filled. */
+  notice: {
+    label: 'Site status',
+    building: 'This site is still being built — work is added as it is finished.',
+  },
+
   /* ── site chrome ─────────────────────────────────────────────────────── */
   nav: {
     home: 'Home',

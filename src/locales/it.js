@@ -7,6 +7,16 @@
  * con l'helper enumKey() di @/content, non concatenando stringhe.
  */
 export default {
+  /* ── site notice ──────────────────────────────────────────────────────
+     The slim strip at the top of every page. It is read by SiteNotice.vue,
+     which renders this sentence in ALL six locales at once, not just the
+     visitor's — so a missing translation would show up as an English line
+     inside another language's slot. Keep every pack filled. */
+  notice: {
+    label: 'Stato del sito',
+    building: 'Questo sito è ancora in costruzione: viene aggiornato man mano.',
+  },
+
   /* ── struttura del sito ──────────────────────────────────────────────── */
   nav: {
     home: 'Home',

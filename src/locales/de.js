@@ -6,6 +6,16 @@
  * entfernt die veralteten Keys skills.levelLabel und skills.levelOf.
  */
 export default {
+  /* ── site notice ──────────────────────────────────────────────────────
+     The slim strip at the top of every page. It is read by SiteNotice.vue,
+     which renders this sentence in ALL six locales at once, not just the
+     visitor's — so a missing translation would show up as an English line
+     inside another language's slot. Keep every pack filled. */
+  notice: {
+    label: 'Status der Website',
+    building: 'Diese Website wird noch gebaut — sie wird laufend ergänzt.',
+  },
+
   /* ── site chrome ─────────────────────────────────────────────────────── */
   nav: {
     home: 'Startseite',

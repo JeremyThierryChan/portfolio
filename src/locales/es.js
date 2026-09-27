@@ -7,6 +7,16 @@
  * p. ej. projects.status.in-progress, skills.category.language.
  */
 export default {
+  /* ── site notice ──────────────────────────────────────────────────────
+     The slim strip at the top of every page. It is read by SiteNotice.vue,
+     which renders this sentence in ALL six locales at once, not just the
+     visitor's — so a missing translation would show up as an English line
+     inside another language's slot. Keep every pack filled. */
+  notice: {
+    label: 'Estado del sitio',
+    building: 'Este sitio aún se está construyendo: se actualiza a medida que avanza.',
+  },
+
   /* ── estructura del sitio ────────────────────────────────────────────── */
   nav: {
     home: 'Inicio',

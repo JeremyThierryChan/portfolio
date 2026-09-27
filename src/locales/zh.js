@@ -13,6 +13,16 @@
  * Vite、Astro、Node.js、WeChat、ATS、JSON Resume 等）保持原文。
  */
 export default {
+  /* ── site notice ──────────────────────────────────────────────────────
+     The slim strip at the top of every page. It is read by SiteNotice.vue,
+     which renders this sentence in ALL six locales at once, not just the
+     visitor's — so a missing translation would show up as an English line
+     inside another language's slot. Keep every pack filled. */
+  notice: {
+    label: '站点状态',
+    building: '本站仍在持续制作中，完成一部分就更新一部分。',
+  },
+
   /* ── 站点框架 ────────────────────────────────────────────────────────── */
   nav: {
     home: '首页',

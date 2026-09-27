@@ -567,6 +567,70 @@ try {
     else bad(`${path} rendered in zh is barely Chinese`, `${han} Han characters`);
   }
 
+  /* ── 9. the site notice actually speaks six languages ────────────────── */
+
+  /*
+   * The whole claim of this component is that it carries the notice in every shipped
+   * locale at once, not only the visitor's. That is not something to assert in a
+   * comment — a pack that silently falls back to English would still render a
+   * perfectly plausible strip. So it is rendered and counted here.
+   */
+  console.log('\n\x1b[1mThe site notice speaks all six languages\x1b[0m');
+
+  {
+    const packs = { en, zh };
+    for (const code of ['fr', 'de', 'es', 'it']) {
+      packs[code] = (await vite.ssrLoadModule(`/src/locales/${code}.js`)).default;
+    }
+
+    const { app, router } = mount(homePage, 'home', 'en', packs);
+    await router.push('/');
+    await router.isReady();
+    const html = await renderToString(app);
+    const text = textOf(html);
+
+    const absent = Object.entries(packs)
+      .filter(([, pack]) => !text.includes(pack.notice.building))
+      .map(([code]) => code);
+    if (absent.length) bad('the notice omits a language', absent.join(', '));
+    else ok('the notice renders every shipped language', Object.keys(packs).join(' · '));
+
+    // Counted exactly, because the marquee is duplicated for a seamless loop: every
+    // language appears twice, and the active one appears a third time because its copy
+    // is also the visually-hidden accessible sentence. (The first version of this check
+    // expected two for everything and failed on the active locale — the assertion was
+    // wrong, not the component.)
+    const expected = Object.fromEntries(Object.keys(packs).map((code) => [code, code === 'en' ? 3 : 2]));
+    const wrongCount = Object.entries(expected)
+      .map(([code, want]) => [code, text.split(packs[code].notice.building).length - 1, want])
+      .filter(([, got, want]) => got !== want)
+      .map(([code, got, want]) => `${code}: ${got} (expected ${want})`);
+    if (wrongCount.length) bad('the notice renders the wrong number of copies per language', wrongCount.join(', '));
+    else ok('copy count is exactly right per language', '2 for the loop pair, 3 for the active locale');
+
+    // Assistive tech must hear one sentence, not six repetitions of it.
+    if (/class="site-notice__track"[^>]*aria-hidden="true"/.test(html)) {
+      ok('the scrolling track is aria-hidden');
+    } else {
+      bad('the scrolling track is not aria-hidden', 'a screen reader would read the notice six times');
+    }
+    if (html.includes('visually-hidden')) ok('the accessible copy is exposed once, outside the track');
+    else bad('no accessible copy for the notice', 'the only text would be the aria-hidden marquee');
+
+    // Every route, not just the one: the notice lives in the shell.
+    const withoutNotice = [];
+    for (const [path2, routeName, label, modulePath] of ROUTES) {
+      const page = (await vite.ssrLoadModule(modulePath)).default;
+      const { app: a2, router: r2 } = mount(page, routeName, 'en', packs);
+      await r2.push(path2);
+      await r2.isReady();
+      const h = await renderToString(a2);
+      if (!h.includes('site-notice__track')) withoutNotice.push(`${path2} (${label})`);
+    }
+    if (withoutNotice.length) bad('the notice is missing on some routes', withoutNotice.join(', '));
+    else ok('the notice renders on every route', `${ROUTES.length} routes`);
+  }
+
 } finally {
   await vite.close();
   delete globalThis.document;
