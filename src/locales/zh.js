@@ -455,6 +455,11 @@ export default {
     styleAxisLabel: '视觉风格',
     modeAxisLabel: '浅色还是深色',
     styleAuto: '跟随时间',
+    /* Said on the trigger itself, so a pinned style is visible without opening
+       the panel. A pinned style silently overrules the schedule, and when that
+       state is invisible the schedule gets reported as broken. */
+    triggerAuto: '外观 — 跟随时间变化',
+    triggerPinned: '外观 — 已固定，不跟随时间',
     styleAutoHint: '一天之中自动切换',
     modeFollowsStyle: '按设计',
     modeFollowsStyleHint: '每种风格预设的明暗程度',

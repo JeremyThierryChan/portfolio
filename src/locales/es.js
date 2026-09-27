@@ -457,6 +457,11 @@ export default {
     styleAxisLabel: 'Estilo visual',
     modeAxisLabel: 'Claro u oscuro',
     styleAuto: 'Seguir el reloj',
+    /* Said on the trigger itself, so a pinned style is visible without opening
+       the panel. A pinned style silently overrules the schedule, and when that
+       state is invisible the schedule gets reported as broken. */
+    triggerAuto: 'Apariencia — sigue el reloj',
+    triggerPinned: 'Apariencia — fijada, no sigue el reloj',
     styleAutoHint: 'Cambia solo a lo largo del día',
     modeFollowsStyle: 'Según el diseño',
     modeFollowsStyleHint: 'El nivel de luz previsto para cada estilo',

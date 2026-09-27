@@ -36,7 +36,7 @@ const p = (...seg) => resolvePath(ROOT_DIR, ...seg);
 // Framework packages are imported directly rather than through `ssrLoadModule`:
 // Vite's SSR graph cannot evaluate Vue's CommonJS entry ("module is not defined"),
 // while Node's own ESM resolution picks the right build via the "import" condition.
-import { createSSRApp, h } from 'vue';
+import { createSSRApp, h, effectScope } from 'vue';
 import { renderToString } from '@vue/server-renderer';
 import { createRouter, createMemoryHistory } from 'vue-router';
 import { createI18n } from 'vue-i18n';
@@ -629,6 +629,80 @@ try {
     }
     if (withoutNotice.length) bad('the notice is missing on some routes', withoutNotice.join(', '));
     else ok('the notice renders on every route', `${ROUTES.length} routes`);
+  }
+
+  /* ── 10. a pinned style is visible from the nav ───────────────────────── */
+
+  /*
+   * A pinned style permanently overrules the schedule, and while that state was written
+   * only onto a chip inside the collapsed popover, a pinned visitor had no way to learn
+   * that their schedule had stopped running — so the schedule itself got reported as
+   * broken. Both states are asserted here: the shape of the fix, and its absence when
+   * nothing is pinned, because a marker that is always on is as useless as one that is
+   * never on.
+   */
+  console.log('\n\x1b[1mA pinned style is visible without opening the panel\x1b[0m');
+
+  {
+    const packs = { en, zh };
+    for (const code of ['fr', 'de', 'es', 'it']) {
+      packs[code] = (await vite.ssrLoadModule(`/src/locales/${code}.js`)).default;
+    }
+
+    /*
+     * The pin is driven through the real composable rather than by seeding storage:
+     * `useTimeTheme` keeps `styleOverride` as MODULE-LEVEL state, read once when the
+     * module is first imported, so writing localStorage mid-process changes nothing.
+     * (The load path itself is covered by `tests/theme-boot.test.mjs`, "a stored style
+     * overrides the clock".) Driving `setStyle` — the same call the UI makes — is what
+     * this section is actually about.
+     */
+    const themeApi = await vite.ssrLoadModule('/src/theme/useTimeTheme.js');
+    const scope = effectScope();
+    const theme = scope.run(() => themeApi.useTimeTheme());
+
+    const renderHome = async () => {
+      const page = (await vite.ssrLoadModule('/src/pages/HomePage.vue')).default;
+      const { app, router } = mount(page, 'home', 'en', packs);
+      await router.push('/');
+      await router.isReady();
+      return renderToString(app);
+    };
+
+    theme.setStyle('b');
+    const pinnedHtml = await renderHome();
+
+    theme.setStyle(themeApi.STYLE_AUTO);
+    const autoHtml = await renderHome();
+
+    scope.stop();
+
+    if (autoHtml.includes(packs.en.theme.triggerAuto)) {
+      ok('unpinned: the trigger says the clock is in charge');
+    } else {
+      bad('unpinned: the trigger does not say the clock is in charge');
+    }
+
+    if (pinnedHtml.includes(packs.en.theme.triggerPinned)) {
+      ok('pinned: the trigger says so');
+    } else {
+      bad('pinned: the trigger does not say so', 'this is the state that silently disables the schedule');
+    }
+
+    if (pinnedHtml.includes('theme-control__pinned')) {
+      ok('pinned: a visible marker renders on the trigger');
+    } else {
+      bad('pinned: the marker does not render');
+    }
+
+    if (autoHtml.includes('theme-control__pinned')) {
+      bad('unpinned: the marker renders anyway', 'a marker that is always on carries no information');
+    } else {
+      ok('unpinned: no marker');
+    }
+
+    // Hand the theme back to the clock for anything that runs after this.
+    theme.setStyle(themeApi.STYLE_AUTO);
   }
 
 } finally {

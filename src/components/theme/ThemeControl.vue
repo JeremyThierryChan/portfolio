@@ -162,6 +162,19 @@ const currentStyleName = computed(() => t(styleNameKey(style.value)));
 const styleStateLabel = computed(() => (styleIsAuto.value ? t('theme.followsClock') : t('theme.pinned')));
 
 /**
+ * What the trigger announces, and what it shows.
+ *
+ * The trigger is the only part of this control a visitor meets without opening it, so
+ * it is the only place that can say whether the clock is in charge. It used to say
+ * neither: it showed the style letter and a sun/moon, and the auto/pinned distinction
+ * lived on a chip INSIDE the collapsed panel. A pinned style permanently overrules the
+ * schedule, so an invisible pin is indistinguishable from an automatic style — which is
+ * how a working schedule gets reported as broken.
+ */
+const triggerLabel = computed(() =>
+  t(styleIsAuto.value ? 'theme.triggerAuto' : 'theme.triggerPinned'));
+
+/**
  * "Switches to Terminal at 18:00" — only while the clock is actually in charge,
  * because while a style is pinned nothing is going to switch and the sentence
  * would be a lie. `minutesUntilChange` guards the label: a stale clock (a laptop
@@ -303,10 +316,39 @@ function showExplainer() {
       :aria-expanded="open ? 'true' : 'false'"
       aria-haspopup="dialog"
       :aria-controls="open ? panelId : null"
-      :aria-label="t('nav.themeLabel')"
+      :aria-label="triggerLabel"
       @click="togglePanel"
     >
       <span class="theme-control__short" aria-hidden="true">{{ styleMeta.short }}</span>
+
+      <!--
+        Shown only while a style is pinned. Without it, the one state that disables the
+        schedule is the one state with no visible marker.
+      -->
+      <svg
+        v-if="!styleIsAuto"
+        class="theme-control__pinned"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <path
+          d="M8.4 10.1V7.7a3.6 3.6 0 0 1 7.2 0v2.4"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+        />
+        <rect
+          x="5.6"
+          y="10.1"
+          width="12.8"
+          height="9.2"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+        />
+      </svg>
       <svg
         v-if="mode === 'dark'"
         class="theme-control__glyph"
@@ -586,6 +628,16 @@ function showExplainer() {
   flex: none;
   font-size: var(--step-0);
   color: var(--fg-muted);
+}
+
+/* A pinned style is an override the visitor should be able to notice from the nav
+   alone, so it gets the accent and its own glyph rather than a quieter marker. */
+.theme-control__pinned {
+  width: 1em;
+  height: 1em;
+  flex: none;
+  font-size: var(--step--1);
+  color: var(--accent);
 }
 
 .theme-control__trigger:hover .theme-control__glyph,
