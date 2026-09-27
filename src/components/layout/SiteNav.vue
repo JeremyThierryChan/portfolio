@@ -345,17 +345,6 @@ const nextChangeText = computed(() => {
       still lines up with the content underneath.
     -->
     <div class="site-nav__inner">
-      <router-link class="site-nav__brand" to="/">
-        {{ SITE_NAME }}
-      </router-link>
-
-      <p class="site-nav__style">
-        <span class="site-nav__style-dot" aria-hidden="true"></span>
-        <span class="site-nav__style-name">{{ t('theme.currentStyle', { name: styleMeta.name }) }}</span>
-        <span v-if="currentWindow" class="site-nav__style-window">{{ currentWindow }}</span>
-        <span class="visually-hidden">{{ nextChangeText }}</span>
-      </p>
-
       <!-- Primary navigation. Below 768px this collapses into a panel that the
            button in `__tools` toggles (aria-controls points at its id). -->
       <nav
@@ -455,7 +444,22 @@ const nextChangeText = computed(() => {
         </ul>
       </nav>
 
+      <router-link class="site-nav__brand" to="/">
+        {{ SITE_NAME }}
+      </router-link>
+
       <div class="site-nav__tools">
+        <!--
+          The style marker lives with the controls, not beside the brand: on the right it
+          reads as part of the "how this page is being presented" cluster.
+        -->
+        <p class="site-nav__style">
+          <span class="site-nav__style-dot" aria-hidden="true"></span>
+          <span class="site-nav__style-name">{{ t('theme.currentStyle', { name: styleMeta.name }) }}</span>
+          <span v-if="currentWindow" class="site-nav__style-window">{{ currentWindow }}</span>
+          <span class="visually-hidden">{{ nextChangeText }}</span>
+        </p>
+
         <!-- Language switcher: the list is derived from LOCALE_META. -->
         <div
           ref="langWrapEl"
@@ -585,20 +589,31 @@ const nextChangeText = computed(() => {
   display: flex;
 
   /*
-   * ONE ROW, ALWAYS — and this is the fix for "the title and the two controls are not on
-   * the same line".
+   * THREE COLUMNS — links, a centred brand, and the controls — on ONE row, always.
    *
-   * Line breaking uses each item's flex BASE size, not its shrunk size. The nav's basis
-   * was `auto`, i.e. its full content width — about 790px for eleven links. Brand, style
-   * line, links and controls came to roughly 1310px against the ~968px `--measure` left
-   * inside `.container`, so the row broke after the style line and the language and
-   * appearance controls landed on the second row while the brand sat alone on the first.
-   * `nowrap` here plus a zero basis on the nav removes the possibility instead of tuning
-   * it: the links are the thing that yields, by wrapping inside their own column.
+   * Two things make this work, and both are deliberate:
+   *
+   * 1. `nowrap`. Line breaking uses each item's flex BASE size, not its shrunk size, and
+   *    the nav's basis used to be `auto` — its full content width. The whole bar needs
+   *    roughly 1180px, against the ~1048px that `--measure` left inside `.container`, so
+   *    the row broke after the style line: brand alone on the first line, links and
+   *    controls on the second. That is the bug this row was rebuilt to remove.
+   *
+   * 2. EQUAL SIDE COLUMNS. Both flanking columns are `flex: 1 1 0` with
+   *    `min-inline-size: 0`, so they resolve to exactly the same width and the brand
+   *    between them lands on the true centre line — not merely in the middle of the
+   *    leftover space, which is what `space-between` would have given. The maths holds
+   *    with the gaps included, because the two gaps are equal.
+   *
+   * The cost is that the wider column sets the floor for both: the links need about
+   * 550px, so one clean row needs roughly 2x550 + the brand, about 1270px of content —
+   * a 1440px window with its gutters. Below that the LINKS wrap inside their own column
+   * and the bar grows a line; the brand stays centred throughout, and neither flanks
+   * column can ever overlap it. The alternatives — absolute centring or a `calc()`
+   * reserve for the brand's half-width — both risk the two colliding, which this cannot.
    */
   flex-wrap: nowrap;
   align-items: center;
-  justify-content: space-between;
   gap: var(--space-sm) var(--space-md);
 
   inline-size: 100%;
@@ -659,8 +674,8 @@ const nextChangeText = computed(() => {
 /* ── primary navigation ──────────────────────────────────────────────────── */
 
 .site-nav__nav {
-  /* A zero basis is the other half of the fix: it keeps the links from ever forcing the
-     row to break, so they wrap internally instead of pushing the controls down. */
+  /* Left column. `1 1 0` with a zero minimum is what makes it exactly as wide as the
+     right column, which is what centres the brand between them. */
   flex: 1 1 0;
   min-inline-size: 0;
 }
@@ -669,7 +684,9 @@ const nextChangeText = computed(() => {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
+  /* Start-aligned: the links now occupy the left column, so centring them inside it
+     would leave a ragged gap against the gutter. */
+  justify-content: flex-start;
   gap: var(--space-3xs);
   margin: 0;
   padding: 0;
@@ -811,8 +828,12 @@ const nextChangeText = computed(() => {
 .site-nav__tools {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: var(--space-xs);
-  flex: none;
+  /* Right column: same zero-basis rule as the left, so the two are the same width and the
+     brand between them is centred by construction rather than by eye. */
+  flex: 1 1 0;
+  min-inline-size: 0;
 }
 
 .lang {
@@ -930,25 +951,16 @@ const nextChangeText = computed(() => {
 /* ── mobile: the primary nav collapses into one panel ────────────────────── */
 
 /*
- * WHERE THIS BOUNDARY COMES FROM, rather than being a round number.
+ * NOTE ON A RULE THAT WAS HERE AND IS NOT ANY MORE.
  *
- * The full bar is roughly 1184px wide: eight links (about 630px including their 12px
- * padding), the brand (about 170px), the style line (about 200px), the two controls
- * (about 136px) and three 16px gaps. Below 1440px the viewport does not offer that once
- * the gutters are taken, so one item has to give. The style prose is the least
- * load-bearing thing up there — the appearance control already names the current style,
- * and its trigger carries the letter — so the prose steps aside and the dot stays. That
- * is the same trade this file already makes below 768px.
- *
- * The figures are estimated from the type scale, not measured in a browser (this project
- * has no browser harness), so the boundary is deliberately generous rather than exact.
+ * This used to hide the style prose below 1440px, on the reasoning that it was the least
+ * load-bearing item in the bar. That reasoning only held while one flexible column
+ * absorbed the shortfall. With two EQUAL side columns it no longer does anything useful:
+ * the links set the floor for both columns, so shrinking the right one buys the left one
+ * nothing. It has been removed rather than left in as a rule that looks like it helps —
+ * and removing it is also what keeps the style marker visible on the right, which is
+ * where it was asked to be.
  */
-@media (max-width: 1439.98px) {
-  .site-nav__style-name,
-  .site-nav__style-window {
-    display: none;
-  }
-}
 
 @media (max-width: 767.98px) {
   /*

@@ -637,6 +637,27 @@ try {
       bad('the nav row is still inside .container', 'the bar would stay confined to the middle of the screen');
     }
 
+    /*
+     * The brand must sit in DOM order BETWEEN the two flanking columns. That is not
+     * cosmetic: the centring is produced by giving the left and right columns the same
+     * width, so putting the brand anywhere else — or moving the style marker back beside
+     * it — silently un-centres the bar with nothing to report it.
+     */
+    const navAt = html.indexOf('site-nav__nav');
+    const brandAt = html.indexOf('site-nav__brand');
+    const toolsAt = html.indexOf('site-nav__tools');
+    if (navAt !== -1 && navAt < brandAt && brandAt < toolsAt) {
+      ok('the brand sits between the two equal-width columns');
+    } else {
+      bad('the brand is not between the columns', `nav@${navAt} brand@${brandAt} tools@${toolsAt}`);
+    }
+    const styleAt = html.indexOf('site-nav__style-name');
+    if (styleAt !== -1 && styleAt > toolsAt) {
+      ok('the style marker sits in the right-hand column');
+    } else {
+      bad('the style marker is not in the right-hand column', `style@${styleAt} tools@${toolsAt}`);
+    }
+
     // Every route, not just the one: the notice lives in the shell.
     const withoutNotice = [];
     for (const [path2, routeName, label, modulePath] of ROUTES) {
