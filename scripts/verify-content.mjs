@@ -535,6 +535,39 @@ for (const [, entry, where] of bilingual) {
   }
 })(NEW_PROFILE, 'profile');
 
+/* ── no English copy that is literally the Chinese copy ───────────────────
+   The bilingual check above compares KEY SETS, so it cannot see an inversion: an entry
+   whose English block holds the Chinese text and whose Chinese block holds the English
+   one passes every key check while showing Chinese to an English reader. One entry was
+   shipped that way — the migration left gallery[7].title inverted — and the loss check
+   could not catch it either, because that asks whether a string exists SOMEWHERE in the
+   layer rather than which locale it sits in.
+
+   Identical values containing Han characters are the signature. English text and Chinese
+   text are almost never byte-identical unless one of them is wrong; where a name really
+   is language-neutral it belongs at the top level as `name`, the documented exception,
+   rather than being duplicated into both locales. */
+{
+  const HAN = /[\u4e00-\u9fff]/;
+  const inverted = [];
+  for (const [collection, entry, where] of bilingual) {
+    const en = entry?.i18n?.en;
+    const zh = entry?.i18n?.zh;
+    if (!en || !zh) continue;
+    for (const key of Object.keys(en)) {
+      if (typeof en[key] !== 'string' || typeof zh[key] !== 'string') continue;
+      if (en[key] === zh[key] && HAN.test(en[key])) {
+        inverted.push(`${where}.${key} (${collection})`);
+      }
+    }
+  }
+  assert(
+    inverted.length === 0,
+    'no English value is a copy of its Chinese value — that renders Chinese to an English reader',
+    inverted.length ? inverted.join(', ') : 'none',
+  );
+}
+
 const bilingualRows = bilingual.filter(([, e]) => e.i18n?.zh).length;
 info('bilingual coverage', `${bilingualRows}/${bilingual.length} entries carry both en and zh`);
 assert(

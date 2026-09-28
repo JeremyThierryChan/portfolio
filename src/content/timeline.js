@@ -53,8 +53,8 @@ export const timeline = [
         description: 'Serving as Senior Assistant to the Chairman and Foreign Affairs Specialist at Zhejiang Yunchuang Printing Technology Co., Ltd. in Wenzhou, handling international communications and day-to-day executive support.',
       },
       zh: {
-        title: '董事长高级助理 — Zhejiang Yunchuang Printing Technology Co., Ltd.',
-        description: '在温州的 Zhejiang Yunchuang Printing Technology Co., Ltd. 担任董事长高级助理兼外事专员，负责国际沟通与日常高管支持工作。',
+        title: '董事长高级助理 — 浙江云创印刷科技有限公司',
+        description: '在温州的浙江云创印刷科技有限公司担任董事长高级助理兼外事专员，负责国际沟通与日常高管支持工作。',
       },
     },
   },
@@ -120,8 +120,8 @@ export const timeline = [
         description: 'Served as English translator and event planner for the Hisense Plaza Black Gold VIP Member Event "Three Seas · Amber Promise", Qingdao.',
       },
       zh: {
-        title: 'Hisense Plaza 黑金会员活动 — 翻译与活动策划',
-        description: '在青岛担任 Hisense Plaza 黑金 VIP 会员活动 “Three Seas · Amber Promise” 的英语翻译与活动策划。',
+        title: '海信广场黑金会员活动 — 翻译与活动策划',
+        description: '在青岛担任海信广场黑金 VIP 会员活动 “Three Seas · Amber Promise” 的英语翻译与活动策划。',
       },
     },
   },
@@ -191,8 +191,8 @@ export const timeline = [
         description: "Graduated in 2024 from Shandong University of Science and Technology with a Bachelor's degree in Surveying Engineering and Technology (Marine Direction — Hydrographic Surveying), marking the completion of the formal academic path.",
       },
       zh: {
-        title: '毕业于 Shandong University of Science and Technology',
-        description: '2024 年毕业于 Shandong University of Science and Technology，获测绘工程与技术专业学士学位（海洋方向 — 海道测量），标志正规学业阶段的完成。',
+        title: '毕业于山东科技大学',
+        description: '2024 年毕业于山东科技大学，获测绘工程与技术专业学士学位（海洋方向 — 海道测量），标志正规学业阶段的完成。',
       },
     },
   },
@@ -361,7 +361,7 @@ export const timeline = [
         description: 'Provided interpreting so international students at SDUST could live, seek medical care and study in China, and organised cross-cultural events and student societies. From 2020 to 2024.',
       },
       zh: {
-        title: '国际学生翻译 — Shandong University of Science and Technology',
+        title: '国际学生翻译 — 山东科技大学',
         description: '为 SDUST 的国际学生提供口译服务，帮助他们在中国生活、就医和学习，并组织跨文化活动与学生社团。时间从 2020 年到 2024 年。',
       },
     },
@@ -396,7 +396,7 @@ export const timeline = [
         description: 'Served as interpreter for a Bangladeshi witness statement recording at the Qingdao Economic and Technological Development Zone Public Security Bureau.',
       },
       zh: {
-        title: '警务翻译 — Qingdao Economic Development Zone',
+        title: '警务翻译 — 青岛经济技术开发区',
         description: '在 Qingdao Economic and Technological Development Zone Public Security Bureau 为一名孟加拉国证人的证词笔录录制担任翻译。',
       },
     },
@@ -414,7 +414,7 @@ export const timeline = [
       },
       zh: {
         title: '创立 “译彩纷呈” 创新工作室与 Transplendid 社团',
-        description: '在 Shandong University of Science and Technology 创立了 “译彩纷呈” 创新创业工作室、Transplendid 多语言兴趣社团，以及 “United Nations” 国际交流俱乐部。',
+        description: '在山东科技大学创立了 “译彩纷呈” 创新创业工作室、Transplendid 多语言兴趣社团，以及 “United Nations” 国际交流俱乐部。',
       },
     },
   },
@@ -464,8 +464,8 @@ export const timeline = [
         description: 'Worked as translator and foreign affairs specialist at Qingdao Weigang Container Transportation Co., Ltd.',
       },
       zh: {
-        title: '集装箱航运翻译 — Qingdao Weigang',
-        description: '在 Qingdao Weigang Container Transportation Co., Ltd. 担任翻译与外事专员。',
+        title: '集装箱航运翻译 — 青岛维港集装箱运输有限公司',
+        description: '在青岛维港集装箱运输有限公司担任翻译与外事专员。',
       },
     },
   },
@@ -482,7 +482,7 @@ export const timeline = [
       },
       zh: {
         title: '全科家教与国际学生活动协调人',
-        description: '在 Hangzhi Education 教授各科课程，并担任 Shandong University of Science and Technology 国际学生活动的总协调人 —— 在疫情封控期间组织校内活动，这些活动后来随限制放宽而被取消。',
+        description: '在 Hangzhi Education 教授各科课程，并担任山东科技大学国际学生活动的总协调人 —— 在疫情封控期间组织校内活动，这些活动后来随限制放宽而被取消。',
       },
     },
   },
@@ -515,8 +515,8 @@ export const timeline = [
         description: 'Served as Head Sommelier at the Sunac Aduo Village resort in Qingdao. Alongside the role, built a drinks reference: around 140 notes on wine, spirits, beer and sake, including a classical-cocktail collection of 108 recipes. It is a working reference rather than a deliverable.',
       },
       zh: {
-        title: '首席侍酒师 — Sunac Aduo Village Resort',
-        description: '在青岛的 Sunac Aduo Village 度假村担任首席侍酒师。任职期间自建了一套酒类资料库：约 140 篇笔记，涵盖葡萄酒、烈酒、啤酒与清酒，其中一部经典鸡尾酒集收录 108 个配方。属于自用参考资料，不是交付物。',
+        title: '首席侍酒师 — 融创·阿朵小镇',
+        description: '在青岛的融创·阿朵小镇担任首席侍酒师。任职期间自建了一套酒类资料库：约 140 篇笔记，涵盖葡萄酒、烈酒、啤酒与清酒，其中一部经典鸡尾酒集收录 108 个配方。属于自用参考资料，不是交付物。',
       },
     },
   },
@@ -617,7 +617,7 @@ export const timeline = [
         description: 'Inspected and signed off construction sites, verified landscaping stock, and reviewed construction drawings. Left to study in Qingdao.',
       },
       zh: {
-        title: '工程师 — Wenzhou Puluotuo Electromechanical Co., Ltd.',
+        title: '工程师 — 温州普露托机电有限公司',
         description: '对施工现场进行查验与签认，核对景观苗木库存，并审阅施工图纸。后为到青岛求学而离开。',
       },
     },
