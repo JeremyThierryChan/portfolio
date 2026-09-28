@@ -979,4 +979,32 @@ export const projects = [
       },
     },
   },
+  {
+    id: 25,
+    tier: 'listed',
+    slug: 'tarot-78-album-design-system',
+    /* Untagged on purpose: this is not audience-specific work, and an untagged entry is
+       relevant to every visitor rather than hidden from some of them. Same treatment the
+       trading and server projects already get. */
+    status: 'in-progress',
+    link: null,
+    tech: ['Python', 'Obsidian', 'Music theory', 'Documentation generation'],
+    cofounder: null,
+    stages: [],
+    /* TODO(verify): no progress figure is set. What is verifiable is that no audio file,
+       score or artwork exists anywhere in the project; how far the composition has
+       actually been taken in the author's head is not something the disk can show. */
+    i18n: {
+      en: {
+        title: 'TAROT 78 — Album Design System',
+        description:
+          'A 78-track progressive metal project in which every track is one tarot card: the 22 major arcana, then the four suits, across five albums. What exists is the design rather than the music — 260 markdown documents in two mirrored sets, English and Chinese, covering track architecture, motifs, harmony, production notes and the tarot reading behind each piece. They are generated rather than hand-maintained: about 3,980 lines of Python across eleven tools build the 78 track notes and the parameter tables from one authored data table, derive the Chinese tables from the English data so the numbers cannot drift, and run a validator that resolves every wiki-link and cross-checks the two languages. The musical decisions are specific enough to be argued with — a tempo centre and a tempo band per album, the meters and pitch-functions each album is forbidden, a 1-to-5 complexity scale, and 77 adjacent-track transitions in which every pair is an exact just ratio. No audio is recorded, no score written, no artwork drawn.',
+      },
+      zh: {
+        title: 'TAROT 78——专辑设计体系',
+        description:
+          '一个 78 首的前卫金属项目：每一首对应一张塔罗牌——22 张大阿卡纳，加上四个牌组，分五张专辑。目前存在的是设计而不是音乐：260 篇 markdown 文档，英文与中文两套互为镜像，覆盖曲目结构、动机、和声、制作笔记与每首牌面的解读。这些文档是「生成」的而不是手写的——约 3,980 行 Python、11 个工具，从一份撰写好的数据表生成 78 首曲目笔记与参数总表，中文表从英文数据派生以保证数字不漂移，另有一个校验器解析全部双链并交叉核对两套文档。音乐上的决策具体到可以被反驳——每张专辑的速度中心与速度带、各自被禁用的拍号与音高功能、1–5 的复杂度标度，以及 77 处相邻曲目速度衔接，每一对都是精确的纯律比值。尚未录制任何音频，没有乐谱，也没有任何封面美术。',
+      },
+    },
+  },
 ];
