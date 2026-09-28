@@ -29,6 +29,21 @@ export default {
     cta: 'Envoyez-moi votre demande',
   },
 
+  /* ── la grille tarifaire des cours ─────────────────────────────────────
+     La page /tutoring et ses tarifs horaires. Les chiffres vivent dans la
+     couche de contenu (content/tutoring.js) ; ici, c'est l'habillage. */
+  tutoring: {
+    overline: 'Enseignement et cours particuliers',
+    title: 'Tarifs horaires',
+    lede: 'Tarifs horaires pour les cours individuels et en petit groupe, du primaire jusqu\'à l\'IELTS, aux langues, à la programmation et à la modélisation.',
+    unit: 'CNY par heure',
+    courseColumn: 'Cours',
+    howTitle: 'Comment le tarif est calculé',
+    howBody: 'Chaque cours n\'a qu\'un seul tarif, celui du cours individuel. Les trois autres colonnes s\'obtiennent en multipliant ce tarif par le coefficient de taille du groupe, puis en arrondissant à la dizaine — dans un duo, chaque personne paie 70 %, 60 % à trois, et 50 % en groupe plus nombreux.',
+    quotedOnRequest: 'Sur demande',
+    cta: 'Se renseigner sur un cours',
+  },
+
   /* ── habillage du site ───────────────────────────────────────────────── */
   nav: {
     home: 'Accueil',

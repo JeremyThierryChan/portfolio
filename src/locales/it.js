@@ -30,6 +30,21 @@ export default {
     cta: 'Mandami di cosa hai bisogno',
   },
 
+  /* ── il listino delle lezioni ──────────────────────────────────────────
+     La pagina /tutoring con le tariffe orarie. I numeri vivono nel livello di
+     contenuto (content/tutoring.js); qui c’è solo l’impalcatura della pagina. */
+  tutoring: {
+    overline: 'Insegnamento e ripetizioni',
+    title: 'Tariffe orarie',
+    lede: 'Tariffe orarie per lezioni individuali e in piccoli gruppi, dalla scuola primaria fino all’IELTS, alle lingue, alla programmazione e alla modellazione.',
+    unit: 'CNY all’ora',
+    courseColumn: 'Corso',
+    howTitle: 'Come si calcola il prezzo',
+    howBody: 'Ogni corso ha un solo prezzo, quello della lezione individuale. Le altre tre colonne sono quel prezzo moltiplicato per il coefficiente della dimensione del gruppo e arrotondato alla decina — in coppia ciascuno paga il 70 %, in tre il 60 % e in un gruppo più numeroso il 50 %.',
+    quotedOnRequest: 'Su richiesta',
+    cta: 'Chiedi informazioni su un corso',
+  },
+
   /* ── struttura del sito ──────────────────────────────────────────────── */
   nav: {
     home: 'Home',

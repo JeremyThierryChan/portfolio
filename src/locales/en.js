@@ -36,6 +36,21 @@ export default {
     cta: 'Send me what you need',
   },
 
+  /* ── the tutoring rate card ───────────────────────────────────────────
+     One page, /tutoring, holding the per-hour rates. The numbers live in the content
+     layer (`content/tutoring.js`); everything here is the page's own chrome. */
+  tutoring: {
+    overline: 'Teaching & tutoring',
+    title: 'Hourly rates',
+    lede: 'Per-hour rates for one-to-one and small-group teaching, from primary school through to IELTS, languages, programming and modelling.',
+    unit: 'CNY per hour',
+    courseColumn: 'Course',
+    howTitle: 'How the pricing works',
+    howBody: 'Each course has a single one-to-one price. The other three columns are that price multiplied by the group-size coefficient and rounded to the nearest ten, so each person in a pair pays 70%, in a threesome 60%, and in a larger group 50%.',
+    quotedOnRequest: 'On request',
+    cta: 'Ask about a course',
+  },
+
   /* ── site chrome ─────────────────────────────────────────────────────── */
   nav: {
     home: 'Home',

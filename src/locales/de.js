@@ -29,6 +29,21 @@ export default {
     cta: 'Schicken Sie mir Ihren Bedarf',
   },
 
+  /* ── die Preisliste für den Unterricht ─────────────────────────────────
+     Die Seite /tutoring mit den Stundensätzen. Die Zahlen liegen in der
+     Inhaltsschicht (content/tutoring.js); hier steht nur der Seitenrahmen. */
+  tutoring: {
+    overline: 'Unterricht und Nachhilfe',
+    title: 'Stundensätze',
+    lede: 'Stundensätze für Einzel- und Kleingruppenunterricht, von der Grundschule bis hin zu IELTS, Sprachen, Programmierung und Modellierung.',
+    unit: 'CNY pro Stunde',
+    courseColumn: 'Kurs',
+    howTitle: 'Wie sich der Preis berechnet',
+    howBody: 'Jeder Kurs hat genau einen Preis, nämlich den für Einzelunterricht. Die drei anderen Spalten sind dieser Preis multipliziert mit dem Gruppengrößen-Faktor, auf den nächsten Zehner gerundet — in einer Zweiergruppe zahlt jede Person 70 %, in einer Dreiergruppe 60 % und in einer größeren Gruppe 50 %.',
+    quotedOnRequest: 'Auf Anfrage',
+    cta: 'Kurs anfragen',
+  },
+
   /* ── site chrome ─────────────────────────────────────────────────────── */
   nav: {
     home: 'Startseite',

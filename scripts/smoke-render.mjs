@@ -85,6 +85,7 @@ globalThis.localStorage = globalThis.window.localStorage;
 const ROUTES = [
   ['/', 'home', 'HomePage', '/src/pages/HomePage.vue'],
   ['/services', 'services', 'ServicesPage', '/src/pages/ServicesPage.vue'],
+  ['/tutoring', 'tutoring', 'TutoringPage', '/src/pages/TutoringPage.vue'],
   ['/about', 'about', 'AboutPage', '/src/pages/about/AboutPage.vue'],
   ['/about/timeline', 'timeline', 'TimelinePage', '/src/pages/about/timeline/TimelinePage.vue'],
   ['/about/skills', 'skills', 'SkillsPage', '/src/pages/about/skills/SkillsPage.vue'],
@@ -108,6 +109,7 @@ const ROUTES = [
 const NAMED_ROUTES = [
   ['/', 'home'],
   ['/services', 'services'],
+  ['/tutoring', 'tutoring'],
   ['/about', 'about'],
   ['/about/timeline', 'timeline'],
   ['/about/skills', 'skills'],
@@ -851,8 +853,76 @@ try {
     const offenders = [['/contact', contactHtml], ['/services', servicesHtml]]
       .filter(([, html]) => priced.test(textOf(html)))
       .map(([label]) => label);
-    if (offenders.length) bad('a figure has appeared on a pricing surface', offenders.join(', '));
-    else ok('no figure appears on either pricing surface');
+    if (offenders.length) bad('a figure has appeared where there should be none', offenders.join(', '));
+    else ok('no figure on /contact or /services — the rate card page is the only place prices live');
+  }
+
+  /* ── 13. the rate card publishes its own arithmetic ──────────────────── */
+
+  /*
+   * This page exists to publish numbers, so the numbers are what get checked. The card is
+   * one price per course plus a coefficient row, and `verify-content` already re-derives
+   * every cell from that row — these checks are about the page actually rendering what the
+   * content layer holds, which is a different failure and a silent one.
+   */
+  console.log('\n\x1b[1mThe rate card renders what it says it does\x1b[0m');
+
+  {
+    const packs = { en, zh };
+    for (const code of ['fr', 'de', 'es', 'it']) {
+      packs[code] = (await vite.ssrLoadModule(`/src/locales/${code}.js`)).default;
+    }
+    const { tutoringGroups, tutoringCourses } = await vite.ssrLoadModule('/src/content/tutoring.js');
+
+    const page = (await vite.ssrLoadModule('/src/pages/TutoringPage.vue')).default;
+    const { app, router } = mount(page, 'tutoring', 'en', packs);
+    await router.push('/tutoring');
+    await router.isReady();
+    const html = await renderToString(app);
+    const text = textOf(html);
+
+    if (html.includes('<table')) ok('/tutoring renders a real table');
+    else bad('/tutoring renders no table');
+
+    // The coefficient is the pricing model, so it has to be on screen next to its column.
+    const missingCoef = tutoringGroups
+      .filter((g) => !html.includes(`×${g.coefficient}`))
+      .map((g) => g.id);
+    if (missingCoef.length) bad('a group coefficient is not rendered', missingCoef.join(', '));
+    else ok('every group size shows its coefficient', tutoringGroups.map((g) => `×${g.coefficient}`).join(' '));
+
+    const missingNames = tutoringCourses
+      .filter((c) => !text.includes(c.i18n.en.name))
+      .map((c) => c.id);
+    if (missingNames.length) bad('a course is missing from the table', missingNames.join(', '));
+    else ok('every course is in the table', `${tutoringCourses.length} courses`);
+
+    // Two different absences that must not be conflated.
+    const onRequest = tutoringCourses.filter((c) => c.prices === null);
+    const label = packs.en.tutoring.quotedOnRequest;
+    const occurrences = text.split(label).length - 1;
+    const expected = onRequest.length * tutoringGroups.length;
+    if (occurrences === expected) ok('quoted-on-request rows say so in every column', `${occurrences} cells`);
+    else bad('the on-request label is rendered the wrong number of times', `${occurrences}, expected ${expected}`);
+
+    const notOffered = tutoringCourses.filter(
+      (c) => c.prices && Object.keys(c.prices).length < tutoringGroups.length,
+    );
+    const dashes = (text.match(/—/g) ?? []).length;
+    if (notOffered.length && dashes < notOffered.length) {
+      bad('a course not offered at a group size renders no dash', `${dashes} dashes`);
+    } else {
+      ok('courses not offered at a size show a dash rather than a price or a blank');
+    }
+
+    // The table must be reachable from the service that owns it.
+    const servicesPage = (await vite.ssrLoadModule('/src/pages/ServicesPage.vue')).default;
+    const { app: a2, router: r2 } = mount(servicesPage, 'services', 'en', packs);
+    await r2.push('/services');
+    await r2.isReady();
+    const servicesHtml = await renderToString(a2);
+    if (servicesHtml.includes('/tutoring')) ok('/services links through to the rate card');
+    else bad('/services has no link to the rate card');
   }
 
 } finally {

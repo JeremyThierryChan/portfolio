@@ -266,32 +266,44 @@ export const services = [
   },
   {
     id: 'language-teaching',
+    /*
+     * The full per-hour rate card lives on its own route. Widened from "language teaching"
+     * to everything he actually teaches — his own rate sheet covers school subjects,
+     * competition prep, IELTS by skill, French and German, programming, modelling and PE,
+     * so a service card promising "English, French, German" was understating it by most of
+     * a page. The id is unchanged because the entry is the same service, not a new one.
+     */
+    ratesPath: '/tutoring',
     audiences: ['institutions'],
     domain: 'language',
     order: 8,
     i18n: {
       en: {
-        title: 'Language teaching — English, French, German',
-        languages: 'For Chinese speakers',
-        summary: 'One-to-one and small-group teaching, including exam preparation and the business language you actually need in a meeting.',
-        billing: 'Billed per lesson.',
+        title: 'Teaching & tutoring',
+        languages: 'Primary school to the gaokao · IELTS · A1–A2 languages · programming',
+        summary: 'One-to-one and small-group teaching across school subjects, exam preparation, languages and technical skills. Every rate is published, in four group sizes.',
+        billing: 'Billed per lesson. The full four-tier rate card is on the rates page.',
         includes: [
-          'One-to-one tutoring and small-group sessions',
-          'Exam and interview preparation',
-          'Business and professional language coaching',
-          'Curriculum design for tutoring centres',
+          'School subjects, from primary school through to the gaokao',
+          'IELTS by skill: listening, reading, writing and speaking',
+          'French and German from A1 to A2',
+          'Programming in Python, C++ and MATLAB',
+          'LLM and agent work, and 3D modelling in Shapr3D',
+          'After-school homework support',
         ],
       },
       zh: {
-        title: '语言教学——英语、法语、德语',
-        languages: '面向中文母语者',
-        summary: '一对一与小班授课，包含应试准备，以及开会时真正用得上的那部分商务语言。',
-        billing: '按课时计费。',
+        title: '教学与辅导',
+        languages: '小学到高考 · 雅思 · 语言 A1–A2 · 编程',
+        summary: '一对一与小班教学，覆盖课内学科、考试准备、语言与技术技能；四种人数档位的单价全部公开。',
+        billing: '按课时计费，四种人数档位的完整价目表见价目表页。',
         includes: [
-          '一对一辅导与小班课',
-          '考试与面试准备',
-          '商务与职业语言训练',
-          '培训机构课程体系设计',
+          '课内学科：小学到高考',
+          '雅思分项：听力、阅读、写作、口语',
+          '法语与德语 A1–A2',
+          'Python、C++、MATLAB 程序设计',
+          'LLM 与 Agent 应用、Shapr3D 建模',
+          '课后答疑托管',
         ],
       },
     },

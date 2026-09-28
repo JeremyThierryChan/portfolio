@@ -56,6 +56,16 @@ const domainLabel = computed(() =>
       <span class="svc__billing-label">{{ t('services.billingLabel') }}</span>
       {{ service.billing }}
     </p>
+
+    <!--
+      Only the service that actually has a detail page gets this, so it is not the "nine
+      competing calls to action" the component deliberately avoids — it is one pointer to
+      more information about one service.
+    -->
+    <router-link v-if="service.ratesPath" class="svc__more" :to="service.ratesPath">
+      {{ t('tutoring.title') }}
+      <span aria-hidden="true">→</span>
+    </router-link>
   </article>
 </template>
 
@@ -128,6 +138,30 @@ const domainLabel = computed(() =>
   text-transform: uppercase;
   letter-spacing: var(--tracking-wide);
   color: var(--fg-faint);
+}
+
+/* A single pointer to a detail page, on the one service that has one. Still not a call to
+   action: the link goes to information, not to the contact form. */
+.svc__more {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  margin-block-start: var(--space-sm);
+  min-block-size: var(--control-height);
+
+  font-size: var(--step--1);
+  font-weight: var(--weight-strong);
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.svc__more:hover {
+  text-decoration: underline;
+}
+
+.svc__more:focus-visible {
+  outline: var(--focus-width) solid var(--focus);
+  outline-offset: var(--focus-offset);
 }
 
 .svc__billing {

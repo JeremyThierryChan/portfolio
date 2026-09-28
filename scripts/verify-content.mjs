@@ -507,6 +507,9 @@ const EXTRA_COLLECTIONS = [
   ['audiences', 'audiences'],
   ['resume', 'RESUME_VARIANTS'],
   ['links', 'links'],
+  ['tutoring', 'tutoringGroups'],
+  ['tutoring', 'tutoringSections'],
+  ['tutoring', 'tutoringCourses'],
 ];
 
 const bilingual = [];
@@ -609,6 +612,49 @@ assert(
   const unordered = rows.filter((l) => typeof l.order !== 'number');
   assert(unordered.length === 0, 'every footer link carries a curated order', 
     unordered.map((l) => l.id).join(', '));
+}
+
+{
+  /*
+   * The rate card is ONE price per course plus a coefficient row, not thirty independent
+   * prices — every cell is the one-to-one price times the coefficient, rounded to the
+   * nearest ten. That is the model his own sheet uses, so a transcription slip in any
+   * single cell shows up as a cell that no longer follows the row above it.
+   *
+   * The arithmetic is integer on purpose. `350 * 0.7` is 244.99999999999997 in binary
+   * floating point, which rounds to 240 instead of 250 and reports two correct cells as
+   * broken — the first version of this check did exactly that.
+   */
+  const t = await import(p('src/content', 'tutoring.js'));
+  const coef = Object.fromEntries(t.tutoringGroups.map((g) => [g.id, g.coefficient]));
+  const base = 'one-to-one';
+  const offences = [];
+  let cells = 0;
+
+  for (const course of t.tutoringCourses) {
+    if (course.prices === null) continue; // quoted on request
+    const oneToOne = course.prices[base];
+    if (typeof oneToOne !== 'number') {
+      offences.push(`${course.id}: no ${base} price to derive the rest from`);
+      continue;
+    }
+    for (const [group, price] of Object.entries(course.prices)) {
+      if (group === base) continue;
+      const want = Math.round((oneToOne * Math.round(coef[group] * 10)) / 100) * 10;
+      cells++;
+      if (price !== want) offences.push(`${course.id}/${group}: ${price} ≠ ${oneToOne}×${coef[group]} = ${want}`);
+    }
+  }
+  assert(offences.length === 0, 'the rate card follows its own coefficient row', 
+    offences.length ? offences.join(' | ') : `${cells} cells`);
+
+  const sectionIds = new Set(t.tutoringSections.map((s) => s.id));
+  const orphans = t.tutoringCourses.filter((c) => !sectionIds.has(c.section)).map((c) => c.id);
+  assert(orphans.length === 0, 'every tutoring course belongs to a real section', orphans.join(', '));
+
+  const orders = t.tutoringCourses.map((c) => c.order);
+  assert(new Set(orders).size === orders.length, 'tutoring course order values are unique',
+    `${orders.length} courses`);
 }
 
 {

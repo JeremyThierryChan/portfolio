@@ -34,6 +34,16 @@ const routes = [
     meta: { titleKey: 'nav.services' },
   },
   {
+    /*
+     * The tutoring rate card. Its own route because a 27-row price table cannot live inside
+     * one card of a nine-card grid; the teaching service points here.
+     */
+    path: '/tutoring',
+    name: 'tutoring',
+    component: () => import('../pages/TutoringPage.vue'),
+    meta: { titleKey: 'tutoring.title' },
+  },
+  {
     path: '/about',
     name: 'about',
     component: () => import('../pages/about/AboutPage.vue'),

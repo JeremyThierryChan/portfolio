@@ -30,6 +30,21 @@ export default {
     cta: 'Envíame lo que necesitas',
   },
 
+  /* ── la tarifa de las clases ───────────────────────────────────────────
+     La página /tutoring con las tarifas por hora. Las cifras viven en la capa
+     de contenido (content/tutoring.js); aquí solo está la estructura. */
+  tutoring: {
+    overline: 'Clases y tutorías',
+    title: 'Tarifas por hora',
+    lede: 'Tarifas por hora para clases individuales y en grupos reducidos, desde primaria hasta IELTS, idiomas, programación y modelado.',
+    unit: 'CNY por hora',
+    courseColumn: 'Curso',
+    howTitle: 'Cómo se calcula el precio',
+    howBody: 'Cada curso tiene un único precio, el de la clase individual. Las otras tres columnas son ese precio multiplicado por el coeficiente de tamaño del grupo y redondeado a la decena — en una pareja cada persona paga el 70 %, en un trío el 60 % y en un grupo mayor el 50 %.',
+    quotedOnRequest: 'A convenir',
+    cta: 'Preguntar por un curso',
+  },
+
   /* ── estructura del sitio ────────────────────────────────────────────── */
   nav: {
     home: 'Inicio',

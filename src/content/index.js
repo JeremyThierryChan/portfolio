@@ -22,17 +22,19 @@ import { services, SERVICE_DOMAINS } from './services.js';
 import { awards } from './awards.js';
 import { audiences, AUDIENCE_ALL, AUDIENCE_IDS, splitByAudience, isRelevant } from './audiences.js';
 import { links } from './links.js';
+import { tutoringGroups, tutoringSections, tutoringCourses } from './tutoring.js';
 
 import { pick, pickAll, byDateDesc, availableLocales, isTranslated } from './resolve.js';
 
 export { profile, projects, timeline, skills, gallery, testimonials, posts, services, awards, links };
+export { tutoringGroups, tutoringSections, tutoringCourses };
 export { SERVICE_DOMAINS };
 export { audiences, AUDIENCE_ALL, AUDIENCE_IDS, splitByAudience, isRelevant };
 export { pick, pickAll, byDateDesc, availableLocales, isTranslated };
 export { FALLBACK_LOCALE } from './resolve.js';
 
 /** Raw modules, handy for tooling and the i18n coverage checker. */
-export const content = { profile, projects, timeline, skills, gallery, testimonials, posts, services, awards, links };
+export const content = { profile, projects, timeline, skills, gallery, testimonials, posts, services, awards, links, tutoringGroups, tutoringSections, tutoringCourses };
 
 /* ── locales ──────────────────────────────────────────────────────────────
    Single source of truth for the language list. The navigation bar used to
@@ -149,6 +151,18 @@ export function useContent() {
      */
     links: computed(() =>
       pickAll(links, L.value).sort((a, b) => (a.order ?? 99) - (b.order ?? 99))),
+
+    /*
+     * The tutoring rate card, in three flat lists so that the same grouping the page needs
+     * is also the shape the bilingual checker can walk. Sorted by the curated `order` on
+     * every one of them — the array order should not be what decides the reading order.
+     */
+    tutoringGroups: computed(() =>
+      pickAll(tutoringGroups, L.value).sort((a, b) => (a.order ?? 99) - (b.order ?? 99))),
+    tutoringSections: computed(() =>
+      pickAll(tutoringSections, L.value).sort((a, b) => (a.order ?? 99) - (b.order ?? 99))),
+    tutoringCourses: computed(() =>
+      pickAll(tutoringCourses, L.value).sort((a, b) => (a.order ?? 99) - (b.order ?? 99))),
 
     /** True when the active locale is a non-English one that is still untranslated. */
     isFallbackOnly: computed(() => L.value === FALLBACK_LOCALE_CODE),
