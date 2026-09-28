@@ -27,6 +27,7 @@ import { useContent } from '@/content/index.js';
 import PageShell from '@/components/layout/PageShell.vue';
 import PageHeader from '@/components/layout/PageHeader.vue';
 import AppButton from '@/components/ui/AppButton.vue';
+import QuoteProcess from '@/components/content/QuoteProcess.vue';
 
 const { t } = useI18n();
 const { profile } = useContent();
@@ -141,6 +142,14 @@ const socials = computed(() => profile.socials ?? []);
         </dl>
       </section>
     </div>
+
+    <!--
+      Only here, not on /services. That page already closes with its own ask plus a "how I
+      work" panel that states the billing basis, so a second pricing block there would be
+      the third one on the same screen. This page had none at all, and it is the page where
+      a visitor is deciding whether to send the form above.
+    -->
+    <QuoteProcess />
 
     <!-- ── socials, with the unlinked ones degraded ───────────────────── -->
     <section class="socials" aria-labelledby="contact-social-title">

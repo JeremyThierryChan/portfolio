@@ -796,6 +796,65 @@ try {
     }
   }
 
+  /* ── 12. price is answered, never quoted ─────────────────────────────── */
+
+  /*
+   * The site publishes no rates on purpose, so what it must publish instead is the unit
+   * each service is charged in and what happens after a visitor writes in. Both are
+   * asserted, and so is the ABSENCE of the process block on /services: that page already
+   * closes with its own ask and a "how I work" panel stating the billing basis, so a
+   * second block there put three pricing sections on one screen. The absence is the
+   * fragile half — nothing else would notice it coming back.
+   */
+  console.log('\n\x1b[1mPrice is answered, never quoted\x1b[0m');
+
+  {
+    const packs = { en, zh };
+    for (const code of ['fr', 'de', 'es', 'it']) {
+      packs[code] = (await vite.ssrLoadModule(`/src/locales/${code}.js`)).default;
+    }
+    const allServices = (await vite.ssrLoadModule('/src/content/services.js')).services;
+
+    const renderPage = async (modulePath, name, at) => {
+      const page = (await vite.ssrLoadModule(modulePath)).default;
+      const { app, router } = mount(page, name, 'en', packs);
+      await router.push(at);
+      await router.isReady();
+      return renderToString(app);
+    };
+
+    const contactHtml = await renderPage('/src/pages/ContactPage.vue', 'contact', '/contact');
+    const servicesHtml = await renderPage('/src/pages/ServicesPage.vue', 'services', '/services');
+
+    if (contactHtml.includes('quote__steps')) ok('/contact explains how a quote happens');
+    else bad('/contact does not explain how a quote happens');
+
+    if (contactHtml.includes(packs.en.quote.cta)) ok('the process block closes with its call to action');
+    else bad('the process block has no call to action');
+
+    const withoutBilling = allServices.filter((s) => !s.i18n.en.billing).map((s) => s.id);
+    if (withoutBilling.length) bad('a service states no billing unit', withoutBilling.join(', '));
+    else ok('every service states what it is billed in', `${allServices.length} services`);
+
+    const unrendered = allServices.filter((s) => !servicesHtml.includes(s.i18n.en.billing));
+    if (unrendered.length) bad('a billing line does not reach the page', unrendered.map((s) => s.id).join(', '));
+    else ok('every billing line reaches the services page');
+
+    if (servicesHtml.includes(packs.en.quote.heading)) {
+      bad('/services duplicates the process block', 'that page states its billing basis already');
+    } else {
+      ok('/services does not repeat the process block');
+    }
+
+    // The decision is "no figures". Assert it rather than trusting the copy.
+    const priced = /[¥$€£]|\b(CNY|USD|EUR|GBP|RMB)\b|\d+\s*(元|美元|欧元|日元)/;
+    const offenders = [['/contact', contactHtml], ['/services', servicesHtml]]
+      .filter(([, html]) => priced.test(textOf(html)))
+      .map(([label]) => label);
+    if (offenders.length) bad('a figure has appeared on a pricing surface', offenders.join(', '));
+    else ok('no figure appears on either pricing surface');
+  }
+
 } finally {
   await vite.close();
   delete globalThis.document;

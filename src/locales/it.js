@@ -17,6 +17,19 @@ export default {
     building: 'Questo sito è ancora in costruzione: viene aggiornato man mano.',
   },
 
+  quote: {
+    heading: 'Come preparo un preventivo',
+    lede: 'Cosa succede fra il momento in cui mi scrivi e quello in cui hai un prezzo in mano.',
+    step1Title: 'Dimmi di cosa hai bisogno',
+    step1Body: 'Scopo, date, lingue, luogo — e un intervallo di budget indicativo se ne hai uno, cosa che fa risparmiare un giro di messaggi.',
+    step2Title: 'Ti rispondo con un prezzo e un perimetro',
+    step2Body: 'Per iscritto, indicando cosa è incluso, cosa non lo è e quando verrebbe consegnato.',
+    step3Title: 'Confermi, e io fisso la data',
+    step3Body: 'Una volta concordati prezzo e perimetro, confermo le date e passo ai preparativi.',
+    noNumbers: 'Qui non c’è un listino, ed è voluto. Questi nove servizi si fatturano in unità diverse — a giornata, a evento, a parola, a progetto, a lezione, a provvigione sugli ordini conclusi — quindi una cifra unica sarebbe più fuorviante che utile. Descrivi di cosa hai bisogno e otterrai un numero preciso.',
+    cta: 'Mandami di cosa hai bisogno',
+  },
+
   /* ── struttura del sito ──────────────────────────────────────────────── */
   nav: {
     home: 'Home',
@@ -380,6 +393,7 @@ export default {
     lede: 'Lavoro fra lingue, commercio e tecnologia. Nella maggior parte degli incarichi se ne usa più di uno: una visita a un fornitore richiede l’interpretariato e le carte, e poi un sito da cui vendere.',
     filterLabel: 'Filtra i servizi per area',
     includesLabel: 'Cosa comprende',
+    billingLabel: 'Come viene fatturato',
     countLabel: '{count} servizi',
     languagesLabel: 'Lingue',
     ctaTitle: 'Non sai quale ti serve?',

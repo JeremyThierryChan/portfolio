@@ -16,6 +16,19 @@ export default {
     building: 'Diese Website wird noch gebaut — sie wird laufend ergänzt.',
   },
 
+  quote: {
+    heading: 'Wie ich kalkuliere',
+    lede: 'Was zwischen Ihrer Anfrage und einem Preis in der Hand passiert.',
+    step1Title: 'Sie sagen mir, was Sie brauchen',
+    step1Body: 'Zweck, Termine, Sprachen, Ort — und eine ungefähre Budgetspanne, wenn Sie eine haben; das spart eine Runde Hin und Her.',
+    step2Title: 'Ich antworte mit Preis und Leistungsumfang',
+    step2Body: 'Schriftlich, mit Angabe dessen, was enthalten ist, was nicht, und wann geliefert würde.',
+    step3Title: 'Sie bestätigen, und ich reserviere den Termin',
+    step3Body: 'Sobald Preis und Umfang abgestimmt sind, bestätige ich die Termine und beginne mit der Vorbereitung.',
+    noNumbers: 'Hier gibt es bewusst keine Preisliste. Diese neun Leistungen werden in unterschiedlichen Einheiten abgerechnet — pro Tag, pro Veranstaltung, pro Wort, pro Projekt, pro Unterrichtseinheit, per Provision auf abgeschlossene Aufträge —, ein einziger Betrag wäre also irreführender als hilfreich. Beschreiben Sie, was Sie brauchen, und Sie bekommen eine konkrete Zahl.',
+    cta: 'Schicken Sie mir Ihren Bedarf',
+  },
+
   /* ── site chrome ─────────────────────────────────────────────────────── */
   nav: {
     home: 'Startseite',
@@ -382,6 +395,7 @@ export default {
     lede: 'Ich arbeite an der Schnittstelle von Sprachen, Handel und Technologie. Bei den meisten Aufträgen kommt mehr als eines davon zusammen — ein Lieferantenbesuch braucht das Dolmetschen und die Papiere und danach eine Website, über die sich das Produkt verkaufen lässt.',
     filterLabel: 'Leistungen nach Bereich filtern',
     includesLabel: 'Das umfasst',
+    billingLabel: 'Abrechnung',
     countLabel: '{count} Leistungen',
     languagesLabel: 'Sprachen',
     ctaTitle: 'Nicht sicher, was Sie davon brauchen?',

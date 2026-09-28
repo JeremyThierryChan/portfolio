@@ -41,6 +41,7 @@ export const services = [
         title: 'Business interpreting',
         languages: 'Chinese ↔ English · French · German',
         summary: 'Consecutive and whispered interpreting for meetings, negotiations, factory visits and trade shows — where getting the nuance wrong costs money.',
+        billing: 'Billed by the day. Pre-meeting terminology preparation is included.',
         includes: [
           'Meetings, negotiations and contract discussions',
           'Supplier and factory visits, technical walkthroughs',
@@ -53,6 +54,7 @@ export const services = [
         title: '商务口译',
         languages: '中文 ↔ 英语 · 法语 · 德语',
         summary: '会议、谈判、验厂、展会上的交传与耳语同传——这些场合里，一个词译偏了就是真金白银。',
+        billing: '按天计费，含会前术语准备。',
         includes: [
           '会议、谈判与合同洽谈',
           '供应商走访、工厂验厂与技术讲解',
@@ -73,6 +75,7 @@ export const services = [
         title: 'Premium event interpreting',
         languages: 'Chinese ↔ English · French · German',
         summary: 'Interpreting at launches, tastings and VIP evenings, where the audience is small, the stakes are high and the script has to sound natural.',
+        billing: 'Billed per event. Advance briefing and terminology preparation are included.',
         includes: [
           'Product launches and press events',
           'Brand tastings, VIP receptions and private viewings',
@@ -86,6 +89,7 @@ export const services = [
         title: '高端活动口译',
         languages: '中文 ↔ 英语 · 法语 · 德语',
         summary: '发布会、品鉴会、VIP 晚宴上的口译——场子小、分量重，而且译出来的话得听着像人话。',
+        billing: '按场计费，含活动前沟通与术语准备。',
         includes: [
           '产品发布会与媒体活动',
           '品牌品鉴会、VIP 接待与私人导览',
@@ -105,6 +109,7 @@ export const services = [
         title: 'Event planning & on-site execution',
         languages: 'CN / EN / FR / DE',
         summary: 'Not only the language: planning the run of the event and running it on the day, from vendor coordination to handling international guests.',
+        billing: 'Quoted per project in stages: concept and run-sheet, vendor coordination, and on-site execution are itemised separately.',
         includes: [
           'Concept, run-sheet and contingency planning',
           'Vendor, venue and supplier coordination',
@@ -116,6 +121,7 @@ export const services = [
         title: '活动策划与现场执行',
         languages: '中 / 英 / 法 / 德',
         summary: '不只是语言：从流程策划到当天落地，从供应商协调到国际嘉宾接待，一起管。',
+        billing: '按项目分阶段报价：方案与流程、供应商协调、现场执行分开列出。',
         includes: [
           '方案构思、流程表与应急预案',
           '供应商、场地与搭建方协调',
@@ -135,6 +141,7 @@ export const services = [
         title: 'China market advisory & business accompaniment',
         languages: 'CN / EN / FR / DE',
         summary: 'Ongoing advice and accompaniment for foreign individuals and firms handling affairs in China — the role of a trusted local counterpart rather than a one-off translator.',
+        billing: 'Ongoing advisory is billed hourly.',
         includes: [
           'Market entry research and partner screening',
           'Meeting accompaniment, negotiation support',
@@ -148,6 +155,7 @@ export const services = [
         title: '中国市场顾问与商务陪同',
         languages: '中 / 英 / 法 / 德',
         summary: '为在中国办事的外国个人和企业提供长期顾问与陪同——做你在国内信得过的对接口，而不是一次性的翻译。',
+        billing: '长期顾问按小时计费。',
         includes: [
           '市场进入调研与合作伙伴筛选',
           '会议陪同与谈判支持',
@@ -167,6 +175,7 @@ export const services = [
         title: 'Cross-border trade — sourcing, documentation, logistics',
         languages: 'CN / EN / RU-aware',
         summary: 'End-to-end handling of an export or import line: finding the supplier, agreeing the specification, and getting the paperwork and shipping right.',
+        billing: 'A fixed price per project.',
         includes: [
           'Supplier sourcing, vetting and quotation comparison',
           'Bilingual product specifications and documentation',
@@ -180,6 +189,7 @@ export const services = [
         title: '跨境贸易——采购、单证、物流',
         languages: '中 / 英 / 具备俄语业务处理能力',
         summary: '一条进出口业务从头接到尾：找供应商、谈定规格、把单证和运输都办对。',
+        billing: '按项目一口价计费。',
         includes: [
           '供应商开发、资质核查与报价比价',
           '双语产品规格书与各类单证',
@@ -199,6 +209,7 @@ export const services = [
         title: 'Websites for brands and small businesses',
         languages: 'CN / EN',
         summary: 'Company sites, brand sites and intranets — built to be handed over, not to lock you into a subscription.',
+        billing: 'A one-off price per project. Deployment and handover documentation are included.',
         includes: [
           'Company, brand and studio websites',
           'Multilingual builds with real language switching',
@@ -211,6 +222,7 @@ export const services = [
         title: '品牌与中小企业网站',
         languages: '中 / 英',
         summary: '公司站、品牌站与内部系统——做完能交接给你，不靠订阅费把你绑住。',
+        billing: '按项目一次性报价，含部署与交接文档。',
         includes: [
           '公司、品牌与工作室网站',
           '真正能切换的多语言站点',
@@ -230,6 +242,7 @@ export const services = [
         title: 'Document translation',
         languages: 'CN ↔ EN · FR · DE',
         summary: 'Business and product material translated with the terminology kept consistent across a whole document set, not sentence by sentence.',
+        billing: 'Priced by word count against the whole document, so terminology stays consistent throughout.',
         includes: [
           'Business correspondence, contracts and tenders',
           'Product, packaging and marketing copy',
@@ -241,6 +254,7 @@ export const services = [
         title: '文档翻译',
         languages: '中 ↔ 英 · 法 · 德',
         summary: '商务与产品材料翻译，术语在一整套文件里保持统一，而不是一句一句地各译各的。',
+        billing: '按字数报价，以整份文件为单位，术语全篇统一。',
         includes: [
           '商务函件、合同与投标文件',
           '产品、包装与营销文案',
@@ -260,6 +274,7 @@ export const services = [
         title: 'Language teaching — English, French, German',
         languages: 'For Chinese speakers',
         summary: 'One-to-one and small-group teaching, including exam preparation and the business language you actually need in a meeting.',
+        billing: 'Billed per lesson.',
         includes: [
           'One-to-one tutoring and small-group sessions',
           'Exam and interview preparation',
@@ -271,6 +286,7 @@ export const services = [
         title: '语言教学——英语、法语、德语',
         languages: '面向中文母语者',
         summary: '一对一与小班授课，包含应试准备，以及开会时真正用得上的那部分商务语言。',
+        billing: '按课时计费。',
         includes: [
           '一对一辅导与小班课',
           '考试与面试准备',
@@ -290,6 +306,7 @@ export const services = [
         title: 'Local servers & on-premise AI',
         languages: 'CN / EN',
         summary: 'Private infrastructure for businesses that would rather not put their files in someone else’s cloud: internal file servers, and locally hosted AI models.',
+        billing: 'Billed per project, covering setup, staff handover and documentation.',
         includes: [
           'NAS setup, internal file sharing and permissions',
           'Backup strategy and access control',
@@ -301,6 +318,7 @@ export const services = [
         title: '本地服务器与私有化 AI',
         languages: '中 / 英',
         summary: '给不愿意把文件放进别人云里的企业做私有基础设施：内部文件服务器，以及跑在自己机器上的 AI 模型。',
+        billing: '按项目计费，含搭建、员工交接与文档。',
         includes: [
           'NAS 搭建、内部文件共享与权限设置',
           '备份策略与访问控制',
@@ -317,3 +335,31 @@ export const services = [
  * be added without its label being accounted for (verify-i18n checks the enum labels).
  */
 export const SERVICE_DOMAINS = ['language', 'trade', 'tech'];
+
+/* ────────────────────────────────────────────────────────────────────────────────
+ * TODO(verify) — `billing` states the UNIT only, and what is still missing.
+ *
+ * Each service now carries a `billing` line saying what it is charged in and nothing
+ * else. Every commercial TERM is deliberately absent, because none were supplied and a
+ * term invented here becomes a promise the site then has to honour. Each of these needs a
+ * decision before it can be published:
+ *
+ *   - travel and accommodation — included, billed at cost, or a flat per-diem?
+ *   - hardware for the local-server work — bought by the client, sourced at cost, or
+ *     marked up?
+ *   - teaching materials — included (as currently written) or charged separately?
+ *   - minimum booking — is there one, for interpreting or for teaching?
+ *   - deposit — any up-front percentage, and due at what point?
+ *   - cross-border trade — only a fixed project price is stated, matching the "fixed
+ *     price for a trade project" line already published on /services. If commission-based
+ *     sourcing is also offered it has to be added in BOTH places or the page contradicts
+ *     itself. It did: an earlier draft of this field said "fixed fee or commission" while
+ *     /services said "fixed price", which is why the two are now written to agree.
+ *   - ongoing advisory — stated hourly, matching /services. A monthly retainer is not
+ *     offered here until it is confirmed.
+ *
+ * The three lines that restate something the /services summary already covers —
+ * interpreting by the day, websites and trade projects at a fixed price, advisory hourly
+ * — are worded to agree with that summary in substance. Change one, change the other, or
+ * the same page will say two different things.
+ * ──────────────────────────────────────────────────────────────────────────────── */

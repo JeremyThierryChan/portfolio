@@ -23,6 +23,19 @@ export default {
     building: 'This site is still being built — work is added as it is finished.',
   },
 
+  quote: {
+    heading: 'How I quote',
+    lede: 'What happens between writing to me and having a price in hand.',
+    step1Title: 'Tell me what you need',
+    step1Body: 'Purpose, dates, languages, location — and a rough budget range if you have one, which saves a round of back and forth.',
+    step2Title: 'I reply with a price and a scope',
+    step2Body: 'Written down, saying what is included, what is not, and when it would be delivered.',
+    step3Title: 'Confirm, and I book it',
+    step3Body: 'Once the price and the scope are agreed, I confirm the dates and move into preparation.',
+    noNumbers: 'There is no price list here on purpose. These nine services are billed in different units — by the day, by the event, by the word, by the project, by the lesson, by commission on completed orders — so a single figure would mislead more than it helps. Describe what you need and you will get a definite number.',
+    cta: 'Send me what you need',
+  },
+
   /* ── site chrome ─────────────────────────────────────────────────────── */
   nav: {
     home: 'Home',
@@ -389,6 +402,7 @@ export default {
     lede: 'I work across languages, trade and technology. Most engagements use more than one of these — a supplier visit needs the interpreting and the paperwork, and then a site to sell it from.',
     filterLabel: 'Filter services by area',
     includesLabel: 'What that covers',
+    billingLabel: 'How it is billed',
     countLabel: '{count} services',
     languagesLabel: 'Languages',
     ctaTitle: 'Not sure which of these you need?',

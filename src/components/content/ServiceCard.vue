@@ -46,11 +46,24 @@ const domainLabel = computed(() =>
         <li v-for="item in service.includes" :key="item" class="svc__include">{{ item }}</li>
       </ul>
     </template>
+
+    <!--
+      The unit this service is billed in. It sits on every card, compact or not: the
+      figure itself is deliberately absent site-wide (see QuoteProcess.vue), so this line
+      is the whole of what a visitor is told about price until they make contact.
+    -->
+    <p v-if="service.billing" class="svc__billing">
+      <span class="svc__billing-label">{{ t('services.billingLabel') }}</span>
+      {{ service.billing }}
+    </p>
   </article>
 </template>
 
 <style scoped>
 .svc {
+  /* One place for the label size, shared by both captions on the card. */
+  --svc-label-size: 0.66rem;
+
   display: flex;
   flex-direction: column;
   gap: var(--space-2xs);
@@ -110,11 +123,30 @@ const domainLabel = computed(() =>
 .svc__includes-label {
   margin-block-start: var(--space-sm);
   font-family: var(--font-mono);
-  font-size: 0.66rem;
+  font-size: var(--svc-label-size);
   font-weight: var(--weight-strong);
   text-transform: uppercase;
   letter-spacing: var(--tracking-wide);
   color: var(--fg-faint);
+}
+
+.svc__billing {
+  margin-block-start: var(--space-sm);
+  padding-block-start: var(--space-2xs);
+  border-block-start: var(--border-width) solid var(--line);
+  font-size: var(--step--1);
+  line-height: var(--leading);
+  color: var(--fg-muted);
+}
+
+.svc__billing-label {
+  font-family: var(--font-mono);
+  font-size: var(--svc-label-size);
+  font-weight: var(--weight-strong);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--fg-faint);
+  margin-inline-end: var(--space-2xs);
 }
 
 .svc__includes {

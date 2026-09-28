@@ -17,6 +17,19 @@ export default {
     building: 'Este sitio aún se está construyendo: se actualiza a medida que avanza.',
   },
 
+  quote: {
+    heading: 'Cómo preparo un presupuesto',
+    lede: 'Lo que ocurre entre que me escribes y tienes un precio en la mano.',
+    step1Title: 'Cuéntame qué necesitas',
+    step1Body: 'Uso, fechas, idiomas, lugar — y un rango de presupuesto aproximado si lo tienes, que ahorra una ronda de idas y venidas.',
+    step2Title: 'Te respondo con un precio y un alcance',
+    step2Body: 'Por escrito, indicando qué está incluido, qué no lo está y cuándo se entregaría.',
+    step3Title: 'Confirmas y reservo la fecha',
+    step3Body: 'Una vez acordados el precio y el alcance, confirmo las fechas y paso a la preparación.',
+    noNumbers: 'Aquí no hay tarifa, y es a propósito. Estos nueve servicios se facturan en unidades distintas — por día, por evento, por palabra, por proyecto, por clase, por comisión sobre pedidos cerrados —, así que una sola cifra engañaría más de lo que ayudaría. Describe lo que necesitas y tendrás una cifra concreta.',
+    cta: 'Envíame lo que necesitas',
+  },
+
   /* ── estructura del sitio ────────────────────────────────────────────── */
   nav: {
     home: 'Inicio',
@@ -385,6 +398,7 @@ export default {
     lede: 'Trabajo entre idiomas, comercio y tecnología. La mayoría de los encargos usan más de una de estas áreas: una visita a proveedores necesita la interpretación y el papeleo, y después un sitio web desde el que vender.',
     filterLabel: 'Filtrar servicios por área',
     includesLabel: 'Qué incluye',
+    billingLabel: 'Cómo se factura',
     countLabel: '{count} servicios',
     languagesLabel: 'Idiomas',
     ctaTitle: '¿No sabes cuál de estos necesitas?',

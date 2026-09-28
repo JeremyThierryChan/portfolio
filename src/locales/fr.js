@@ -16,6 +16,19 @@ export default {
     building: 'Ce site est encore en construction — il est mis à jour au fur et à mesure.',
   },
 
+  quote: {
+    heading: 'Comment j\'établis un devis',
+    lede: 'Ce qui se passe entre le moment où vous m\'écrivez et celui où vous avez un prix en main.',
+    step1Title: 'Dites-moi ce qu\'il vous faut',
+    step1Body: 'Usage, dates, langues, lieu — et une fourchette de budget approximative si vous en avez une, ce qui évite un aller-retour.',
+    step2Title: 'Je réponds avec un prix et un périmètre',
+    step2Body: 'Par écrit, en précisant ce qui est inclus, ce qui ne l\'est pas, et quand ce serait livré.',
+    step3Title: 'Vous confirmez, et je réserve le créneau',
+    step3Body: 'Une fois le prix et le périmètre acceptés, je confirme les dates et je passe à la préparation.',
+    noNumbers: 'Il n\'y a pas de grille tarifaire ici, et c\'est volontaire. Ces neuf services se facturent dans des unités différentes — à la journée, par événement, au mot, au projet, par cours, sur commission pour les commandes conclues — donc un chiffre unique serait plus trompeur qu\'utile. Décrivez ce dont vous avez besoin et vous obtiendrez un chiffre ferme.',
+    cta: 'Envoyez-moi votre demande',
+  },
+
   /* ── habillage du site ───────────────────────────────────────────────── */
   nav: {
     home: 'Accueil',
@@ -385,6 +398,7 @@ export default {
     lede: 'Je travaille à la croisée des langues, du commerce et de la technologie. La plupart des missions en combinent plusieurs — une visite chez un fournisseur demande l\'interprétation et les documents, puis un site pour vendre.',
     filterLabel: 'Filtrer les services par domaine',
     includesLabel: 'Ce que cela comprend',
+    billingLabel: 'Mode de facturation',
     countLabel: '{count} services',
     languagesLabel: 'Langues',
     ctaTitle: 'Vous ne savez pas ce qu\'il vous faut ?',

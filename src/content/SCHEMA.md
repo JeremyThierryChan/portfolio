@@ -162,3 +162,14 @@ resolver and by the UI's safe-degradation rules.
   URL. The UI must render them as non-interactive (safe degradation), never as `'#'` links.
 - **`testimonials[].name` / `skills[].name` are proper nouns at the top level** — see the
   documented exception above.
+
+### Field additions beyond the original contract (continued)
+
+- `services[].billing` states the UNIT a service is charged in, inside `i18n.<locale>`.
+  It never carries a figure or a commercial term: the site publishes no rates on purpose,
+  and the reasoning is in `src/components/content/QuoteProcess.vue`. Two rules apply to
+  it, and `verify-content` enforces only the first because the second is a judgement:
+  it must be present in every locale like any other copy, and it must AGREE with the
+  billing basis already stated by `services.pricingBody` on the services page. Those two
+  contradicted each other once (hourly advisory versus a monthly retainer) and the page
+  was publishing both.
