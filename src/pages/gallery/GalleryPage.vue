@@ -180,13 +180,21 @@ const hasPlaceholders = computed(() => gallery.value.some((i) => i.imageStatus =
   list-style: none;
 }
 
-@media (min-width: 620px) {
-  .gallery__grid { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (min-width: 980px) {
-  .gallery__grid { grid-template-columns: repeat(3, 1fr); }
-}
+/*
+ * No breakpoint here on purpose: `auto-fit` asks the CONTAINER how many columns fit.
+ *
+ * These grids used to switch at fixed VIEWPORT widths, which measures the wrong thing.
+ * The grid lives inside `.container`, capped at `--measure` (1080-1160px depending on the
+ * clock), so at a 1600px window it still only had about 1048px to work with and the
+ * "3 columns" rule fired because the window was wide, not because there was room.
+ * `auto-fit` cannot be wrong about that at any width.
+ *
+ * `min(X, 100%)` is NOT optional: with a plain `Xrem` floor the track would be 320px wide
+ * inside the 280px that a 320px phone leaves after gutters, and the page would scroll
+ * sideways. The `min()` caps the floor at the container, so the worst case is one
+ * full-width column.
+ */
+.gallery__grid { grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr)); }
 
 .shot {
   display: flex;

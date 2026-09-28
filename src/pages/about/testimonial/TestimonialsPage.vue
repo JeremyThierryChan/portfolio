@@ -49,9 +49,6 @@ const { testimonials } = useContent();
   list-style: none;
 }
 
-@media (min-width: 860px) {
-  .testimonials {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
+.testimonials { grid-template-columns: repeat(auto-fit, minmax(min(22rem, 100%), 1fr)); }
+
 </style>

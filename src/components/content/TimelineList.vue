@@ -292,7 +292,7 @@ const { style } = useTimeTheme();
 
 /* ── narrow screens ─────────────────────────────────────────────────────── */
 
-@media (max-width: 40rem) {
+@media (max-width: 767.98px) {
   .timeline--a .timeline__entry,
   .timeline--b .timeline__entry,
   .timeline--c .timeline__entry {

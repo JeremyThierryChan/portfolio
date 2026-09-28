@@ -290,13 +290,21 @@ const stageProgress = computed(() => {
   list-style: none;
 }
 
-@media (min-width: 640px) {
-  .grid { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (min-width: 1040px) {
-  .grid { grid-template-columns: repeat(3, 1fr); }
-}
+/*
+ * No breakpoint here on purpose: `auto-fit` asks the CONTAINER how many columns fit.
+ *
+ * These grids used to switch at fixed VIEWPORT widths, which measures the wrong thing.
+ * The grid lives inside `.container`, capped at `--measure` (1080-1160px depending on the
+ * clock), so at a 1600px window it still only had about 1048px to work with and the
+ * "3 columns" rule fired because the window was wide, not because there was room.
+ * `auto-fit` cannot be wrong about that at any width.
+ *
+ * `min(X, 100%)` is NOT optional: with a plain `Xrem` floor the track would be 320px wide
+ * inside the 280px that a 320px phone leaves after gutters, and the page would scroll
+ * sideways. The `min()` caps the floor at the container, so the worst case is one
+ * full-width column.
+ */
+.grid { grid-template-columns: repeat(auto-fit, minmax(min(19rem, 100%), 1fr)); }
 
 .grid--other {
   opacity: 0.9;
@@ -337,7 +345,10 @@ const stageProgress = computed(() => {
   border-block-end: var(--border-width) solid var(--line);
 }
 
-@media (min-width: 900px) {
+/* This one keeps a breakpoint: the index row is a four-track table shape and `auto-fit`
+   cannot express "add the status and action columns". It moves onto the one boundary the
+   rest of the site now uses. */
+@media (min-width: 768px) {
   .row {
     grid-template-columns: minmax(0, 1.6fr) auto minmax(0, 1.2fr) auto;
   }

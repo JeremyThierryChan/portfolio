@@ -329,7 +329,7 @@ const stageLabel = computed(() => {
   text-transform: uppercase;
 }
 
-@media (max-width: 40rem) {
+@media (max-width: 767.98px) {
   .work-card--c .work-card__title { font-size: var(--step-1); }
 }
 </style>

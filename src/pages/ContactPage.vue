@@ -195,11 +195,9 @@ const socials = computed(() => profile.socials ?? []);
   margin-block-end: var(--space-2xl);
 }
 
-@media (min-width: 900px) {
-  .contact-grid {
-    grid-template-columns: 1.1fr 0.9fr;
-    align-items: start;
-  }
+.contact-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(22rem, 100%), 1fr));
+  align-items: start;
 }
 
 .panel {

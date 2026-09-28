@@ -282,9 +282,7 @@ function marker(item, index) {
   grid-template-columns: 1fr;
 }
 
-@media (min-width: 46rem) {
-  .index--c { grid-template-columns: repeat(2, 1fr); }
-}
+.index--c { grid-template-columns: repeat(auto-fit, minmax(min(24rem, 100%), 1fr)); }
 
 .index--c .index__item { display: flex; }
 
@@ -344,7 +342,7 @@ function marker(item, index) {
 
 /* ── narrow screens ─────────────────────────────────────────────────────── */
 
-@media (max-width: 40rem) {
+@media (max-width: 767.98px) {
   .index--a .index__link,
   .index--b .index__link {
     grid-template-columns: 1fr;

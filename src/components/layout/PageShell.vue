@@ -59,7 +59,7 @@ defineProps({
   max-inline-size: none;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767.98px) {
   .page-shell {
     padding-block: var(--space-xl) var(--space-2xl);
   }

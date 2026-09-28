@@ -216,11 +216,7 @@ function onKeydown(event) {
   gap: var(--space-xs);
 }
 
-@media (min-width: 720px) {
-  .ap__options {
-    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-  }
-}
+.ap__options { grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr)); }
 
 .ap__option {
   display: grid;

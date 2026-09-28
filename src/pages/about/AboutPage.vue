@@ -201,9 +201,7 @@ const items = computed(() => [
   margin-block-end: var(--space-md);
 }
 
-@media (min-width: 860px) {
-  .quotes__grid { grid-template-columns: repeat(2, 1fr); }
-}
+.quotes__grid { grid-template-columns: repeat(auto-fit, minmax(min(22rem, 100%), 1fr)); }
 
 .quote {
   margin: 0;
@@ -332,7 +330,7 @@ const items = computed(() => [
   text-align: end;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 767.98px) {
   .award {
     grid-template-columns: auto 1fr;
   }

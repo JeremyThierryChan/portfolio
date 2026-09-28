@@ -177,13 +177,21 @@ const otherLabel = computed(() => {
   list-style: none;
 }
 
-@media (min-width: 720px) {
-  .svc-page__grid { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (min-width: 1080px) {
-  .svc-page__grid { grid-template-columns: repeat(3, 1fr); }
-}
+/*
+ * No breakpoint here on purpose: `auto-fit` asks the CONTAINER how many columns fit.
+ *
+ * These grids used to switch at fixed VIEWPORT widths, which measures the wrong thing.
+ * The grid lives inside `.container`, capped at `--measure` (1080-1160px depending on the
+ * clock), so at a 1600px window it still only had about 1048px to work with and the
+ * "3 columns" rule fired because the window was wide, not because there was room.
+ * `auto-fit` cannot be wrong about that at any width.
+ *
+ * `min(X, 100%)` is NOT optional: with a plain `Xrem` floor the track would be 320px wide
+ * inside the 280px that a 320px phone leaves after gutters, and the page would scroll
+ * sideways. The `min()` caps the floor at the container, so the worst case is one
+ * full-width column.
+ */
+.svc-page__grid { grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr)); }
 
 /* The collapsed remainder is visually quieter, so it reads as secondary without being
    hidden or disabled. */
@@ -209,11 +217,12 @@ const otherLabel = computed(() => {
   border-radius: var(--radius-lg);
 }
 
-@media (min-width: 900px) {
-  .svc-page__cta {
-    grid-template-columns: 1.1fr 0.9fr;
-    align-items: start;
-  }
+/* Same reasoning as the card grid above. The intentional 1.1fr/0.9fr asymmetry is given
+   up for it: an even split that holds at every width beats a ratio that only applied above
+   900px of viewport. */
+.svc-page__cta {
+  grid-template-columns: repeat(auto-fit, minmax(min(22rem, 100%), 1fr));
+  align-items: start;
 }
 
 .svc-page__cta-title {

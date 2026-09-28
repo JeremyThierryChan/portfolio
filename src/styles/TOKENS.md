@@ -84,6 +84,41 @@ borders and the corner ticks described below.
 `--space-3xs` … `--space-4xl` (4px-based scale)
 `--gutter` — page gutter, already fluid
 `--measure` — default container width; `--measure-read` — prose width
+
+### Width and breakpoints — the contract
+
+**One breakpoint: 768px.** Written `max-width: 767.98px` for "phone and below" and
+`min-width: 768px` for "desktop and up", so the two never overlap. The 0.02px gap is
+deliberate: `max-width: 768px` and `min-width: 768px` both match at exactly 768px, which
+is how the page shell and the nav used to disagree about which side of the boundary they
+were on.
+
+**Media queries cannot read a custom property.** `@media (min-width: var(--bp))` is
+invalid CSS, so the boundary is a literal in every file. `scripts/verify-layout.mjs`
+asserts that only those two literals exist, which is what makes the rule enforceable.
+
+**`--measure` differs per style** — 1160 / 1120 / 1080 for a / b / c. Because the clock
+picks the style, the content column on a wide window is 968–1048px depending on the time
+of day. Anything width-sensitive has to be invariant across that band, or the page
+reflows at 07:00, 12:00 and 18:00.
+
+**Grids carry no breakpoints.** The column count comes from the container:
+
+```css
+grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
+```
+
+The `min(X, 100%)` guard is mandatory, not stylistic. With a bare `18rem` floor a 320px
+phone leaves 280px of content and the track still demands 288px, so the page scrolls
+sideways. The guard caps the floor at the container, making one full-width column the
+worst case.
+
+**Choosing the floor.** With `n = floor((W + gap) / (floor + gap))`, the floor has to put
+every style's container width in the same integer bucket. For a 3-column card grid with a
+16px gap that means a floor in `(250px, 312px]`, and 288px sits in the middle of it. A
+floor of 320px looks reasonable and yields 2 columns in style C and 3 in style A. Change a
+floor and run `npm run verify:layout` either side of it: it prints the column count per
+width and fails on any grid that shifts with the clock.
 `--dur-instant|fast|base|slow`, `--dur-theme-swap`
 `--ease-out`, `--ease-in-out`
 `--z-base|sticky|overlay|modal|toast`

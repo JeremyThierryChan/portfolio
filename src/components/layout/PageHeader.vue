@@ -87,7 +87,7 @@ defineProps({
   white-space: nowrap;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 767.98px) {
   .page-header {
     align-items: flex-start;
   }

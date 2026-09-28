@@ -243,9 +243,7 @@ function print() {
   margin-block-end: var(--space-md);
 }
 
-@media (min-width: 720px) {
-  .cv-variants { grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); }
-}
+.cv-variants { grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr)); }
 
 .cv-variant {
   display: flex;
