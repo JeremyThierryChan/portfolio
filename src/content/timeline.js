@@ -512,11 +512,11 @@ export const timeline = [
     i18n: {
       en: {
         title: 'Head Sommelier — Sunac Aduo Village Resort',
-        description: 'Served as Head Sommelier at the Sunac Aduo Village resort in Qingdao.',
+        description: 'Served as Head Sommelier at the Sunac Aduo Village resort in Qingdao. Alongside the role, built a drinks reference: around 140 notes on wine, spirits, beer and sake, including a classical-cocktail collection of 108 recipes. It is a working reference rather than a deliverable.',
       },
       zh: {
         title: '首席侍酒师 — Sunac Aduo Village Resort',
-        description: '在青岛的 Sunac Aduo Village 度假村担任首席侍酒师。',
+        description: '在青岛的 Sunac Aduo Village 度假村担任首席侍酒师。任职期间自建了一套酒类资料库：约 140 篇笔记，涵盖葡萄酒、烈酒、啤酒与清酒，其中一部经典鸡尾酒集收录 108 个配方。属于自用参考资料，不是交付物。',
       },
     },
   },

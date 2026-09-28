@@ -226,6 +226,10 @@ const INTENTIONAL_DEVIATIONS = new Map([
     'Planning and technical setup for the Wenzhou Lacquerware Gallery (昆阳), including NAS infrastructure proposal and website design.',
     'Anonymised at Jeremy direction: clients and collaborators are described by kind rather than named, so no third party appears on the site as his client without having agreed to it. The substance of the entry is otherwise unchanged.',
   ],
+  [
+    'Served as Head Sommelier at the Sunac Aduo Village resort in Qingdao.',
+    'Enriched from a read-only audit of the role: the drinks reference built alongside it — about 140 notes across wine, spirits, beer and sake, including a classical-cocktail collection of 108 recipes. The original sentence is kept as the opening clause; the addition states the evidence and marks the reference as a working document rather than a deliverable.',
+  ],
 ]);
 
 

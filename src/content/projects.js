@@ -239,12 +239,12 @@ export const projects = [
       en: {
         title: 'Forex Strategy System',
         description:
-          'A personal forex trading system built around an equidistant price grid and a moving-average ribbon. The interesting part is not the indicator but the verification: a Python backtester formalises a rule that until then existed only as a hand-maintained spreadsheet — a five-digit pattern over four prior prices, with a palindromic A-B-C-B-A match marking the breakout level — and it reproduced the spreadsheet without matching it exactly (63.5% against 64.4%). The gap was traced rather than waved away: 91 placeholder rows in the sheet were generating spurious hits. A companion generator emits 3,000 grid lines per script using exact decimal formatting, because the Pine parser on TradingView rejects scientific notation.',
+          'A personal forex trading system built around an equidistant price grid and a moving-average ribbon. The interesting part is not the indicator but the verification: a Python backtester formalises a rule that until then existed only as a hand-maintained spreadsheet — a five-digit pattern over four prior prices, with a palindromic A-B-C-B-A match marking the breakout level — and it reproduced the spreadsheet without matching it exactly (63.5% against 64.4%). The gap was traced rather than waved away: 91 placeholder rows in the sheet were generating spurious hits. A companion generator emits 3,000 grid lines per script using exact decimal formatting, because the Pine parser on TradingView rejects scientific notation. A separate New York-session scalper on the first four-hour range carries the opposite instinct: when the stop distance would exceed half the range, it refuses to place the order, flags the bar and hands the decision back to the operator rather than executing a trade it does not believe in.',
       },
       zh: {
         title: '外汇策略系统',
         description:
-          '一套个人外汇交易系统，围绕等距价格网格与均线带（MA Ribbon）搭建。真正值得讲的不是指标，而是验证：一个 Python 回测脚本把此前只存在于手工表格里的规则形式化——用前四个价格的五位性质码做匹配，命中回文结构 A-B-C-B-A 即判定该位为突破位——复现结果与手工表格接近但并不相同（代码 63.5%，手工 64.4%）。这个差异没有被敷衍过去，而是被查清并写了下来：表格里有 91 个占位行产生了伪命中。配套生成器每个脚本输出 3,000 条网格线，并采用精确十进制格式化，因为 TradingView 的 Pine 解析器不接受科学计数法。',
+          '一套个人外汇交易系统，围绕等距价格网格与均线带（MA Ribbon）搭建。真正值得讲的不是指标，而是验证：一个 Python 回测脚本把此前只存在于手工表格里的规则形式化——用前四个价格的五位性质码做匹配，命中回文结构 A-B-C-B-A 即判定该位为突破位——复现结果与手工表格接近但并不相同（代码 63.5%，手工 64.4%）。这个差异没有被敷衍过去，而是被查清并写了下来：表格里有 91 个占位行产生了伪命中。配套生成器每个脚本输出 3,000 条网格线，并采用精确十进制格式化，因为 TradingView 的 Pine 解析器不接受科学计数法。另有一个纽约时段的剥头皮策略，基于当日第一根四小时 K 线的区间，体现的是相反的一种直觉：当止损距离超过区间宽度的一半时，它不下单，只打标签并把决定交回给人，而不是机械执行一笔它自己都不相信的交易。',
       },
     },
   },
@@ -947,6 +947,35 @@ export const projects = [
         title: '定制电吉他设计工程',
         description:
           '一套自研定制电吉他背后的设计工程。最硬的证据不是成品琴，而是一批设计决策：27 张 CorelDraw 图纸，覆盖琴体、琴颈、品距与弦距，其中包括一把九弦琴——它的多弦长（扇品）尺寸由斐波那契数列推导得出，而不是照抄现成的弦长组合——以及一个为容纳 Jackson 57.5mm 琴颈而绘制的琴体，这是跨品牌零件兼容性设计，不是装饰。另有一个目录收着 11 张「需调整」的设计稿，其中一张干脆把失败写进了文件名：弦距过宽。支撑材料包括产品与 BOM 表、弦长搭配表、琴弦规格与张力表，以及一个按弦数切分产品线的资料库，从五弦一直到 Bass VI。如实说明：没有任何成品琴被拍过照或交付过，图纸是 CorelDraw 格式、必须先导出才能展示，而项目里唯一的脚本——19 行 Python，用勾股关系解出多弦长琴桥处第一弦的位置——是第一步，不是生成器。',
+      },
+    },
+  },
+  {
+    id: 24,
+    tier: 'listed',
+    slug: 'creator-showcase-platform',
+    audiences: ['web'],
+    status: 'in-progress',
+    /* The link is withheld: the domain carries the brand's name, and the brand is someone
+       else's. See scripts/withheld-names.mjs, which guards the name for the same reason. */
+    link: null,
+    tech: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS'],
+    cofounder: null,
+    stages: [],
+    /* TODO(verify): two things the audit could not settle. (1) Whether the build is still
+       being extended or is finished — no progress figure is set rather than a guessed one.
+       (2) Permission for the brand's and the creators' images, which is why nothing from
+       the platform is reproduced here. */
+    i18n: {
+      en: {
+        title: 'Creator Showcase Platform',
+        description:
+          'A showcase platform for a creative brand: thirty creators and 119 works, with the catalogue, the artist pages and the work detail living in one application. Next.js 15, React 19, TypeScript and Tailwind v4 — about 7,500 lines written by hand across 39 commits. The brand belongs to someone else; the application does not. No image from the platform appears here, because the work belongs to the creators it depicts, and no link is given, because the domain carries the brand’s name.',
+      },
+      zh: {
+        title: '创作者作品展示平台',
+        description:
+          '为一个创意品牌做的作品展示平台：30 位创作者、119 件作品，作品目录、创作者主页与作品详情都在同一个应用里。Next.js 15、React 19、TypeScript 与 Tailwind v4——约 7,500 行手写代码，39 次提交。品牌是别人的，这个应用不是。这里不放站上的任何图片，因为作品属于各位创作者；也不给链接，因为域名里带着品牌名。',
       },
     },
   },

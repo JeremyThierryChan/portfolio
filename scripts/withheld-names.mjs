@@ -44,6 +44,11 @@ export const WITHHELD = [
    * LetterResearchINST / letterresearchinst, InChief / inchiefprinting — were removed when
    * their sites were linked from the footer. See decision 3 above.
    */
+  // the creative brand whose platform Jeremy built — the brand is theirs, the code is his
+  "Mom's Rage",
+  'Mom-s-Rage',
+  'mom-s-rage',
+  'MomsRage',
   // organisations
   'Muyang',
   '沐阳教育',
