@@ -36,9 +36,9 @@
  * Exit code 0 = the contract holds. Exit code 1 = it does not.
  */
 
-import { readFileSync, globSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { dirname, resolve } from 'node:path';
+import { dirname, join, relative, resolve } from 'node:path';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const p = (...s) => resolve(ROOT, ...s);
@@ -54,7 +54,24 @@ const REM = 16;
 
 /* ── read the stylesheets ─────────────────────────────────────────────────── */
 
-const srcFiles = globSync(['src/**/*.vue', 'src/**/*.css'], { cwd: ROOT })
+/**
+ * Every source file under `src/` with one of these extensions, as a path relative to ROOT.
+ *
+ * WHY THIS IS NOT `fs.globSync`. `globSync` arrived in Node 22, and the deploy workflow
+ * pins Node 20 — so this checker could not run in CI at all, which is the reason nobody
+ * noticed. A ten-line walk works on every version the project supports and costs nothing.
+ */
+function walk(dir, exts, out = []) {
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    if (entry.name === 'node_modules' || entry.name.startsWith('.')) continue;
+    const full = join(dir, entry.name);
+    if (entry.isDirectory()) walk(full, exts, out);
+    else if (exts.some((e) => entry.name.endsWith(e))) out.push(relative(ROOT, full));
+  }
+  return out;
+}
+
+const srcFiles = walk(p('src'), ['.vue', '.css'])
   .map((f) => ({ path: f, text: readFileSync(p(f), 'utf8') }));
 
 /* ── 1. one breakpoint ────────────────────────────────────────────────────── */

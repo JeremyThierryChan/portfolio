@@ -30,8 +30,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build
-        run: npm run build
+      # The eight verification layers existed for months and never ran here, so every
+      # red commit deployed. `npm run verify` ends with the production build, which is
+      # what the artifact step below uploads — so this replaces the build step rather
+      # than adding to it.
+      - name: Verify
+        run: npm run verify
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
