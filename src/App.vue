@@ -15,12 +15,20 @@ import { watch, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
+import { useContent } from '@/content/index.js';
 import SiteNav from '@/components/layout/SiteNav.vue';
 import SiteFooter from '@/components/layout/SiteFooter.vue';
 import ThemeExplainer from '@/components/theme/ThemeExplainer.vue';
 
 const { t } = useI18n();
 const route = useRoute();
+const { profile } = useContent();
+
+/*
+ * The absolute origin. Open Graph scrapers reject a relative image or URL, so the
+ * deployment origin has to appear literally somewhere; this is the one place it does.
+ */
+const ORIGIN = 'https://jeremythierrychan.github.io/portfolio';
 
 /*
  * Per-route document title. It used to be one static string, so every page in the
@@ -34,7 +42,60 @@ const title = computed(() => {
   return page ? `${page} — ${BRAND}` : BRAND;
 });
 
-watch(title, (value) => { document.title = value; }, { immediate: true });
+/**
+ * The description for the current route.
+ *
+ * It REUSES the `lede` each page already shows rather than adding a parallel set written
+ * for crawlers. Those are real one-sentence summaries, they are already translated into
+ * all six locales, and a second set would be free to say something different from the page
+ * it describes. Routes with no lede fall back to the positioning summary, which is the
+ * best description of the whole site there is.
+ */
+const description = computed(() => {
+  const key = route.meta?.descKey;
+  if (key) {
+    const value = t(key);
+    // vue-i18n renders the key path itself when a key is missing; that must not ship as a
+    // meta description.
+    if (value && value !== key) return value;
+  }
+  return profile.value?.positioning?.summary ?? '';
+});
+
+/*
+ * One canonical form, and it has to match sitemap.xml exactly: no trailing slash on a
+ * sub-path, a trailing slash on the root. The first version added a slash to every path,
+ * which meant the sitemap and the page each declared a different canonical URL for the
+ * same route — the two would have competed.
+ */
+const canonicalUrl = computed(() => `${ORIGIN}${route.path === '/' ? '/' : route.path}`);
+
+/** Write one tag, creating it if the static HTML did not declare it. */
+function writeTag(selector, attributes) {
+  const el = document.head.querySelector(selector) ?? document.createElement(selector.startsWith('link') ? 'link' : 'meta');
+  for (const [name, value] of Object.entries(attributes)) el.setAttribute(name, value);
+  if (!el.parentNode) document.head.appendChild(el);
+}
+
+/**
+ * Keep the document metadata in step with the route.
+ *
+ * Guarded twice: there is no `document` during the SSR smoke render, and the harness's
+ * stub has no `head`. Neither is an error — it just means there is nothing to update.
+ */
+function applyMetadata() {
+  if (typeof document === 'undefined' || !document.head) return;
+  document.title = title.value;
+  writeTag('meta[name="description"]', { content: description.value });
+  writeTag('meta[property="og:title"]', { content: title.value });
+  writeTag('meta[property="og:description"]', { content: description.value });
+  writeTag('meta[property="og:url"]', { content: canonicalUrl.value });
+  writeTag('meta[name="twitter:title"]', { content: title.value });
+  writeTag('meta[name="twitter:description"]', { content: description.value });
+  writeTag('link[rel="canonical"]', { rel: 'canonical', href: canonicalUrl.value });
+}
+
+watch([title, description, canonicalUrl], applyMetadata, { immediate: true });
 </script>
 
 <template>

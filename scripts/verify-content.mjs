@@ -13,7 +13,7 @@
  * Exit code 0 = no content lost. Exit code 1 = something is missing.
  */
 
-import { readFileSync, readdirSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 import { WITHHELD, findWithheld } from './withheld-names.mjs';
@@ -580,6 +580,98 @@ assert(
     ? `${localeProblems.length} 处问题，前几处：\n      - ${localeProblems.slice(0, 8).join('\n      - ')}`
     : `${bilingualRows} entries`,
 );
+
+/* ── published metadata ───────────────────────────────────────────────────
+   sitemap.xml, robots.txt and the sharing tags in index.html are all hand-written, and
+   hand-written lists drift from the routes they describe. Each assertion below exists
+   because the duplicate has no other way of noticing it has gone stale.
+
+   The canonical origin is the worst of them: it appears in index.html, in sitemap.xml and
+   in App.vue, and a scraper given three different origins does not error — it just shows
+   the wrong one.
+   ────────────────────────────────────────────────────────────────────────── */
+section('Published metadata');
+
+{
+  const router = readFileSync(p('src', 'router', 'index.js'), 'utf8');
+  const app = readFileSync(p('src', 'App.vue'), 'utf8');
+  const head = readFileSync(p('index.html'), 'utf8');
+  const sitemap = readFileSync(p('public', 'sitemap.xml'), 'utf8');
+  const robots = readFileSync(p('public', 'robots.txt'), 'utf8');
+
+  const origins = {
+    'index.html canonical': head.match(/<link rel="canonical" href="([^"]+)"/)?.[1],
+    'sitemap first <loc>': sitemap.match(/<loc>([^<]+)<\/loc>/)?.[1],
+    'App.vue ORIGIN': app.match(/const ORIGIN = '([^']+)'/)?.[1],
+  };
+  /*
+   * Compared without the trailing slash, because the root URL legitimately ends with one
+   * and the base constant legitimately does not. The first version compared them raw, then
+   * used the un-normalised value as a base — so every lookup below built
+   * `.../portfolio//services` and all six assertions failed for a reason that had nothing
+   * to do with the files they were checking.
+   */
+  const bare = (url) => (url ?? '').replace(/\/$/, '');
+  const distinct = new Set(Object.values(origins).filter(Boolean).map(bare));
+  assert(
+    distinct.size === 1,
+    'the canonical origin agrees in index.html, sitemap.xml and App.vue',
+    distinct.size === 1
+      ? [...distinct][0]
+      : Object.entries(origins).map(([k, v]) => `${k}=${v}`).join(' vs '),
+  );
+  const origin = [...distinct][0] ?? '';
+
+  const declared = [...router.matchAll(/^\s*path: '([^']+)'/gm)].map((m) => m[1]);
+  const locs = new Set([...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]));
+
+  // Every literal route must be reachable in the sitemap.
+  const staticPaths = declared
+    .filter((r) => !r.includes(':') && r !== '/:catchAll(.*)')
+    .map((r) => (r === '/' ? '/' : r));
+  const missing = staticPaths.filter((r) => !locs.has(r === '/' ? `${origin}/` : `${origin}${r}`));
+  assert(missing.length === 0, 'every static route is in the sitemap',
+    missing.length ? missing.join(', ') : `${staticPaths.length} routes`);
+
+  // Parameterised routes, expanded from the content that defines their ids.
+  const { RESUME_VARIANTS } = await import(p('src/content/resume.js'));
+  const { testimonials: tRows } = await import(p('src/content/testimonials.js'));
+  const dynamicPaths = [
+    ...RESUME_VARIANTS.map((v) => `/resume/${v.id}`),
+    ...tRows.map((r) => `/about/testimonials/${r.id}`),
+  ];
+  const missingDynamic = dynamicPaths.filter((r) => !locs.has(`${origin}${r}`));
+  assert(missingDynamic.length === 0, 'every resume variant and testimonial has a sitemap url',
+    missingDynamic.length ? missingDynamic.join(', ') : `${dynamicPaths.length} urls`);
+
+  // And nothing invented: every sitemap url must map back to a route.
+  const known = new Set([...staticPaths, ...dynamicPaths]);
+  const extra = [...locs].filter((u) => !known.has(u.startsWith(origin) ? u.slice(origin.length) || '/' : u));
+  assert(extra.length === 0, 'the sitemap lists no url that has no route',
+    extra.length ? extra.join(', ') : 'none');
+
+  assert(robots.includes(`Sitemap: ${origin}/sitemap.xml`), 'robots.txt points at the sitemap');
+
+  const requiredTags = ['og:title', 'og:description', 'og:url', 'og:image', 'twitter:card'];
+  const missingTags = requiredTags.filter((tag) => !head.includes(`"${tag}"`));
+  assert(missingTags.length === 0, 'index.html declares the sharing tags',
+    missingTags.length ? missingTags.join(', ') : requiredTags.join(', '));
+
+  const ogImage = head.match(/<meta property="og:image" content="([^"]+)"/)?.[1] ?? '';
+  assert(
+    Boolean(ogImage) && ogImage.startsWith(origin) && existsSync(p('public', ogImage.slice(origin.length + 1))),
+    'og:image points at a file that exists',
+    ogImage.split('/').pop() || '(missing)',
+  );
+
+  // A route whose description key does not resolve ships its key path as the meta
+  // description, which is exactly the kind of thing nobody reads until it is indexed.
+  const EN = readFileSync(p('src', 'locales', 'en.js'), 'utf8');
+  const descKeys = [...router.matchAll(/descKey: '([^']+)'/g)].map((m) => m[1]);
+  const unresolved = descKeys.filter((k) => !new RegExp(`^\\s+${k.split('.').pop()}:`, 'm').test(EN));
+  assert(unresolved.length === 0, 'every route description key resolves in the locale pack',
+    unresolved.length ? unresolved.join(', ') : `${descKeys.length} keys`);
+}
 
 /* ── no withheld name reaches a published surface ─────────────────────────
    Anonymising `src/content` is not enough. Two other surfaces ship: every file

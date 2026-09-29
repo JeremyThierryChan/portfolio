@@ -3,9 +3,77 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Jeremy Thierry Chan's personal portfolio website.">
+  <meta name="description" content="Interpreting between Chinese, English, French and German; cross-border trade and sourcing; and the websites and internal systems that hold it together. Based in Wenzhou, working across China and abroad.">
   <meta name="author" content="Jeremy Thierry Chan">
   <title>Jeremy Thierry Chan - Portfolio</title>
+
+  <!--
+    ───────────────────────────────────────────────────────────────────────────
+    Sharing metadata.
+
+    NONE OF THIS EXISTED, and the gap mattered more than it looks: the site had a
+    one-line stub description, no Open Graph tags and no canonical URL. A link sent
+    to a client — which is how this work actually travels, by chat rather than by
+    search — rendered as a bare URL with no title, no description and no image.
+    These tags are what turn it into a card.
+
+    `theme-color` is set here with a first-paint default and then kept correct by
+    the theme bootstrap below, which reads the resolved background from the inline
+    rules rather than keeping a second copy of the six values.
+    ───────────────────────────────────────────────────────────────────────────
+  -->
+  <!-- Absolute URLs are required by the scrapers; this is the deployment origin. -->
+  <link rel="canonical" href="https://jeremythierrychan.github.io/portfolio/">
+  <meta name="theme-color" content="#fbfbfa">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Jeremy Thierry Chan">
+  <meta property="og:locale" content="en">
+  <meta property="og:title" content="Jeremy Thierry Chan - Portfolio">
+  <meta property="og:description" content="Interpreting between Chinese, English, French and German; cross-border trade and sourcing; and the websites and internal systems that hold it together.">
+  <meta property="og:url" content="https://jeremythierrychan.github.io/portfolio/">
+  <meta property="og:image" content="https://jeremythierrychan.github.io/portfolio/og-cover.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Jeremy Thierry Chan — interpreting, translation, cross-border trade and web.">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Jeremy Thierry Chan - Portfolio">
+  <meta name="twitter:description" content="Interpreting between Chinese, English, French and German; cross-border trade and sourcing; and the websites and internal systems that hold it together.">
+  <meta name="twitter:image" content="https://jeremythierrychan.github.io/portfolio/og-cover.png">
+
+  <!--
+    Structured data, so a search engine can tell it is a person offering services
+    rather than a page about one. Kept to facts the site already states: no
+    `sameAs` links (they are maintained in the content layer and would drift from a
+    second copy here) and no Chinese name, which Jeremy has asked not to put on the
+    site.
+  -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Jeremy Thierry Chan",
+    "url": "https://jeremythierrychan.github.io/portfolio/",
+    "description": "Interpreter, cross-border trade consultant and web developer.",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Wenzhou",
+      "addressRegion": "Zhejiang",
+      "addressCountry": "CN"
+    },
+    "knowsLanguage": ["zh", "en", "fr", "de"],
+    "knowsAbout": [
+      "Interpreting",
+      "Translation",
+      "Cross-border trade",
+      "Sourcing",
+      "Web development",
+      "Local server infrastructure"
+    ]
+  }
+  </script>
   <!-- %BASE_URL% is substituted by Vite, so the icon resolves under /portfolio/ on
        GitHub Pages and under / in local dev without hardcoding either one. -->
   <link rel="icon" href="%BASE_URL%favicon.ico">
@@ -102,6 +170,17 @@
       el.setAttribute('data-style', style);
       el.setAttribute('data-mode', mode);
       el.className += ' theme-' + style + ' mode-' + mode;
+
+      // Mobile browser chrome, matched to the page. Read from the inline rules above
+      // rather than kept as a second copy of the six background values, which is how the
+      // two would drift apart. Guarded: the boot test injects a stub without either API.
+      try {
+        if (typeof getComputedStyle === 'function' && document.querySelector) {
+          var chrome = document.querySelector('meta[name="theme-color"]');
+          var bg = getComputedStyle(el).backgroundColor;
+          if (chrome && bg) chrome.setAttribute('content', bg);
+        }
+      } catch (e) { /* not fatal: the static default in <head> stays */ }
     })();
   </script>
 

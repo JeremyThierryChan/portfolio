@@ -31,7 +31,7 @@ const routes = [
     path: '/services',
     name: 'services',
     component: () => import('../pages/ServicesPage.vue'),
-    meta: { titleKey: 'nav.services' },
+    meta: { titleKey: 'nav.services', descKey: 'services.lede' },
   },
   {
     /*
@@ -41,7 +41,7 @@ const routes = [
     path: '/tutoring',
     name: 'tutoring',
     component: () => import('../pages/TutoringPage.vue'),
-    meta: { titleKey: 'tutoring.title' },
+    meta: { titleKey: 'tutoring.title', descKey: 'tutoring.lede' },
   },
   {
     path: '/about',
@@ -53,26 +53,26 @@ const routes = [
     path: '/about/timeline',
     name: 'timeline',
     component: () => import('../pages/about/timeline/TimelinePage.vue'),
-    meta: { titleKey: 'nav.timeline' },
+    meta: { titleKey: 'nav.timeline', descKey: 'timeline.lede' },
   },
   {
     path: '/about/skills',
     name: 'skills',
     component: () => import('../pages/about/skills/SkillsPage.vue'),
-    meta: { titleKey: 'nav.skills' },
+    meta: { titleKey: 'nav.skills', descKey: 'skills.lede' },
   },
   {
     path: '/about/testimonials',
     name: 'testimonials',
     component: () => import('../pages/about/testimonial/TestimonialsPage.vue'),
-    meta: { titleKey: 'nav.testimonials' },
+    meta: { titleKey: 'nav.testimonials', descKey: 'testimonials.lede' },
   },
   {
     path: '/about/testimonials/:id',
     name: 'testimonialDetail',
     component: () => import('../pages/about/testimonial/TestimonialDetail.vue'),
     props: true,
-    meta: { titleKey: 'nav.testimonials' },
+    meta: { titleKey: 'nav.testimonials', descKey: 'testimonials.lede' },
   },
   {
     path: '/projects',
@@ -82,25 +82,25 @@ const routes = [
     // the URL reads as in a shared link, so both resolve.
     alias: '/work',
     component: () => import('../pages/projects/ProjectsPage.vue'),
-    meta: { titleKey: 'nav.projects' },
+    meta: { titleKey: 'nav.projects', descKey: 'projects.lede' },
   },
   {
     path: '/gallery',
     name: 'gallery',
     component: () => import('../pages/gallery/GalleryPage.vue'),
-    meta: { titleKey: 'nav.gallery' },
+    meta: { titleKey: 'nav.gallery', descKey: 'gallery.lede' },
   },
   {
     path: '/blog',
     name: 'blog',
     component: () => import('../pages/blogs/BlogPage.vue'),
-    meta: { titleKey: 'nav.blog' },
+    meta: { titleKey: 'nav.blog', descKey: 'blog.lede' },
   },
   {
     path: '/resume',
     name: 'resume',
     component: () => import('../pages/ResumePage.vue'),
-    meta: { titleKey: 'resume.title' },
+    meta: { titleKey: 'resume.title', descKey: 'resume.lede' },
   },
   {
     /* One route per industry cut. The variant id matches `audiences[].resumeVariant`, so
@@ -108,13 +108,13 @@ const routes = [
     path: '/resume/:variant',
     name: 'resumeVariant',
     component: () => import('../pages/ResumePage.vue'),
-    meta: { titleKey: 'resume.title' },
+    meta: { titleKey: 'resume.title', descKey: 'resume.lede' },
   },
   {
     path: '/contact',
     name: 'contact',
     component: () => import('../pages/ContactPage.vue'),
-    meta: { titleKey: 'nav.contact' },
+    meta: { titleKey: 'nav.contact', descKey: 'contact.lede' },
   },
   {
     path: '/:catchAll(.*)',

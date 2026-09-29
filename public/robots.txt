@@ -1,0 +1,12 @@
+# Everything is public. The two paths that are not useful to a crawler are the
+# generated resume JSON exports (machine input for an ATS, not pages).
+User-agent: *
+Allow: /
+Disallow: /resume.json
+Disallow: /resume-full.json
+Disallow: /resume-interpretation.json
+Disallow: /resume-trade.json
+Disallow: /resume-web.json
+Disallow: /resume-education.json
+
+Sitemap: https://jeremythierrychan.github.io/portfolio/sitemap.xml
