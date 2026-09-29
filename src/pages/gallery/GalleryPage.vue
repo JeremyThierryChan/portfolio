@@ -90,8 +90,17 @@ const hasPlaceholders = computed(() => gallery.value.some((i) => i.imageStatus =
           @click="active = item"
         >
           <span class="shot__frame">
-            <!-- Explicit dimensions reserve the box so late loading cannot reflow the grid. -->
+            <!--
+              A real photograph when there is one; a drawn placeholder when there is not.
+              These entries used to point at a third-party stock-photo host, so every visit
+              fetched fourteen unrelated photographs — slow or unreachable for the Chinese
+              clients this site is for, and misrepresenting the events they sat next to.
+              The box is drawn from tokens instead: no request, and correct in all six
+              style/mode combinations. Keep hostnames out of template comments: they ship to
+              the browser.
+            -->
             <img
+              v-if="item.image"
               :src="item.image"
               :alt="item.title"
               width="600"
@@ -99,6 +108,12 @@ const hasPlaceholders = computed(() => gallery.value.some((i) => i.imageStatus =
               loading="lazy"
               decoding="async"
             />
+            <span v-else class="shot__placeholder" aria-hidden="true">
+              <span class="shot__placeholder-mark">{{ t('gallery.placeholderBadge') }}</span>
+              <span class="shot__placeholder-label">
+                {{ t(enumLabelKey('gallery', 'category', item.category)) }}
+              </span>
+            </span>
             <span v-if="item.imageStatus === 'placeholder'" class="shot__badge">
               {{ t('gallery.placeholderBadge') }}
             </span>
@@ -132,12 +147,19 @@ const hasPlaceholders = computed(() => gallery.value.some((i) => i.imageStatus =
     >
       <figure v-if="active" class="lightbox">
         <img
+          v-if="active.image"
           class="lightbox__img"
           :src="active.image"
           :alt="active.title"
           width="600"
           height="400"
         />
+        <span v-else class="lightbox__placeholder" aria-hidden="true">
+          <span class="shot__placeholder-mark">{{ t('gallery.placeholderBadge') }}</span>
+          <span class="shot__placeholder-label">
+            {{ t(enumLabelKey('gallery', 'category', active.category)) }}
+          </span>
+        </span>
         <figcaption class="lightbox__caption">
           <p class="lightbox__desc">{{ active.description }}</p>
           <dl class="lightbox__facts">
@@ -215,6 +237,48 @@ const hasPlaceholders = computed(() => gallery.value.some((i) => i.imageStatus =
   background-color: var(--bg-sunken);
   border: var(--border-width) solid var(--card-border);
   border-radius: var(--card-radius);
+}
+
+/*
+ * The drawn placeholder: the same 3:2 box the photographs will occupy, a faint diagonal
+ * hatch so it reads as deliberately empty rather than as a broken image, and the category
+ * so the tile still says something. Tokens only, so it is right in every theme.
+ */
+.shot__placeholder,
+.lightbox__placeholder {
+  display: grid;
+  place-content: center;
+  gap: var(--space-3xs);
+
+  aspect-ratio: 3 / 2;
+  inline-size: 100%;
+
+  background-image: repeating-linear-gradient(
+    135deg,
+    transparent 0 9px,
+    var(--line) 9px 10px
+  );
+  color: var(--fg-faint);
+  text-align: center;
+}
+
+.lightbox__placeholder {
+  border: var(--border-width) solid var(--line);
+  border-radius: var(--card-radius);
+}
+
+.shot__placeholder-mark {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: var(--weight-strong);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+.shot__placeholder-label {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  color: var(--fg-muted);
 }
 
 .shot__frame img {

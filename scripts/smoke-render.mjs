@@ -857,6 +857,52 @@ try {
     else ok('no figure on /contact or /services — the rate card page is the only place prices live');
   }
 
+  /* ── 12b. the gallery draws its own placeholders ─────────────────────── */
+
+  /*
+   * The 14 gallery entries have no photographs. They used to point at `picsum.photos`, so
+   * the page depended on a third-party host for every tile; now the box is drawn from
+   * tokens. This asserts the switch actually works — a null `image` reaching `:src` would
+   * render a broken image and nothing else would say so.
+   */
+  console.log('\n\x1b[1mThe gallery draws its placeholders instead of fetching them\x1b[0m');
+
+  {
+    const packs = { en, zh };
+    for (const code of ['fr', 'de', 'es', 'it']) {
+      packs[code] = (await vite.ssrLoadModule(`/src/locales/${code}.js`)).default;
+    }
+    const { gallery: allShots } = await vite.ssrLoadModule('/src/content/gallery.js');
+
+    const page = (await vite.ssrLoadModule('/src/pages/gallery/GalleryPage.vue')).default;
+    const { app, router } = mount(page, 'gallery', 'en', packs);
+    await router.push('/gallery');
+    await router.isReady();
+    const html = await renderToString(app);
+
+    if (html.includes('shot__placeholder')) ok('the gallery draws a placeholder box');
+    else bad('the gallery renders no placeholder box');
+
+    /*
+     * Scoped to attributes on purpose. The first version searched the whole document, and
+     * failed on the template's own explanatory comment — Vue renders template comments
+     * into the output, so a comment that MENTIONS a host read as a reference to one. What
+     * matters is what the page loads, not what it says about itself.
+     */
+    const referenced = [...html.matchAll(/(?:src|srcset|href)="([^"]*)"/g)]
+      .map((m) => m[1])
+      .filter((v) => /picsum|unsplash|placehold/i.test(v));
+    if (referenced.length) {
+      bad('a third-party image host is still referenced', referenced.join(', '));
+    } else {
+      ok('nothing in the markup is loaded from a third-party image host');
+    }
+
+    const imgs = (html.match(/<img/g) ?? []).length;
+    if (imgs === 0) ok('no <img> is emitted for entries that have no photograph', `${allShots.length} entries`);
+    else bad('an <img> is emitted with no source', `${imgs} of ${allShots.length}`);
+  }
+
   /* ── 13. the rate card publishes its own arithmetic ──────────────────── */
 
   /*

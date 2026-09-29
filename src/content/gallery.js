@@ -21,7 +21,7 @@ export const gallery = [
     id: 1,
     category: 'events',
     year: '2024',
-    image: 'https://picsum.photos/seed/g1/600/400',
+    image: null,
     imageStatus: 'placeholder',
     i18n: {
       en: {
@@ -40,7 +40,7 @@ export const gallery = [
     id: 2,
     category: 'events',
     year: '2024',
-    image: 'https://picsum.photos/seed/g2/600/400',
+    image: null,
     imageStatus: 'placeholder',
     i18n: {
       en: {
@@ -59,7 +59,7 @@ export const gallery = [
     id: 3,
     category: 'events',
     year: '2024',
-    image: 'https://picsum.photos/seed/g3/600/400',
+    image: null,
     imageStatus: 'placeholder',
     i18n: {
       en: {
@@ -78,7 +78,7 @@ export const gallery = [
     id: 4,
     category: 'events',
     year: '2024',
-    image: 'https://picsum.photos/seed/g4/600/400',
+    image: null,
     imageStatus: 'placeholder',
     i18n: {
       en: {
@@ -97,7 +97,7 @@ export const gallery = [
     id: 5,
     category: 'events',
     year: '2024',
-    image: 'https://picsum.photos/seed/g5/600/400',
+    image: null,
     imageStatus: 'placeholder',
     i18n: {
       en: {
@@ -116,7 +116,7 @@ export const gallery = [
     id: 6,
     category: 'events',
     year: '2024',
-    image: 'https://picsum.photos/seed/g6/600/400',
+    image: null,
     imageStatus: 'placeholder',
     i18n: {
       en: {
@@ -135,7 +135,7 @@ export const gallery = [
     id: 7,
     category: 'events',
     year: '2025',
-    image: 'https://picsum.photos/seed/g7/600/400',
+    image: null,
     imageStatus: 'placeholder',
     i18n: {
       en: {
@@ -156,7 +156,7 @@ export const gallery = [
     id: 8,
     category: 'sports',
     year: '2023',
-    image: 'https://picsum.photos/seed/g8/600/400',
+    image: null,
     imageStatus: 'placeholder',
     i18n: {
       en: {
@@ -177,7 +177,7 @@ export const gallery = [
     id: 9,
     category: 'volunteer',
     year: '2019',
-    image: 'https://picsum.photos/seed/g9/600/400',
+    image: null,
     imageStatus: 'placeholder',
     i18n: {
       en: {
@@ -196,7 +196,7 @@ export const gallery = [
     id: 10,
     category: 'volunteer',
     year: '2018',
-    image: 'https://picsum.photos/seed/g10/600/400',
+    image: null,
     imageStatus: 'placeholder',
     i18n: {
       en: {
@@ -217,7 +217,7 @@ export const gallery = [
     id: 11,
     category: 'campus',
     year: '2020–2024',
-    image: 'https://picsum.photos/seed/g11/600/400',
+    image: null,
     imageStatus: 'placeholder',
     i18n: {
       en: {
@@ -236,7 +236,7 @@ export const gallery = [
     id: 12,
     category: 'campus',
     year: '2023',
-    image: 'https://picsum.photos/seed/g12/600/400',
+    image: null,
     imageStatus: 'placeholder',
     i18n: {
       en: {
@@ -257,7 +257,7 @@ export const gallery = [
     id: 13,
     category: 'travel',
     year: '2019',
-    image: 'https://picsum.photos/seed/g13/600/400',
+    image: null,
     imageStatus: 'placeholder',
     i18n: {
       en: {
@@ -276,7 +276,7 @@ export const gallery = [
     id: 14,
     category: 'travel',
     year: '2020',
-    image: 'https://picsum.photos/seed/g14/600/400',
+    image: null,
     imageStatus: 'placeholder',
     i18n: {
       en: {

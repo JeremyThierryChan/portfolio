@@ -785,6 +785,39 @@ assert(NEW.timeline.some((e) => e.i18n?.en?.dateLabel === 'The Time for Learning
 // Placeholder / safe-degradation markers
 assert(NEW.gallery.every((g) => g.imageStatus === 'placeholder'),
   'gallery images flagged as placeholders', `${NEW.gallery.length}/${NEW.gallery.length}`);
+
+/*
+ * No content image may be fetched from someone else's host.
+ *
+ * The gallery shipped fourteen `picsum.photos` stubs: fourteen unrelated stock photographs
+ * loaded from a third party on every visit. Slow or unreachable for the Chinese clients
+ * this site is for, and misrepresenting the events they sat beside. `image: null` marks a
+ * slot waiting for a real photograph, and a real one must be a path under `public/` — an
+ * absolute URL is never necessary for an asset this site ships itself.
+ */
+{
+  const remote = [];
+  const sources = ['gallery', 'projects', 'posts', 'testimonials', 'profile'];
+  for (const name of sources) {
+    const mod = await import(p('src/content', `${name}.js`));
+    const entries = Object.values(mod).filter((v) => v && typeof v === 'object');
+    for (const root of entries) {
+      const walk = (node, path) => {
+        if (!node || typeof node !== 'object') return;
+        for (const [key, value] of Object.entries(node)) {
+          if (key === 'image' && typeof value === 'string' && /^(https?:)?\/\//.test(value)) {
+            remote.push(`${name}${path}.image = ${value}`);
+          } else {
+            walk(value, `${path}.${key}`);
+          }
+        }
+      };
+      walk(root, '');
+    }
+  }
+  assert(remote.length === 0, 'every content image is served from this site or absent',
+    remote.length ? remote.join(', ') : 'no third-party image host');
+}
 const nullUrls = NEW_PROFILE.socials.filter((s) => !s.url);
 assert(nullUrls.length === 7, 'exactly 7 socials have no url (safe-degradation input)', `${nullUrls.length}`);
 assert(NEW_PROFILE.contact?.email && NEW_PROFILE.birth?.iso, 'profile keeps email + birth timestamp');
