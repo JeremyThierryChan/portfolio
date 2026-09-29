@@ -358,8 +358,3 @@ export function variantOptions(locale = 'en') {
       audience: v.audience,
     }));
 }
-
-/** The audience an existing audience id maps to for CV purposes (used by verify tooling). */
-export function resumeVariantForAudience(audienceId) {
-  return audiences.find((a) => a.id === audienceId)?.resumeVariant ?? null;
-}

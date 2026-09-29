@@ -107,6 +107,9 @@ const STATIC_PATTERNS = [
   /titleKey:\s*'([^']+)'/g,
   /ledeKey:\s*'([^']+)'/g,
   /overlineKey:\s*'([^']+)'/g,
+  // `descKey` carries a real key path on every route and was not scanned, so a typo in one
+  // would have shown up only as a page whose meta description was the key itself.
+  /descKey:\s*'([^']+)'/g,
 ];
 const DYNAMIC_PATTERNS = [
   new RegExp(`${T_CALL}\\s*[^)]*\\$\\{`, 'g'),
@@ -260,6 +263,15 @@ for (const [collection, fields] of Object.entries(ENUM_FIELDS)) {
     for (const value of distinctValues(content[collection], field)) enumKeys.add(`${ns}.${field}.${value}`);
   }
 }
+/*
+ * `skills.usageShort.*` mirrors `skills.usage.*`, is read through `enumLabelKey`, and so is
+ * used without any static reference naming it. ENUM_FIELDS cannot express it — there is no
+ * `usageShort` field in the content to enumerate — so it is added here. Without this the
+ * report flags all three as unused, which is the opposite of the truth and is exactly why
+ * an unused-key report nobody trusts is worse than none.
+ */
+for (const value of distinctValues(content.skills, 'usage')) enumKeys.add(`skills.usageShort.${value}`);
+
 // Keys that only ever appear via a template literal or as a namespace root.
 const dynamicUsable = [...EN].filter((k) => [...used.keys()].some((u) => u.startsWith(`${k}.`)));
 

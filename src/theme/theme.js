@@ -10,7 +10,7 @@
  * on the schedule boundaries and the storage keys, so the duplication cannot drift.
  */
 
-import { STYLES, styleForDate, slotForMinutes, nextChangeAfter, minutesOf } from './schedule.js';
+import { STYLES, styleForDate } from './schedule.js';
 
 /* ── storage ──────────────────────────────────────────────────────────────
    Two independent keys, because style and mode are two independent axes.
@@ -193,22 +193,6 @@ export function resolveMode(styleId, override = MODE_FOLLOWS_STYLE) {
   return systemMode() ?? designed;
 }
 
-/** Both axes at once, as a single descriptor. */
-export function resolveTheme(now = new Date(), styleOverride = STYLE_AUTO, modeOverride = MODE_FOLLOWS_STYLE) {
-  const style = resolveStyle(now, styleOverride);
-  const mode = resolveMode(style, modeOverride);
-  return {
-    style,
-    mode,
-    /** True when the clock (not the visitor) chose the style. */
-    styleIsAuto: styleOverride === STYLE_AUTO,
-    /** True when the style's own intent (not the visitor, not the OS) chose the mode. */
-    modeIsAuto: modeOverride === MODE_FOLLOWS_STYLE,
-    slot: slotForMinutes(minutesOf(now)),
-    nextChange: nextChangeAfter(now),
-  };
-}
-
 /* ── applying to the document ──────────────────────────────────────────── */
 
 /**
@@ -223,12 +207,6 @@ export function applyTheme(el, style, mode) {
     el.setAttribute('data-mode', mode);
   }
   return changed;
-}
-
-/** Snapshot of what is currently on the document, for verification and tooling. */
-export function readAppliedTheme(el = isBrowser ? document.documentElement : null) {
-  if (!el) return { style: null, mode: null };
-  return { style: el.getAttribute('data-style'), mode: el.getAttribute('data-mode') };
 }
 
 /* ── first-visit explainer ────────────────────────────────────────────────

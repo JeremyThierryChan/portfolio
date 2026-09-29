@@ -71,17 +71,6 @@ export function isTranslated(entry, locale) {
 }
 
 /**
- * True only when EVERY field of the locale's copy is present — a locale object that
- * exists but is half-filled still counts as untranslated.
- */
-export function isFullyTranslated(entry, locale) {
-  const base = defined(entry?.i18n?.[FALLBACK_LOCALE]);
-  const target = defined(entry?.i18n?.[locale]);
-  const keys = Object.keys(base);
-  return keys.length > 0 && keys.every((k) => k in target);
-}
-
-/**
  * Chronological sort for timeline-style entries, newest first.
  * `date` is ISO-prefixed, so plain string comparison is already chronological.
  * Entries with no date sink to the bottom (they are the earliest / undated ones).

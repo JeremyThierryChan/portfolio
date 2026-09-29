@@ -149,15 +149,6 @@ export function msUntilNextChange(date = new Date()) {
   return Math.max(1000, nextChangeAfter(date).getTime() - date.getTime());
 }
 
-/**
- * The next slot after the current one, so the UI can name what is coming.
- * Returns null when the schedule is empty.
- */
-export function nextSlotAfter(date = new Date()) {
-  const next = nextChangeAfter(date);
-  return slotForMinutes(minutesOf(next));
-}
-
 /** Human summary of the whole schedule, for the explainer UI. */
 export function scheduleSummary() {
   return SCHEDULE.map((s) => ({
