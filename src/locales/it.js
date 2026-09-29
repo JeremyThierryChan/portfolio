@@ -26,7 +26,7 @@ export default {
     step2Body: 'Per iscritto, indicando cosa è incluso, cosa non lo è e quando verrebbe consegnato.',
     step3Title: 'Confermi, e io fisso la data',
     step3Body: 'Una volta concordati prezzo e perimetro, confermo le date e passo ai preparativi.',
-    noNumbers: 'Qui non c’è un listino, ed è voluto. Questi nove servizi si fatturano in unità diverse — a giornata, a evento, a parola, a progetto, a lezione, a provvigione sugli ordini conclusi — quindi una cifra unica sarebbe più fuorviante che utile. Descrivi di cosa hai bisogno e otterrai un numero preciso.',
+    noNumbers: 'Qui non c’è un listino, ed è voluto. Questi nove servizi si fatturano in unità diverse — a giornata, a evento, a parola, a progetto, a ora, a lezione — quindi una cifra unica sarebbe più fuorviante che utile. Descrivi di cosa hai bisogno e otterrai un numero preciso.',
     cta: 'Mandami di cosa hai bisogno',
   },
 
@@ -129,7 +129,7 @@ export default {
        indice → contatti. Queste sono le etichette di quella struttura. */
     servicesLede: 'Nove cose per cui posso essere ingaggiato. Dimmi quale ti riguarda e le metto davanti a tutto il resto.',
     trustTitle: 'Cosa dicono di me',
-    trustLede: 'Scritte da persone con cui ho lavorato — una vicepreside, un collega, due coordinatori di programma.',
+    trustLede: 'Scritte da persone con cui ho lavorato — una vicepreside, un collega, due coordinatori di programma e un altro volontario.',
     trustAll: 'Tutte le referenze',
     closingTitle: 'Dimmi di cosa hai bisogno',
     closingBody: 'Un progetto, una domanda, o una situazione che non sai come affrontare. La prima conversazione non costa nulla.',
@@ -417,7 +417,7 @@ export default {
     otherNote: 'Altri tipi di lavoro: basta chiedere.',
     /* Come si calcola il prezzo, senza pubblicare cifre. */
     pricingTitle: 'Come lavoro',
-    pricingBody: 'Preventivo per incarico — tariffa giornaliera per l’interpretariato, prezzo fisso per un sito o un progetto commerciale, a ore per una consulenza continuativa. Ti dico che forma avrà il costo prima che tu ti impegni, e cosa comprende.',
+    pricingBody: 'Preventivo per incarico — tariffa a giornata o a evento per l’interpretariato, prezzo fisso per un sito o un progetto commerciale, a ore per una consulenza continuativa. Ti dico che forma avrà il costo prima che tu ti impegni, e cosa comprende.',
     travelNote: 'Base a Wenzhou, Zhejiang. Disponibile per lavori in tutta la Cina e all’estero.',
     domainLabel: 'Area',
     domain: {

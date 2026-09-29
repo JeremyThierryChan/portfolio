@@ -2,7 +2,15 @@
   "name": "my-portfolio",
   "version": "0.1.0",
   "private": true,
+  "description": "Six-language, time-themed portfolio for Jeremy Thierry Chan — language, trade and technology.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JeremyThierryChan/portfolio.git"
+  },
   "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "vite",
     "serve": "vite",
@@ -13,7 +21,7 @@
     "verify:i18n": "node scripts/verify-i18n.mjs",
     "verify:contrast": "node scripts/verify-contrast.mjs",
     "verify:cascade": "node scripts/verify-cascade.mjs",
-  "verify:layout": "node scripts/verify-layout.mjs",
+    "verify:layout": "node scripts/verify-layout.mjs",
     "smoke": "node scripts/smoke-render.mjs",
     "verify": "npm run test && npm run verify:content && npm run verify:i18n && npm run verify:contrast && npm run verify:cascade && npm run verify:layout && npm run verify:resume && npm run smoke && npm run build",
     "resume:json": "node scripts/build-resume-json.mjs",

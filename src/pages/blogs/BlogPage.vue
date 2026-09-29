@@ -24,7 +24,7 @@ import FilterBar from '@/components/ui/FilterBar.vue';
 import EmptyState from '@/components/ui/EmptyState.vue';
 import AppModal from '@/components/ui/AppModal.vue';
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const { posts } = useContent();
 
 const ALL = 'all';
@@ -53,9 +53,23 @@ const filtered = computed(() =>
     : posts.value.filter((p) => p.category === selected.value),
 );
 
+/*
+ * A post `date` is a calendar date, not an instant: `new Date('2026-05-10')` is UTC
+ * midnight, so rendering it in the visitor's timezone showed the 9th to everyone west
+ * of UTC. `timeZone: 'UTC'` pins the day that is written in the content file.
+ *
+ * The locale is the SITE's, not the visitor's browser language, so a French reader
+ * gets a French date on an otherwise French page — the date was the one string here
+ * that ignored the language switcher.
+ */
 const formatDate = (iso) =>
   iso
-    ? new Date(iso).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })
+    ? new Date(iso).toLocaleDateString(locale.value, {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      timeZone: 'UTC',
+    })
     : '';
 </script>
 

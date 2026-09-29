@@ -13,7 +13,7 @@
  * Exit code 0 = no content lost. Exit code 1 = something is missing.
  */
 
-import { existsSync, readFileSync, readdirSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 import { WITHHELD, findWithheld } from './withheld-names.mjs';
@@ -673,6 +673,165 @@ section('Published metadata');
     unresolved.length ? unresolved.join(', ') : `${descKeys.length} keys`);
 }
 
+/* ── the billing surfaces must agree ──────────────────────────────────────
+   `services[].billing` prints a unit on each of the nine service cards. Two other
+   published surfaces restate the same bases in prose: `services.pricingBody` on /services
+   and `quote.noNumbers` on /contact. Nothing compared them, and they have contradicted
+   each other twice — an hourly advisory against a monthly retainer, and "by commission on
+   completed orders" against `cross-border-trade`'s fixed price per project, which shipped
+   on /contact until a hand-read found it. The second one hid because the documented rule
+   named only the /services surface.
+
+   Six languages of prose cannot be compared mechanically, so this asserts the part that
+   can be: the set of units the cards actually use must equal the set the /contact
+   paragraph names, and every "by the X" the paragraph invents must be a real unit. Adding
+   or removing a billing basis on one surface without the other is how both contradictions
+   happened, and this is the check that would have caught them.
+   ────────────────────────────────────────────────────────────────────────── */
+{
+  const EN = (await import(p('src', 'locales', 'en.js'))).default;
+  // Imported here rather than read off `NEW`: that map is built from `NEW_FILES`, which
+  // covers the six rewritten collections only, and `services` is not one of them.
+  const SERVICES = (await import(p('src', 'content', 'services.js'))).services;
+
+  const CARD_UNITS = [
+    [/billed by the day/i, 'day'],
+    [/billed per event/i, 'event'],
+    [/per project|one-off price per project|fixed price per project/i, 'project'],
+    [/billed hourly/i, 'hour'],
+    [/by word count/i, 'word'],
+    [/billed per lesson/i, 'lesson'],
+  ];
+  const LISTED_UNITS = [
+    [/\bby the day\b/i, 'day'],
+    [/\bby the event\b/i, 'event'],
+    [/\bby the project\b/i, 'project'],
+    [/\bby the hour\b/i, 'hour'],
+    [/\bby the word\b/i, 'word'],
+    [/\bby the lesson\b/i, 'lesson'],
+  ];
+
+  const cardUnits = new Set();
+  const unreadable = [];
+  for (const s of SERVICES) {
+    const hit = CARD_UNITS.find(([re]) => re.test(s.i18n.en.billing));
+    if (hit) cardUnits.add(hit[1]);
+    else unreadable.push(s.id);
+  }
+  assert(unreadable.length === 0, 'every service card states a recognisable billing unit',
+    unreadable.length ? `unreadable: ${unreadable.join(', ')}` : `${SERVICES.length} cards`);
+
+  const listed = new Set(
+    LISTED_UNITS.filter(([re]) => re.test(EN.quote.noNumbers)).map(([, unit]) => unit));
+  const notNamed = [...cardUnits].filter((u) => !listed.has(u)).sort();
+  const notUsed = [...listed].filter((u) => !cardUnits.has(u)).sort();
+  assert(notNamed.length === 0 && notUsed.length === 0,
+    'quote.noNumbers names exactly the units the service cards use',
+    notNamed.length || notUsed.length
+      ? [
+          notNamed.length ? `missing: ${notNamed.join(', ')}` : '',
+          notUsed.length ? `unused: ${notUsed.join(', ')}` : '',
+        ].filter(Boolean).join('; ')
+      : `${[...cardUnits].sort().join(', ')}`);
+
+  // "by commission on completed orders" was invisible to the set comparison above, because
+  // a unit the code has never heard of simply did not match any pattern. Read every
+  // "by the X" out of the paragraph and require each one to be a unit the cards really use.
+  /*
+   * `by (?:the )?` and not `by the`: the clause that actually shipped was "by COMMISSION on
+   * completed orders", which carries no article — so a `by the (\w+)` scan matched nothing
+   * and the invented unit sailed through. Caught by negative-testing this check with the
+   * historical bug reinstated, which is the only reason to trust it.
+   */
+  const known = new Set(LISTED_UNITS.map(([, unit]) => unit));
+  const invented = [...new Set(
+    [...EN.quote.noNumbers.matchAll(/\bby (?:the )?(\w+)/gi)].map((m) => m[1].toLowerCase()),
+  )].filter((w) => !known.has(w));
+  assert(invented.length === 0, 'quote.noNumbers invents no billing unit the cards do not use',
+    invented.length ? `not a card unit: ${invented.join(', ')}` : 'none');
+}
+
+/* ── refs must be dereferenced in a <script> block ────────────────────────
+   `useContent()` returns refs. The template AUTO-UNWRAPS them; the `<script>` block does
+   not. So the very same expression is correct on one side of that boundary and a
+   `TypeError` on the other — and nothing else in the eight layers can see the difference,
+   because the page still renders and every string in it is still correct.
+
+   That is not hypothetical. `/contact` read `profile.contact.email` in script scope and
+   three user-visible things were broken at once:
+     - the copy-email button threw before reaching the clipboard and fell into its own
+       `catch`, so it reported "copy failed" on every single click;
+     - the form's submit threw, so an enquiry never reached a mail client;
+     - `socials` resolved through `profile.socials ?? []`, and the `?? []` absorbed the
+       TypeError into silence, so the whole social list rendered empty with no error at all.
+
+   Precision matters more than reach, so a name is only checked in a file that actually
+   destructures it from `useContent()`. Comments and quoted strings are removed first,
+   because an i18n key (`projects.stageOf`) and an import path (`@/content/audiences.js`)
+   are indistinguishable from a bug otherwise. Template literals are deliberately NOT
+   stripped — the original defect lived inside one.
+   ────────────────────────────────────────────────────────────────────────── */
+{
+  /** Remove comments and '…'/"…" strings in one pass, keeping template literals intact. */
+  function stripCommentsAndQuoted(code) {
+    let out = '';
+    let i = 0;
+    while (i < code.length) {
+      const two = code.slice(i, i + 2);
+      if (two === '//') { while (i < code.length && code[i] !== '\n') i++; continue; }
+      if (two === '/*') { i += 2; while (i < code.length && code.slice(i, i + 2) !== '*/') i++; i += 2; continue; }
+      const ch = code[i];
+      if (ch === "'" || ch === '"') {
+        i++;
+        while (i < code.length && code[i] !== ch) { if (code[i] === '\\') i++; i++; }
+        i++;
+        out += '""';
+        continue;
+      }
+      out += ch;
+      i++;
+    }
+    return out;
+  }
+
+  function vueFiles(dir, out = []) {
+    for (const entry of readdirSync(dir)) {
+      const full = p(dir, entry);
+      if (statSync(full).isDirectory()) vueFiles(full, out);
+      else if (entry.endsWith('.vue')) out.push(full);
+    }
+    return out;
+  }
+
+  const components = vueFiles('src');
+  const offenders = [];
+  for (const file of components) {
+    const source = readFileSync(file, 'utf8');
+    const block = source.match(/<script[^>]*>([\s\S]*?)<\/script>/)?.[1];
+    if (!block) continue;
+
+    // The refs THIS file takes from the composable, aliases included (`a: b`).
+    const destructured = [...block.matchAll(/const\s*\{([^}]*)\}\s*=\s*useContent\(\)/g)]
+      .flatMap((m) => m[1].split(',').map((part) => part.split(':').pop().trim()))
+      .filter(Boolean);
+    if (!destructured.length) continue;
+
+    const code = stripCommentsAndQuoted(
+      // Drop the destructuring statement itself, then every paired `.value`.
+      block.replace(/const\s*\{[^}]*\}\s*=\s*useContent\(\)/g, ''));
+    for (const name of destructured) {
+      const bare = new RegExp(`\\b${name}\\.(?!value\\b)([A-Za-z_$][\\w$]*)`, 'g');
+      for (const hit of code.matchAll(bare)) {
+        // ROOT-relative so a CI failure cites the repo path rather than this machine’s
+        // filesystem — the absolute path is 40 characters of noise in every hit.
+        offenders.push(`${file.replace(ROOT + '/', '')}: ${hit[0]} in script scope`);
+      }
+    }
+  }
+  assert(offenders.length === 0, 'no useContent() ref is dereferenced without .value in a script block',
+    offenders.length ? offenders.join(' | ') : `${components.length} component(s) checked`);
+}
+
 /* ── no withheld name reaches a published surface ─────────────────────────
    Anonymising `src/content` is not enough. Two other surfaces ship: every file
    under `public/` (served byte-for-byte, including the ATS-facing résumé JSON the
@@ -785,6 +944,29 @@ assert(NEW.timeline.some((e) => e.i18n?.en?.dateLabel === 'The Time for Learning
 // Placeholder / safe-degradation markers
 assert(NEW.gallery.every((g) => g.imageStatus === 'placeholder'),
   'gallery images flagged as placeholders', `${NEW.gallery.length}/${NEW.gallery.length}`);
+
+/*
+ * Closed vocabularies for the two enum-ish fields that render through a DEDICATED string
+ * instead of a label key: `projects.tier` surfaces as `projects.archivedNote`, and
+ * `gallery.imageStatus` as `gallery.placeholderBadge`. Because neither goes through
+ * `enumLabelKey()`, the enum scan in `verify:i18n` (ENUM_FIELDS) cannot see either field,
+ * so before this block a typo in one was invisible to all eight layers: the card would
+ * silently lose its note, or the badge would simply not render, and the page would
+ * under-report what it was actually showing. SCHEMA.md documents both sets; these
+ * assertions are what makes that documentation binding rather than aspirational.
+ */
+{
+  const TIERS = ['featured', 'listed', 'archived'];
+  const unknownTier = [...new Set(NEW.projects.map((p) => p.tier))].filter((t) => !TIERS.includes(t));
+  assert(unknownTier.length === 0, 'projects.tier uses only the documented vocabulary',
+    unknownTier.length ? `unknown: ${unknownTier.join(', ')}` : `${TIERS.join(' | ')}`);
+
+  const IMAGE_STATUS = ['placeholder', 'real'];
+  const unknownStatus = [...new Set(NEW.gallery.map((g) => g.imageStatus))]
+    .filter((s) => !IMAGE_STATUS.includes(s));
+  assert(unknownStatus.length === 0, 'gallery.imageStatus uses only the documented vocabulary',
+    unknownStatus.length ? `unknown: ${unknownStatus.join(', ')}` : `${IMAGE_STATUS.join(' | ')}`);
+}
 
 /*
  * No content image may be fetched from someone else's host.

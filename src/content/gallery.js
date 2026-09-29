@@ -5,8 +5,10 @@
  *   - `category` keeps the old lowercase enum strings unchanged.
  *   - `year` stays the original display string (ranges like '2020–2024' keep
  *     their en dash — it is an i18n-free label, not an ISO date).
- *   - `imageStatus` is new: all 14 entries still point at picsum placeholders,
- *     so every entry is 'placeholder' until a real photo replaces the URL.
+ *   - `image` is `null` on all 14 entries: the gallery no longer fetches from a
+ *     third-party image host, and the page draws its own placeholder instead.
+ *     `imageStatus` stays 'placeholder' per entry so the one flag flips to 'real'
+ *     when a real photograph arrives — it tracks the entry's state, not the URL.
  * Copy: `i18n.en.title`, `i18n.en.description`, `i18n.en.location`.
  *   - `location` moved into i18n because place names are localised
  *     (e.g. 'Qingdao, China' → 「中国青岛」) even though the English string is

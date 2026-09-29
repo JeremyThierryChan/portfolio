@@ -1,4 +1,9 @@
 // Content layer — structure at top level, all display copy under i18n.en (see SCHEMA.md).
+//
+// `cofounder` is copy, not structure, so it lives inside each entry's `i18n` block like
+// every other user-visible string — and is absent rather than `null` on the 23 entries
+// that have no collaborator. Readers are unaffected: they receive `pick()`ed projects,
+// which merge i18n fields onto the top level, so `project.cofounder` still resolves.
 export const projects = [
   {
     id: 1,
@@ -12,7 +17,6 @@ export const projects = [
     progress: 99,
     link: 'https://jeremythierrychan.github.io/portfolio/',
     tech: ['Vue.js', 'CSS', 'JavaScript'],
-    cofounder: null,
     stages: [],
     i18n: {
       en: {
@@ -40,7 +44,6 @@ export const projects = [
     progress: 15,
     link: 'https://jeremythierrychan.github.io/CarpeLucem/',
     tech: ['Brand Strategy', 'International Trade', 'Product Sourcing'],
-    cofounder: null,
     stages: [
       {
         id: 'concept-branding',
@@ -149,7 +152,6 @@ export const projects = [
     progress: 70,
     link: null,
     tech: ['Python', 'FastAPI', 'React', 'SQLAlchemy', 'ccxt', 'Docker'],
-    cofounder: null,
     stages: [
       {
         id: 'research',
@@ -233,7 +235,6 @@ export const projects = [
     progress: 60,
     link: null,
     tech: ['Python', 'Numbers', 'Trading Platforms'],
-    cofounder: null,
     stages: [],
     i18n: {
       en: {
@@ -261,7 +262,6 @@ export const projects = [
     progress: 25,
     link: null,
     tech: ['International Trade', 'Russian', 'Documentation'],
-    cofounder: null,
     stages: [
       {
         id: 'market-research',
@@ -346,7 +346,6 @@ export const projects = [
     progress: 30,
     link: 'https://jeremythierrychan.github.io/ParallelOffset/',
     tech: ['Next.js', 'React', 'TypeScript', 'next-intl'],
-    cofounder: null,
     stages: [
       {
         id: 'design',
@@ -437,7 +436,6 @@ export const projects = [
        describing her anonymously. See scripts/withheld-names.mjs. */
     link: null,
     tech: ['Vue.js', 'CSS', 'JavaScript'],
-    cofounder: null,
     stages: [],
     i18n: {
       en: {
@@ -464,7 +462,6 @@ export const projects = [
     /* Link withheld — it is the client's name. See scripts/withheld-names.mjs. */
     link: null,
     tech: ['JavaScript', 'Vue.js'],
-    cofounder: null,
     stages: [],
     i18n: {
       en: {
@@ -492,7 +489,6 @@ export const projects = [
     progress: 20,
     link: null,
     tech: ['Research', 'Curriculum Design', 'Documentation'],
-    cofounder: null,
     stages: [],
     i18n: {
       en: {
@@ -520,7 +516,6 @@ export const projects = [
     progress: 10,
     link: null,
     tech: ['Vue', 'Axios', 'Recipe API'],
-    cofounder: null,
     stages: [
       {
         id: 'planning',
@@ -603,7 +598,6 @@ export const projects = [
     progress: 80,
     link: null,
     tech: ['Vue.js', 'CSS', 'JavaScript'],
-    cofounder: null,
     stages: [],
     i18n: {
       en: {
@@ -631,7 +625,6 @@ export const projects = [
     progress: 15,
     link: 'https://jeremythierrychan.github.io/Taoism/',
     tech: ['Next.js', 'JavaScript'],
-    cofounder: null,
     stages: [],
     i18n: {
       en: {
@@ -659,16 +652,17 @@ export const projects = [
     progress: 30,
     link: 'https://jeremythierrychan.github.io/Lacquora/',
     tech: ['Vue.js', 'Node.js', 'Docker'],
-    cofounder: 'A local heritage lacquer-art studio',
     stages: [],
     i18n: {
       en: {
         title: 'Lacquora — Lacquer Art Guitar',
+        cofounder: 'A local heritage lacquer-art studio',
         description:
           'A niche project combining traditional intangible cultural heritage lacquer art with custom electric guitars. A collaboration between Jeremy and a local studio working in intangible cultural heritage lacquer art. Includes a showcase website, product pages, and a backend server.',
       },
       zh: {
         title: 'Lacquora — 漆艺吉他',
+        cofounder: '一家本地非遗漆艺工作室',
         description:
           '将传统非物质文化遗产漆艺与定制电吉他结合的小众项目。由 Jeremy 与一家本地非遗漆艺工作室合作开展。包含展示网站、产品页面与一个后端服务器。',
       },
@@ -688,7 +682,6 @@ export const projects = [
     /* Link withheld — it is the client's name. See scripts/withheld-names.mjs. */
     link: null,
     tech: ['Astro', 'CSS', 'JavaScript'],
-    cofounder: null,
     stages: [],
     i18n: {
       en: {
@@ -714,7 +707,6 @@ export const projects = [
     progress: 20,
     link: null,
     tech: ['Vue.js', 'JavaScript', 'XMind'],
-    cofounder: null,
     stages: [],
     i18n: {
       en: {
@@ -742,7 +734,6 @@ export const projects = [
     progress: 30,
     link: null,
     tech: ['Vue.js', 'CSS', 'JavaScript'],
-    cofounder: null,
     stages: [],
     i18n: {
       en: {
@@ -770,7 +761,6 @@ export const projects = [
     progress: 25,
     link: null,
     tech: ['Vue.js', 'CSS'],
-    cofounder: null,
     stages: [],
     i18n: {
       en: {
@@ -798,7 +788,6 @@ export const projects = [
     progress: 15,
     link: null,
     tech: ['OpenMediaVault', 'NAS', 'Web Design'],
-    cofounder: null,
     stages: [],
     i18n: {
       en: {
@@ -825,16 +814,17 @@ export const projects = [
     progress: 100,
     link: null,
     tech: ['Java', 'Minecraft Server'],
-    cofounder: 'A co-admin',
     stages: [],
     i18n: {
       en: {
         title: 'Minecraft Server',
+        cofounder: 'A co-admin',
         description:
           'A continuously running Minecraft server with plugin configuration, performance optimisation, and load balancing.',
       },
       zh: {
         title: 'Minecraft 服务器',
+        cofounder: '一位共同管理员',
         description:
           '一台持续运行的 Minecraft 服务器，包含插件配置、性能优化与负载均衡。',
       },
@@ -853,7 +843,6 @@ export const projects = [
     progress: 100,
     link: null,
     tech: ['OpenMediaVault', 'Linux', 'Networking'],
-    cofounder: null,
     stages: [],
     i18n: {
       en: {
@@ -879,7 +868,6 @@ export const projects = [
     status: 'in-progress',
     link: 'https://blog.csdn.net/JeremyTC',
     tech: ['Python', 'Technical writing'],
-    cofounder: null,
     stages: [],
     i18n: {
       en: {
@@ -902,7 +890,6 @@ export const projects = [
     status: 'in-progress',
     link: null,
     tech: ['Obsidian', 'CorelDraw', 'XMind', 'Knowledge base design'],
-    cofounder: null,
     stages: [],
     /* TODO(verify): no percentage is set on purpose — an audit found the project stalled
        with no measurable completion, so a number would be invented. The two things that
@@ -929,7 +916,6 @@ export const projects = [
     status: 'in-progress',
     link: null,
     tech: ['CorelDraw', 'Parametric design', 'Python', 'XMind'],
-    cofounder: null,
     stages: [],
     /* TODO(verify): two open questions from the audit. (1) The drawings are 27 .cdr files
        — CorelDraw's own format, which no browser and no Mac preview can open. Until they
@@ -960,7 +946,6 @@ export const projects = [
        else's. See scripts/withheld-names.mjs, which guards the name for the same reason. */
     link: null,
     tech: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS'],
-    cofounder: null,
     stages: [],
     /* TODO(verify): two things the audit could not settle. (1) Whether the build is still
        being extended or is finished — no progress figure is set rather than a guessed one.
@@ -989,7 +974,6 @@ export const projects = [
     status: 'in-progress',
     link: null,
     tech: ['Python', 'Obsidian', 'Music theory', 'Documentation generation'],
-    cofounder: null,
     stages: [],
     /* TODO(verify): no progress figure is set. What is verifiable is that no audio file,
        score or artwork exists anywhere in the project; how far the composition has

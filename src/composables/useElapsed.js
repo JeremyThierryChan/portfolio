@@ -47,12 +47,17 @@ export function useElapsed(start) {
   };
 
   onMounted(() => {
-    startTicking();
+    // Mount can land in an already-hidden document (a restored background tab), where
+    // starting unconditionally would re-create the always-on interval this file exists
+    // to remove. The listener below still catches every change after that.
+    if (typeof document === 'undefined') return;
+    if (document.visibilityState === 'visible') startTicking();
     document.addEventListener('visibilitychange', onVisibility);
   });
 
   onUnmounted(() => {
     stop();
+    if (typeof document === 'undefined') return;
     document.removeEventListener('visibilitychange', onVisibility);
   });
 

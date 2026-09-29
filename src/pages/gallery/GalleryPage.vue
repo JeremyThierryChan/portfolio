@@ -3,13 +3,21 @@
  * GalleryPage — 14 photographs.
  *
  * SAFE DEGRADATION, and the honest handling of placeholder content:
- *   Every one of the 14 images is a `picsum.photos` stub — there is not a single real
- *   photograph in the project. The old page presented them as if they were real. Here
- *   a notice at the top of the page says so plainly, and each card carries a
- *   "Placeholder" badge, so the gallery reads as a work in progress rather than as the
- *   owner's actual photography. `content.layer` tags them with `imageStatus:
- *   'placeholder'`, so when real images arrive the flag flips and the notice and badges
- *   disappear on their own.
+ *   There is not a single real photograph in the project. The old page pointed all 14
+ *   entries at `picsum.photos` and presented the results as if they were real; they are
+ *   now `image: null`, and the page draws its own placeholder in CSS instead, so the
+ *   site no longer fetches fourteen photographs from a third party. A notice at the top
+ *   of the page says so plainly. `content.layer` still tags every entry with
+ *   `imageStatus: 'placeholder'`, so when real images arrive the flag flips and the
+ *   notice disappears on its own.
+ *
+ *   Two distinct states, which is why the badge and the drawn box are separate:
+ *     - `image: null`            → drawn placeholder box, whose own mark reads
+ *                                  "Placeholder". No badge (it would repeat the word).
+ *     - `image` set but the flag
+ *       still 'placeholder'      → a real <img> that is known to be a stub, so it gets
+ *                                  the badge to stop it passing for real photography.
+ *   The badge is therefore conditioned on `image && imageStatus === 'placeholder'`.
  *
  * Also fixed:
  *   - The card was a `<div @click>`, so the lightbox was unreachable by keyboard.

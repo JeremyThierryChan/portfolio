@@ -25,7 +25,7 @@ export default {
     step2Body: 'Schriftlich, mit Angabe dessen, was enthalten ist, was nicht, und wann geliefert würde.',
     step3Title: 'Sie bestätigen, und ich reserviere den Termin',
     step3Body: 'Sobald Preis und Umfang abgestimmt sind, bestätige ich die Termine und beginne mit der Vorbereitung.',
-    noNumbers: 'Hier gibt es bewusst keine Preisliste. Diese neun Leistungen werden in unterschiedlichen Einheiten abgerechnet — pro Tag, pro Veranstaltung, pro Wort, pro Projekt, pro Unterrichtseinheit, per Provision auf abgeschlossene Aufträge —, ein einziger Betrag wäre also irreführender als hilfreich. Beschreiben Sie, was Sie brauchen, und Sie bekommen eine konkrete Zahl.',
+    noNumbers: 'Hier gibt es bewusst keine Preisliste. Diese neun Leistungen werden in unterschiedlichen Einheiten abgerechnet — pro Tag, pro Veranstaltung, pro Wort, pro Projekt, pro Stunde, pro Unterrichtseinheit —, ein einziger Betrag wäre also irreführender als hilfreich. Beschreiben Sie, was Sie brauchen, und Sie bekommen eine konkrete Zahl.',
     cta: 'Schicken Sie mir Ihren Bedarf',
   },
 
@@ -129,7 +129,7 @@ export default {
        Stimmen → Wegweiser → Kontakt. Das sind die Abschnittsbeschriftungen dazu. */
     servicesLede: 'Neun Dinge, für die man mich beauftragen kann. Sagen Sie mir, was auf Sie zutrifft, und ich stelle diese nach vorn.',
     trustTitle: 'Was andere sagen',
-    trustLede: 'Geschrieben von Menschen, mit denen ich zusammengearbeitet habe — einer stellvertretenden Schulleitung, einem Kollegen und zwei Programmkoordinatoren.',
+    trustLede: 'Geschrieben von Menschen, mit denen ich zusammengearbeitet habe — einer stellvertretenden Schulleitung, einem Kollegen, zwei Programmkoordinatoren und einem Mitfreiwilligen.',
     trustAll: 'Alle Empfehlungen',
     closingTitle: 'Sagen Sie mir, was Sie brauchen',
     closingBody: 'Ein Projekt, eine Frage oder eine Situation, bei der Sie nicht wissen, wie Sie sie angehen sollen. Das erste Gespräch kostet nichts.',
@@ -419,7 +419,7 @@ export default {
     otherNote: 'Andere Arten von Arbeit: fragen Sie einfach.',
     /* Wie ein Auftrag berechnet wird, ohne Zahlen zu veröffentlichen. */
     pricingTitle: 'Wie ich arbeite',
-    pricingBody: 'Angebot pro Auftrag — Tagessatz beim Dolmetschen, Festpreis für eine Website oder ein Handelsprojekt, Stundensatz für laufende Beratung. Wie die Kosten aussehen und was enthalten ist, sage ich Ihnen, bevor Sie sich entscheiden.',
+    pricingBody: 'Angebot pro Auftrag — beim Dolmetschen pro Tag oder pro Veranstaltung, Festpreis für eine Website oder ein Handelsprojekt, Stundensatz für laufende Beratung. Wie die Kosten aussehen und was enthalten ist, sage ich Ihnen, bevor Sie sich entscheiden.',
     travelNote: 'Sitz in Wenzhou, Zhejiang. Verfügbar für Aufträge in ganz China und international.',
     domainLabel: 'Bereich',
     domain: {

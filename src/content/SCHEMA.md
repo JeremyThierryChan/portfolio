@@ -133,7 +133,7 @@ resolver and by the UI's safe-degradation rules.
 
 | file | export | notes |
 |---|---|---|
-| `projects.js` | `projects` | 21 entries. `tech` is a **string array**, not a comma string. `tier` ∈ `'featured'` \| `'listed'` \| `'archived'`. |
+| `projects.js` | `projects` | 25 entries. `tech` is a **string array**, not a comma string. `tier` ∈ `'featured'` \| `'listed'` \| `'archived'`. |
 | `timeline.js` | `timeline` | 50 entries. Ordered **newest first**. |
 | `skills.js` | `skills` | 21 entries. `evidence[]` lives inside `i18n.<locale>` and holds checkable facts; `usage` replaced a self-rated `level` percentage. |
 | `gallery.js` | `gallery` | 14 entries. |
@@ -147,8 +147,11 @@ resolver and by the UI's safe-degradation rules.
 
 ### Field additions beyond the original contract
 
-- `gallery[].imageStatus` ∈ `'placeholder'` \| `'real'` — all 14 current images are
-  `picsum.photos` stubs, so the UI can badge or de-emphasise them.
+- `gallery[].imageStatus` ∈ `'placeholder'` \| `'real'` — `image` is `null` on all 14
+  entries: the gallery fetches nothing from a third-party image host and the page draws its
+  own placeholder. The value stays `'placeholder'` per entry so that one flag flips to
+  `'real'` when a real photograph arrives; it is a statement about the entry, not something
+  derived from `image`.
 
 ## Known limitations (deliberate, not oversights)
 
@@ -166,10 +169,25 @@ resolver and by the UI's safe-degradation rules.
 ### Field additions beyond the original contract (continued)
 
 - `services[].billing` states the UNIT a service is charged in, inside `i18n.<locale>`.
-  It never carries a figure or a commercial term: the site publishes no rates on purpose,
-  and the reasoning is in `src/components/content/QuoteProcess.vue`. Two rules apply to
-  it, and `verify-content` enforces only the first because the second is a judgement:
-  it must be present in every locale like any other copy, and it must AGREE with the
-  billing basis already stated by `services.pricingBody` on the services page. Those two
-  contradicted each other once (hourly advisory versus a monthly retainer) and the page
-  was publishing both.
+  It never carries a figure or a commercial term. Two rules apply to it, and
+  `verify-content` enforces only the first because the second is a judgement: it must be
+  present in every locale like any other copy, and it must AGREE with every other surface
+  that states a billing basis. There are three such surfaces, and changing one is changing
+  all three:
+
+  1. `services[].billing` itself — the unit printed on the service card.
+  2. `locale.services.pricingBody` — the "how I work" panel on /services.
+  3. `locale.quote.noNumbers` — the no-price-list paragraph on /contact.
+
+  `verify-content` can only assert that `billing` exists in every locale; it cannot tell
+  whether a sentence in a locale file agrees with it, so re-reading all three by hand is the
+  check. They have contradicted each other twice already: hourly advisory against a monthly
+  retainer, and "commission on completed orders" against `cross-border-trade`'s fixed price
+  per project. The second one went unnoticed because the rule above named only surface 2 —
+  the false clause was on surface 3. Trade sourcing was never commission-based; the clause
+  was removed from all six locales.
+
+  One deliberate exception to "no rates": /tutoring publishes a full rate card by explicit
+  decision, because teaching is sold in comparable hourly units with no scope left to
+  discover. This rule governs the nine service cards, not the site as a whole — which is
+  also why `quote.noNumbers` says "no price list HERE" rather than "no price list".

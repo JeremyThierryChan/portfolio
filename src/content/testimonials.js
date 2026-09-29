@@ -1,6 +1,16 @@
 // testimonials.js — i18n content layer (see SCHEMA.md).
 // Migrated verbatim from src/pages/about/testimonial/testimonialsData.js —
 // no wording was changed, shortened, or reordered.
+/*
+ * COUPLING WARNING: `home.trustLede` (in every locale) enumerates who wrote these — it
+ * names "a school vice-principal, a colleague, two programme coordinators and a fellow
+ * volunteer". That sentence was written when there were four entries and was never updated
+ * when the fifth was added, so the lede disagreed with the cards below it and no checker
+ * could see it: the lede is prose, and the count is data.
+ *
+ * Adding or removing an entry here therefore means updating `trustLede` in ALL SIX locale
+ * files, or the page starts misdescribing itself again.
+ */
 export const testimonials = [
   {
     id: 1,

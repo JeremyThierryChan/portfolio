@@ -35,7 +35,6 @@ export const services = [
     // Order here is the order the cards render in; it is deliberately the order a
     // prospective client is most likely to be shopping for.
     order: 1,
-    featured: true,
     i18n: {
       en: {
         title: 'Business interpreting',
@@ -69,7 +68,6 @@ export const services = [
     audiences: ['events'],
     domain: 'language',
     order: 2,
-    featured: true,
     i18n: {
       en: {
         title: 'Premium event interpreting',
@@ -362,16 +360,23 @@ export const SERVICE_DOMAINS = ['language', 'trade', 'tech'];
  *   - teaching materials — included (as currently written) or charged separately?
  *   - minimum booking — is there one, for interpreting or for teaching?
  *   - deposit — any up-front percentage, and due at what point?
- *   - cross-border trade — only a fixed project price is stated, matching the "fixed
- *     price for a trade project" line already published on /services. If commission-based
- *     sourcing is also offered it has to be added in BOTH places or the page contradicts
- *     itself. It did: an earlier draft of this field said "fixed fee or commission" while
- *     /services said "fixed price", which is why the two are now written to agree.
+ *   - cross-border trade — only a fixed project price is stated, matching the "fixed price
+ *     for a trade project" line published on /services. If commission-based sourcing is
+ *     also offered it has to be added EVERYWHERE a billing basis is stated, not in one
+ *     place: this entry's own `billing` line, the /services summary
+ *     (`services.pricingBody`), and the paragraph on /contact that explains why there is no
+ *     price list (`quote.noNumbers`). Both halves of that rule have been broken in the
+ *     past — an earlier draft of this field said "fixed fee or commission" against a
+ *     summary saying "fixed price", and `quote.noNumbers` listed "commission on completed
+ *     orders" among the units while this entry stated a fixed project price. Nothing
+ *     mechanical catches that: the checker can assert that `billing` exists in every
+ *     locale, not that it agrees with a sentence in a locale file, so the agreement is a
+ *     judgement to re-read by hand whenever any one of the three changes.
  *   - ongoing advisory — stated hourly, matching /services. A monthly retainer is not
  *     offered here until it is confirmed.
  *
- * The three lines that restate something the /services summary already covers —
- * interpreting by the day, websites and trade projects at a fixed price, advisory hourly
- * — are worded to agree with that summary in substance. Change one, change the other, or
- * the same page will say two different things.
+ * `billing` is not the only surface that states a basis: the /services summary restates
+ * several of them (interpreting by the day or per event, a fixed price for a website or a
+ * trade project, advisory hourly) and the cards render on that same page. Change one,
+ * change the other, or the same page will say two different things.
  * ──────────────────────────────────────────────────────────────────────────────── */

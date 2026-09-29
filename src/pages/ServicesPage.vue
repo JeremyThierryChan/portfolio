@@ -23,6 +23,7 @@
 import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useContent, enumLabelKey, distinctValues } from '@/content/index.js';
+import { pick } from '@/content/resolve.js';
 import { splitByAudience } from '@/content/audiences.js';
 import { useAudience } from '@/composables/useAudience.js';
 
@@ -34,9 +35,17 @@ import CollapsedGroup from '@/components/ui/CollapsedGroup.vue';
 import AppButton from '@/components/ui/AppButton.vue';
 import ServiceCard from '@/components/content/ServiceCard.vue';
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const { services, profile } = useContent();
 const { current, isFiltered } = useAudience();
+
+/*
+ * `pick()` flattens only the TOP level of what it is given, so `pick(profile, locale)`
+ * leaves `positioning` as the raw {based, available, i18n} object. Reading
+ * `profile.positioning.availability` off that is silently `undefined`, which is what put an
+ * empty green block on this page where the availability sentence belongs.
+ */
+const positioning = computed(() => pick(profile.value.positioning, locale.value));
 
 const ALL_AREAS = 'all';
 const area = ref(ALL_AREAS);
@@ -148,7 +157,7 @@ const otherLabel = computed(() => {
         </AppButton>
 
         <p v-if="!isFiltered" class="svc-page__avail">
-          {{ profile.positioning.availability }}
+          {{ positioning.availability }}
         </p>
       </div>
 
@@ -159,7 +168,7 @@ const otherLabel = computed(() => {
         </div>
         <div class="svc-page__fact">
           <dt>{{ t('services.travelNote') }}</dt>
-          <dd>{{ profile.positioning.available }}</dd>
+          <dd>{{ positioning.available }}</dd>
         </div>
       </dl>
     </section>

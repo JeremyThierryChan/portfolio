@@ -24,12 +24,19 @@ export const profile = {
    * because the visitor is a prospective client, not a reader browsing a personal site.
    */
   positioning: {
-    /* Travel is stated without the "depending on the fee" caveat that belongs in
+    /* `based` and `available` used to sit at this level, which made them the only
+       user-visible copy in the entire content layer outside `i18n` — the one thing
+       SCHEMA.md forbids — and it showed: the Chinese page printed "Wenzhou, Zhejiang"
+       and "China & international travel" verbatim. Both are localisable, a place name
+       especially, so they moved in with everything else.
+       No reader needed changing: they all go through `pick(profile.positioning, locale)`,
+       which flattens this object whichever side of the `i18n` boundary a field sits on.
+       Travel is stated without the "depending on the fee" caveat that belongs in
        negotiation, not on a public page. */
-    based: 'Wenzhou, Zhejiang',
-    available: 'China & international travel',
     i18n: {
       en: {
+        based: 'Wenzhou, Zhejiang',
+        available: 'China & international travel',
         line: 'Language, trade and technology — one operator.',
         summary:
           'I interpret between Chinese, English, French and German. I help cross-border businesses find suppliers, agree specifications and ship. And I build the websites and internal systems that hold it together. Based in Wenzhou, working across China and abroad.',
@@ -37,6 +44,8 @@ export const profile = {
         cta: 'Tell me what you need',
       },
       zh: {
+        based: '浙江温州',
+        available: '中国各地与海外',
         line: '语言、贸易与技术——一个人就能办。',
         summary:
           '我在中文、英文、法文和德文之间做口译。我帮跨境企业找供应商、确认规格并安排出货。我还搭建让这些事情运转起来的网站和内部系统。我常驻温州，在中国和海外工作。',

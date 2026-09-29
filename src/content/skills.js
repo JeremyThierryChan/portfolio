@@ -4,8 +4,12 @@
  * Structure (top level): id, name, category, usage.
  *   - `name` is a proper noun (technology / language name), so it stays
  *     locale-neutral at the top level. `i18n.<locale>.name` overrides it where a
- *     locale genuinely translates the name — every skill below has a real Chinese
- *     name, so `zh` supplies one. That is the one sanctioned use of the exception.
+ *     locale genuinely translates the name: the language entries (English → 英语,
+ *     French → 法语) each carry a real Chinese name, while the technology and tool
+ *     entries keep the English one, because `Vue.js` and `Docker` are not translated.
+ *     SCHEMA.md states that rule — use it where the name is genuinely translated,
+ *     leave it out where the name is a technology — and this is the one sanctioned
+ *     use of the exception.
  *   - `category` is the lowercase enum from SCHEMA.md, NOT the old display
  *     string: 'Programming Language' → 'programming', 'Language' → 'language',
  *     'Other' → 'other'.
@@ -39,14 +43,14 @@ export const skills = [
       en: {
         description: 'JavaScript framework for building user interfaces. Used to build this portfolio website and several SPA projects with multi-language support and dark mode.',
         evidence: [
-          'Every site in this portfolio is built with it, including the six-language version you are reading',
+          'Nine of the 25 projects here are built with it, including the six-language site you are reading; three use Next.js and one uses Astro',
           'Multilingual routing and a full design-token layer written by hand',
         ],
       },
       zh: {
         description: '用于构建用户界面的 JavaScript 框架。本站与多个单页应用都用它开发，支持多语言与深色模式。',
         evidence: [
-          '这个作品集里的每一个站点都用它构建，包括你正在读的六语言版本',
+          '这里的 25 个项目中有 9 个用它构建，包括你正在读的这个六语言站点；另有 3 个用 Next.js、1 个用 Astro',
           '多语言路由与一整套手写设计令牌层',
         ],
       },
@@ -277,14 +281,14 @@ export const skills = [
       en: {
         description: 'Version control and team collaboration. All projects maintained on GitHub with structured branching and commit history.',
         evidence: [
-          'Every project in this portfolio is public on GitHub',
+          'Five of the 25 projects here are deployed on GitHub Pages; the other twenty are client and personal work, so most have no public link',
           'Structured branching and commit history across team and solo work',
         ],
       },
       zh: {
         description: '版本控制与团队协作。所有项目都托管在 GitHub 上，有规范的分支与提交记录。',
         evidence: [
-          '本作品集中的每个项目都在 GitHub 上公开',
+          '这里的 25 个项目中有 5 个部署在 GitHub Pages 上；其余 20 个是客户与个人项目，大多没有公开链接',
           '个人与协作项目都保持了规范的分支与提交历史',
         ],
       },

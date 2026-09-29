@@ -761,7 +761,7 @@ export const timeline = [
   {
     id: 'started-french-language-learning',
     audiences: ['institutions'],
-    category: 'hobby',
+    category: 'education',
     date: '2014-10',
     datePrecision: 'month',
     i18n: {

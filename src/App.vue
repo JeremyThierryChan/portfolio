@@ -16,11 +16,12 @@ import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
 import { useContent } from '@/content/index.js';
+import { pick } from '@/content/resolve.js';
 import SiteNav from '@/components/layout/SiteNav.vue';
 import SiteFooter from '@/components/layout/SiteFooter.vue';
 import ThemeExplainer from '@/components/theme/ThemeExplainer.vue';
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const route = useRoute();
 const { profile } = useContent();
 
@@ -59,7 +60,14 @@ const description = computed(() => {
     // meta description.
     if (value && value !== key) return value;
   }
-  return profile.value?.positioning?.summary ?? '';
+  /*
+   * `positioning` carries its own `i18n` block, and `pick()` flattens only the TOP level
+   * of whatever it is handed — so `pick(profile, locale).positioning` is still the raw
+   * {based, available, i18n} object, and its `summary` is `undefined`. Every route with no
+   * lede was therefore rendering `content=""`, which is how a shared link ended up with no
+   * description at all. Pick the nested object itself, the way HomePage already does.
+   */
+  return pick(profile.value?.positioning, locale.value)?.summary ?? '';
 });
 
 /*
@@ -86,12 +94,23 @@ function writeTag(selector, attributes) {
 function applyMetadata() {
   if (typeof document === 'undefined' || !document.head) return;
   document.title = title.value;
-  writeTag('meta[name="description"]', { content: description.value });
+  /*
+   * The description-bearing tags are written ONLY when there is a description. `writeTag`
+   * sets `content` unconditionally, so an empty string does not mean "leave it alone" — it
+   * DELETES the real tags declared in index.html, and the link then gets shared with no
+   * description whatsoever. Absent is harmless; blank is not. This is the second half of
+   * the fix for the bug above: even if a description ever goes missing again, the static
+   * tags survive instead of being blanked out.
+   */
+  const desc = description.value;
+  if (desc) {
+    writeTag('meta[name="description"]', { content: desc });
+    writeTag('meta[property="og:description"]', { content: desc });
+    writeTag('meta[name="twitter:description"]', { content: desc });
+  }
   writeTag('meta[property="og:title"]', { content: title.value });
-  writeTag('meta[property="og:description"]', { content: description.value });
   writeTag('meta[property="og:url"]', { content: canonicalUrl.value });
   writeTag('meta[name="twitter:title"]', { content: title.value });
-  writeTag('meta[name="twitter:description"]', { content: description.value });
   writeTag('link[rel="canonical"]', { rel: 'canonical', href: canonicalUrl.value });
 }
 

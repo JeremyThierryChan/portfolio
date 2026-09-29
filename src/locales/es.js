@@ -26,7 +26,7 @@ export default {
     step2Body: 'Por escrito, indicando qué está incluido, qué no lo está y cuándo se entregaría.',
     step3Title: 'Confirmas y reservo la fecha',
     step3Body: 'Una vez acordados el precio y el alcance, confirmo las fechas y paso a la preparación.',
-    noNumbers: 'Aquí no hay tarifa, y es a propósito. Estos nueve servicios se facturan en unidades distintas — por día, por evento, por palabra, por proyecto, por clase, por comisión sobre pedidos cerrados —, así que una sola cifra engañaría más de lo que ayudaría. Describe lo que necesitas y tendrás una cifra concreta.',
+    noNumbers: 'Aquí no hay tarifa, y es a propósito. Estos nueve servicios se facturan en unidades distintas — por día, por evento, por palabra, por proyecto, por hora, por clase —, así que una sola cifra engañaría más de lo que ayudaría. Describe lo que necesitas y tendrás una cifra concreta.',
     cta: 'Envíame lo que necesitas',
   },
 
@@ -131,7 +131,7 @@ export default {
        confianza → índice → contacto. Estas son las etiquetas de esa estructura. */
     servicesLede: 'Nueve cosas por las que puedes contratarme. Dime cuál se parece a tu caso y pondré esas primero.',
     trustTitle: 'Lo que dicen',
-    trustLede: 'Escrito por personas con las que he trabajado: un vicedirector de instituto, un colega y dos coordinadores de programas.',
+    trustLede: 'Escrito por personas con las que he trabajado: un vicedirector de instituto, un colega, dos coordinadores de programas y otro voluntario.',
     trustAll: 'Todas las recomendaciones',
     closingTitle: 'Dime qué necesitas',
     closingBody: 'Un proyecto, una duda o una situación que no sabes cómo resolver. La primera conversación no cuesta nada.',
@@ -422,7 +422,7 @@ export default {
     otherNote: 'Otros tipos de trabajo: solo tienes que preguntar.',
     /* Cómo se cobra un encargo, sin publicar cifras. */
     pricingTitle: 'Cómo trabajo',
-    pricingBody: 'Presupuesto por encargo: tarifa por día para la interpretación, precio cerrado para una web o un proyecto comercial, y por horas para el asesoramiento continuo. Te diré qué forma tiene el coste antes de que te comprometas, y qué incluye.',
+    pricingBody: 'Presupuesto por encargo: tarifa por día o por evento para la interpretación, precio cerrado para una web o un proyecto comercial, y por horas para el asesoramiento continuo. Te diré qué forma tiene el coste antes de que te comprometas, y qué incluye.',
     travelNote: 'Con base en Wenzhou, Zhejiang. Disponible para trabajar en toda China y a nivel internacional.',
     domainLabel: 'Área',
     domain: {

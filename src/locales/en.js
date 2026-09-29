@@ -32,7 +32,7 @@ export default {
     step2Body: 'Written down, saying what is included, what is not, and when it would be delivered.',
     step3Title: 'Confirm, and I book it',
     step3Body: 'Once the price and the scope are agreed, I confirm the dates and move into preparation.',
-    noNumbers: 'There is no price list here on purpose. These nine services are billed in different units — by the day, by the event, by the word, by the project, by the lesson, by commission on completed orders — so a single figure would mislead more than it helps. Describe what you need and you will get a definite number.',
+    noNumbers: 'There is no price list here on purpose. These nine services are billed in different units — by the day, by the event, by the word, by the project, by the hour, by the lesson — so a single figure would mislead more than it helps. Describe what you need and you will get a definite number.',
     cta: 'Send me what you need',
   },
 
@@ -136,7 +136,7 @@ export default {
        index → contact. These are the section labels for that structure. */
     servicesLede: 'Nine things I can be hired for. Tell me which sounds like you and I will put those first.',
     trustTitle: 'What people say',
-    trustLede: 'Written by people I have worked with — a school vice-principal, a colleague, two programme coordinators.',
+    trustLede: 'Written by people I have worked with — a school vice-principal, a colleague, two programme coordinators and a fellow volunteer.',
     trustAll: 'All testimonials',
     closingTitle: 'Tell me what you need',
     closingBody: 'A project, a question, or a situation you are not sure how to handle. The first conversation costs nothing.',
@@ -426,7 +426,7 @@ export default {
     otherNote: 'Other types of work: just ask.',
     /* How an engagement is priced, without publishing numbers. */
     pricingTitle: 'How I work',
-    pricingBody: 'Quoted per engagement — day rate for interpreting, fixed price for a website or a trade project, hourly for ongoing advisory. I will tell you the shape of the cost before you commit, and what is included.',
+    pricingBody: 'Quoted per engagement — by the day or per event for interpreting, a fixed price for a website or a trade project, hourly for ongoing advisory. I will tell you the shape of the cost before you commit, and what is included.',
     travelNote: 'Based in Wenzhou, Zhejiang. Available for work across China and internationally.',
     domainLabel: 'Area',
     domain: {

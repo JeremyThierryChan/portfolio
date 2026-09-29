@@ -54,8 +54,12 @@ function close() {
 // Effects that must only run while open.
 useBodyScrollLock(isOpen);
 useFocusTrap(isOpen, panel, {
-  // Focus the heading area rather than the close button, so a screen reader reads
-  // the dialog's name before offering to dismiss it.
+  /*
+   * The close button, not the heading. The heading is a plain <h2> with no tabindex, so
+   * `focus()` on it is silently ignored and focus would stay on <body> — outside the
+   * dialog, the very defect this trap exists to fix. The first real control is safely
+   * inside the trap, and `aria-labelledby` still gets the title announced.
+   */
   initialFocus: closeButton,
   onEscape: close,
 });

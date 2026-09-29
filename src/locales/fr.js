@@ -25,7 +25,7 @@ export default {
     step2Body: 'Par écrit, en précisant ce qui est inclus, ce qui ne l\'est pas, et quand ce serait livré.',
     step3Title: 'Vous confirmez, et je réserve le créneau',
     step3Body: 'Une fois le prix et le périmètre acceptés, je confirme les dates et je passe à la préparation.',
-    noNumbers: 'Il n\'y a pas de grille tarifaire ici, et c\'est volontaire. Ces neuf services se facturent dans des unités différentes — à la journée, par événement, au mot, au projet, par cours, sur commission pour les commandes conclues — donc un chiffre unique serait plus trompeur qu\'utile. Décrivez ce dont vous avez besoin et vous obtiendrez un chiffre ferme.',
+    noNumbers: 'Il n\'y a pas de grille tarifaire ici, et c\'est volontaire. Ces neuf services se facturent dans des unités différentes — à la journée, par événement, au mot, au projet, à l\'heure, par cours — donc un chiffre unique serait plus trompeur qu\'utile. Décrivez ce dont vous avez besoin et vous obtiendrez un chiffre ferme.',
     cta: 'Envoyez-moi votre demande',
   },
 
@@ -129,7 +129,7 @@ export default {
        accroche → services → recommandations → index → contact. */
     servicesLede: 'Neuf choses pour lesquelles vous pouvez faire appel à moi. Dites-moi ce qui vous ressemble et je le mettrai en avant.',
     trustTitle: 'Ce que l\'on dit de moi',
-    trustLede: 'Écrit par des personnes avec qui j\'ai travaillé — un directeur adjoint d\'école, un collègue, deux coordinateurs de programme.',
+    trustLede: 'Écrit par des personnes avec qui j\'ai travaillé — un directeur adjoint d\'école, un collègue, deux coordinateurs de programme et un autre volontaire.',
     trustAll: 'Toutes les recommandations',
     closingTitle: 'Dites-moi ce dont vous avez besoin',
     closingBody: 'Un projet, une question, ou une situation que vous ne savez pas trop comment aborder. La première conversation ne coûte rien.',
@@ -422,7 +422,7 @@ export default {
     otherNote: 'D\'autres types de missions ? Demandez, tout simplement.',
     /* Comment une mission est facturée, sans publier de chiffres. */
     pricingTitle: 'Comment je travaille',
-    pricingBody: 'Devis au cas par cas — tarif journalier pour l\'interprétation, prix forfaitaire pour un site ou un projet commercial, tarif horaire pour un accompagnement régulier. Je vous annonce la forme du coût avant tout engagement, et ce qui est inclus.',
+    pricingBody: 'Devis au cas par cas — à la journée ou par événement pour l\'interprétation, prix forfaitaire pour un site ou un projet commercial, tarif horaire pour un accompagnement régulier. Je vous annonce la forme du coût avant tout engagement, et ce qui est inclus.',
     travelNote: 'Basé à Wenzhou, dans le Zhejiang. Disponible pour des missions partout en Chine et à l\'international.',
     domainLabel: 'Domaine',
     domain: {

@@ -30,10 +30,16 @@ const route = useRoute();
 
 const variants = computed(() => variantOptions(locale.value));
 
+/*
+ * A URL that names no known variant — `/resume` (no param at all) or a stale
+ * `/resume/<unknown>` — falls back to the complete CV. Both branches of the ternary
+ * that used to sit here returned DEFAULT_VARIANT, so the route-name test decided
+ * nothing and was removed rather than left as a claim about variant routing.
+ */
 const activeId = computed(() => {
   const raw = route.params.variant;
   const id = Array.isArray(raw) ? raw[0] : raw;
-  return isVariantId(id) ? id : (route.name === 'resume' ? DEFAULT_VARIANT : DEFAULT_VARIANT);
+  return isVariantId(id) ? id : DEFAULT_VARIANT;
 });
 
 const doc = computed(() => buildResume(activeId.value, locale.value));

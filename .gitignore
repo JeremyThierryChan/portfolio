@@ -11,6 +11,12 @@ node_modules
 __pycache__/
 *.pyc
 
+# Scratch files left in the repo root by automated editing sessions.
+# A round of fixes once left eight of these behind — copies of live components and probe
+# scripts, ~40 KB — and `git status` listed every one as an untracked file about to be
+# committed. They are never part of the project, so they are ignored rather than reviewed.
+.dsh-*
+
 # Log files
 npm-debug.log*
 yarn-debug.log*

@@ -21,16 +21,33 @@
  * without a URL render as a non-interactive `<span>` with an explanatory accessible
  * name, and entries with a URL get `rel="noopener noreferrer"` and a new-tab hint.
  */
-import { ref, computed, reactive } from 'vue';
+import { ref, computed, reactive, onUnmounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useContent } from '@/content/index.js';
+import { pick } from '@/content/resolve.js';
 import PageShell from '@/components/layout/PageShell.vue';
 import PageHeader from '@/components/layout/PageHeader.vue';
 import AppButton from '@/components/ui/AppButton.vue';
 import QuoteProcess from '@/components/content/QuoteProcess.vue';
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const { profile } = useContent();
+
+/*
+ * `useContent()` hands back REFS, so a bare `profile.contact.email` in this block is
+ * `undefined.contact.email` — a TypeError, not a value. The TEMPLATE auto-unwraps, so the
+ * same expression is correct there; that asymmetry is exactly why this went unnoticed.
+ * Three things were broken and none of them showed on the rendered page:
+ *   - `copyEmail()` threw before touching the clipboard and fell into its own `catch`, so
+ *     the button reported "copy failed" on every click;
+ *   - `submit()` threw, so the form never handed the message to a mail client;
+ *   - `socials` resolved to `[]`, so the entire social list rendered empty.
+ *
+ * `contact` is PICKED rather than read off `profile`, because `location` lives inside
+ * `contact.i18n` and `pick(profile, …)` flattens only the top level — reading it raw
+ * printed nothing beside the Location label.
+ */
+const contact = computed(() => pick(profile.value.contact, locale.value));
 
 const form = reactive({ name: '', email: '', message: '' });
 const copied = ref(false);
@@ -52,26 +69,35 @@ const mailtoHref = computed(() => {
     form.name,
     form.email,
   ].filter(Boolean).join('\n');
-  return `mailto:${profile.contact.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  return `mailto:${profile.value.contact.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 });
 
 function submit() {
   window.location.href = mailtoHref.value;
 }
 
+/** Pending "copied" revert, held so a second copy restarts the delay instead of racing it. */
+let copyTimer = null;
+
 async function copyEmail() {
   copyError.value = false;
   try {
-    await navigator.clipboard.writeText(profile.contact.email);
+    await navigator.clipboard.writeText(profile.value.contact.email);
     copied.value = true;
-    setTimeout(() => { copied.value = false; }, 2400);
+    // Each click owns the label for the full 2.4s: without clearing the previous timer,
+    // it fires early and reverts a label that has just been re-set.
+    clearTimeout(copyTimer);
+    copyTimer = setTimeout(() => { copied.value = false; }, 2400);
   } catch {
     // Clipboard access is refused in some browsers and all insecure contexts.
     copyError.value = true;
   }
 }
 
-const socials = computed(() => profile.socials ?? []);
+// A queued timer would otherwise write to a ref whose component is already gone.
+onUnmounted(() => clearTimeout(copyTimer));
+
+const socials = computed(() => profile.value.socials ?? []);
 </script>
 
 <template>
@@ -121,7 +147,7 @@ const socials = computed(() => profile.socials ?? []);
         <dl class="details">
           <dt>{{ t('contact.email') }}</dt>
           <dd>
-            <a :href="`mailto:${profile.contact.email}`">{{ profile.contact.email }}</a>
+            <a :href="`mailto:${contact.email}`">{{ contact.email }}</a>
             <AppButton variant="ghost" size="sm" @click="copyEmail">
               {{ copied ? t('contact.copied') : t('contact.copyEmail') }}
             </AppButton>
@@ -132,13 +158,13 @@ const socials = computed(() => profile.socials ?? []);
           </dd>
 
           <dt>{{ t('contact.phone') }}</dt>
-          <dd><a :href="`tel:${profile.contact.phone.replace(/\s+/g, '')}`">{{ profile.contact.phone }}</a></dd>
+          <dd><a :href="`tel:${contact.phone.replace(/\s+/g, '')}`">{{ contact.phone }}</a></dd>
 
           <dt>{{ t('contact.wechat') }}</dt>
-          <dd>{{ profile.contact.wechat }}</dd>
+          <dd>{{ contact.wechat }}</dd>
 
           <dt>{{ t('contact.location') }}</dt>
-          <dd>{{ profile.contact.location }}</dd>
+          <dd>{{ contact.location }}</dd>
         </dl>
       </section>
     </div>

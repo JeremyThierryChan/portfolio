@@ -14,7 +14,7 @@
  * ── Why the composition is explicit rather than derived ─────────────────────────
  *
  * `EDUCATION_IDS` and the per-variant emphasis are written out. That looks like duplication
- * next to the timeline data, and it is intentional: a CV is a curated document. Which three
+ * next to the timeline data, and it is intentional: a CV is a curated document. Which two
  * education entries matter is an editorial decision, not something a rule can infer from 50
  * records — the timeline legitimately contains "entered primary school", and no derived
  * query would know that a recruiter does not care.

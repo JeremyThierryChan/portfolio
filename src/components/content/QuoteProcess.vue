@@ -2,24 +2,37 @@
 /**
  * QuoteProcess — how a request turns into a price.
  *
- * WHY THIS EXISTS INSTEAD OF A PRICE LIST. The site publishes no rates, and that is a
- * decision rather than an omission. The nine services are billed in units that cannot be
- * compared with one another — day, event, word, project, lesson, commission on completed
- * orders — so a single figure would mislead more than it helps, and each direction carries
- * a real cost: priced too high it filters people out before they have seen the work;
- * priced too low it anchors the number and a later increase reads as a price rise. Three
- * of the four audiences make it worse rather than better: trade sourcing is commission-
- * based and publishing the structure invites being bypassed, event work varies by
- * duration and staging so a list price becomes a ceiling in negotiation, and institutional
- * procurement needs a formal quote regardless of what the website says.
+ * WHY THIS EXISTS INSTEAD OF A PRICE LIST. No figure appears beside a service card, and
+ * that is a decision rather than an omission. The nine services are billed in units that
+ * cannot be compared with one another — day, event, word, project, hour, lesson — so a
+ * single figure would mislead more than it helps, and each direction carries a real cost:
+ * priced too high it filters people out before they have seen the work; priced too low it
+ * anchors the number and a later increase reads as a price rise. Three of the four
+ * audiences make it worse rather than better: trade work is quoted per project, where the
+ * price is a function of product, market and volume, so any published figure is wrong
+ * before the brief has been read; event work varies by duration and staging so a list
+ * price becomes a ceiling in negotiation; and institutional procurement needs a formal
+ * quote regardless of what the website says.
+ *
+ * /tutoring IS the one published rate card, and that is a deliberate exception, not an
+ * oversight in the paragraph above: teaching is sold in comparable hourly units with no
+ * scope left to discover, so a table there removes friction instead of anchoring a number.
+ * Do not read this as "the site has no rates anywhere" — `quote.noNumbers` says "no price
+ * list HERE" for exactly that reason. (An earlier version of this comment claimed trade
+ * sourcing was commission-based; `cross-border-trade` states a fixed price per project.
+ * The comment was the stale side and was corrected, not the data.)
  *
  * What a prospective client actually lacks is not a number, it is any idea of what happens
  * after they write in. That is what this answers, and it costs nothing to publish. The unit
- * each service is billed in lives on the service card itself (`services.billingLabel`), so
- * the two halves together remove the friction without anchoring a figure.
+ * each service is billed in lives on the service card itself (`services.billingLabel`), and
+ * a service with a published table links to it (`services[].ratesPath`), so the two halves
+ * together remove the friction without anchoring a figure.
  *
- * Rendered on /services (where the price question arises) and on /contact (where the
- * decision happens), from one component and one set of keys, so the two can never drift.
+ * Rendered on /contact only, from one component and one set of keys. /services is the
+ * obvious other home — that is where the price question arises — but it already closes
+ * with its own ask and a "how I work" panel stating the billing basis, so this block there
+ * would have been the third pricing section on one screen. /contact is where the decision
+ * happens and had no pricing answer at all.
  */
 import { useI18n } from 'vue-i18n';
 
