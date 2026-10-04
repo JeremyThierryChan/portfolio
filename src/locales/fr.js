@@ -129,7 +129,7 @@ export default {
        accroche → services → recommandations → index → contact. */
     servicesLede: 'Neuf choses pour lesquelles vous pouvez faire appel à moi. Dites-moi ce qui vous ressemble et je le mettrai en avant.',
     trustTitle: 'Ce que l\'on dit de moi',
-    trustLede: 'Écrit par des personnes avec qui j\'ai travaillé — un directeur adjoint d\'école, un collègue, deux coordinateurs de programme et un autre volontaire.',
+    trustLede: 'Écrit par des personnes avec qui j\'ai travaillé — un directeur adjoint d\'école, un ancien professeur d\'anglais, deux coordinateurs de programme et un autre volontaire.',
     trustAll: 'Toutes les recommandations',
     closingTitle: 'Dites-moi ce dont vous avez besoin',
     closingBody: 'Un projet, une question, ou une situation que vous ne savez pas trop comment aborder. La première conversation ne coûte rien.',

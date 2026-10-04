@@ -129,7 +129,7 @@ export default {
        indice → contatti. Queste sono le etichette di quella struttura. */
     servicesLede: 'Nove cose per cui posso essere ingaggiato. Dimmi quale ti riguarda e le metto davanti a tutto il resto.',
     trustTitle: 'Cosa dicono di me',
-    trustLede: 'Scritte da persone con cui ho lavorato — una vicepreside, un collega, due coordinatori di programma e un altro volontario.',
+    trustLede: 'Scritte da persone con cui ho lavorato — una vicepreside, un mio ex insegnante di inglese, due coordinatori di programma e un altro volontario.',
     trustAll: 'Tutte le referenze',
     closingTitle: 'Dimmi di cosa hai bisogno',
     closingBody: 'Un progetto, una domanda, o una situazione che non sai come affrontare. La prima conversazione non costa nulla.',

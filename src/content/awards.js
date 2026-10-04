@@ -278,7 +278,11 @@ export const awards = [
     },
   },
   {
-    id: 'wenzhou-junior-cycling-2014-2017',
+    /* Owner-confirmed (2026-10): won THREE times. So "three" was never the error — the
+       span beside it was, since 2014–2017 is four calendar years. Both this entry and the
+       timeline one are anchored to 2017, so the three years are 2015–2017; the id would
+       otherwise assert the same wrong span. */
+    id: 'wenzhou-junior-cycling-2015-2017',
     year: '2017',
     kind: 'sport',
     audiences: [],
@@ -286,12 +290,12 @@ export const awards = [
       en: {
         title: 'Wenzhou junior road cycling championship',
         issuer: 'Wenzhou',
-        result: 'Champion, three consecutive years (2014–2017)',
+        result: 'Champion, three consecutive years (2015–2017)',
       },
       zh: {
         title: '温州市青少年公路自行车锦标赛',
         issuer: '温州市',
-        result: '冠军，连续三年（2014–2017）',
+        result: '冠军，连续三年（2015–2017）',
       },
     },
   },

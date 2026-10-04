@@ -129,7 +129,7 @@ export default {
        Stimmen → Wegweiser → Kontakt. Das sind die Abschnittsbeschriftungen dazu. */
     servicesLede: 'Neun Dinge, für die man mich beauftragen kann. Sagen Sie mir, was auf Sie zutrifft, und ich stelle diese nach vorn.',
     trustTitle: 'Was andere sagen',
-    trustLede: 'Geschrieben von Menschen, mit denen ich zusammengearbeitet habe — einer stellvertretenden Schulleitung, einem Kollegen, zwei Programmkoordinatoren und einem Mitfreiwilligen.',
+    trustLede: 'Geschrieben von Menschen, mit denen ich zusammengearbeitet habe — einer stellvertretenden Schulleitung, einem früheren Englischlehrer von mir, zwei Programmkoordinatoren und einem Mitfreiwilligen.',
     trustAll: 'Alle Empfehlungen',
     closingTitle: 'Sagen Sie mir, was Sie brauchen',
     closingBody: 'Ein Projekt, eine Frage oder eine Situation, bei der Sie nicht wissen, wie Sie sie angehen sollen. Das erste Gespräch kostet nichts.',

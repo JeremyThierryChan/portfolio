@@ -142,7 +142,13 @@ export const projects = [
 
        Next question for Jeremy: should this be presented as a working system with an
        unproven live record, or as an engineering exercise? The copy currently does the
-       former without the latter's claims. */
+       former without the latter's claims.
+
+       ANSWERED (2026-10): this is Jeremy's OWN project, and it is a DIFFERENT piece of
+       work from the 2025 timeline entry \"Arbitrage Trading System Engineer\", which was a
+       role inside a company project. The two are not the same system, so the timeline's
+       \"developed and maintained\" does not contradict this entry's unproven live record —
+       an audit flagged that as a possible conflict and it is closed, not outstanding. */
     /* `tier` decides presentation only — every project stays in the content layer and
        appears in the full index on /projects, including the archived ones. Nothing is
        deleted; 'archived' means "not promoted", not "hidden". */

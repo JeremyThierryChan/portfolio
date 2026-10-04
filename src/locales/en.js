@@ -136,7 +136,7 @@ export default {
        index → contact. These are the section labels for that structure. */
     servicesLede: 'Nine things I can be hired for. Tell me which sounds like you and I will put those first.',
     trustTitle: 'What people say',
-    trustLede: 'Written by people I have worked with — a school vice-principal, a colleague, two programme coordinators and a fellow volunteer.',
+    trustLede: 'Written by people I have worked with — a school vice-principal, a former English teacher of mine, two programme coordinators and a fellow volunteer.',
     trustAll: 'All testimonials',
     closingTitle: 'Tell me what you need',
     closingBody: 'A project, a question, or a situation you are not sure how to handle. The first conversation costs nothing.',

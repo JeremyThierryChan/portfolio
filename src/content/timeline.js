@@ -716,11 +716,11 @@ export const timeline = [
     i18n: {
       en: {
         title: 'Wenzhou Junior Road Cycling Champion — three consecutive years',
-        description: 'Won the Wenzhou junior road cycling championship three years running, from 2014 to 2017.',
+        description: 'Won the Wenzhou junior road cycling championship three years running, from 2015 to 2017.',
       },
       zh: {
         title: '温州青少年公路自行车冠军 — 连续三年',
-        description: '从 2014 年到 2017 年，连续三年获得温州青少年公路自行车赛冠军。',
+        description: '从 2015 年到 2017 年，连续三年获得温州青少年公路自行车赛冠军。',
       },
     },
   },

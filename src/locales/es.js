@@ -131,7 +131,7 @@ export default {
        confianza → índice → contacto. Estas son las etiquetas de esa estructura. */
     servicesLede: 'Nueve cosas por las que puedes contratarme. Dime cuál se parece a tu caso y pondré esas primero.',
     trustTitle: 'Lo que dicen',
-    trustLede: 'Escrito por personas con las que he trabajado: un vicedirector de instituto, un colega, dos coordinadores de programas y otro voluntario.',
+    trustLede: 'Escrito por personas con las que he trabajado: un vicedirector de instituto, un antiguo profesor de inglés, dos coordinadores de programas y otro voluntario.',
     trustAll: 'Todas las recomendaciones',
     closingTitle: 'Dime qué necesitas',
     closingBody: 'Un proyecto, una duda o una situación que no sabes cómo resolver. La primera conversación no cuesta nada.',
