@@ -17,6 +17,7 @@ import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 import { WITHHELD, findWithheld } from './withheld-names.mjs';
+import { collectOpenQuestions } from './open-questions.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const p = (...s) => resolve(ROOT, ...s);
@@ -830,6 +831,31 @@ section('Published metadata');
   }
   assert(offenders.length === 0, 'no useContent() ref is dereferenced without .value in a script block',
     offenders.length ? offenders.join(' | ') : `${components.length} component(s) checked`);
+}
+
+/* ── the README's open-question count must still be true ──────────────────
+   README.md is the first thing the owner opens after months away, and it quotes how many
+   questions are waiting on him. That number is the one part of the README that can rot
+   with nobody noticing: answering a question edits a content file, never the README, and
+   nothing about the edit looks incomplete.
+
+   So the count is DERIVED — `open-questions.mjs` reads the markers — and this asserts the
+   derived value against the quoted one. Neither is trusted on its own. This is the same
+   rule as everything else here: a document may describe the data, but something has to
+   check that the description still matches.
+   ────────────────────────────────────────────────────────────────────────── */
+{
+  const README = readFileSync(p('README.md'), 'utf8');
+  const quoted = README.match(/\*\*Open questions: (\d+)\*\*/)?.[1];
+  const actual = collectOpenQuestions().total;
+
+  assert(quoted !== undefined, 'README quotes the open-question count in a checkable form',
+    quoted === undefined ? 'no "**Open questions: N**" line found' : `${quoted}`);
+
+  assert(Number(quoted) === actual, 'the README open-question count matches the content layer',
+    Number(quoted) === actual
+      ? `${actual}`
+      : `README says ${quoted}, the content layer has ${actual} — run "npm run questions"`);
 }
 
 /* ── no withheld name reaches a published surface ─────────────────────────
